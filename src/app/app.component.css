@@ -1,0 +1,28 @@
+/* Navigation */
+.nav {
+  position: sticky;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background: rgba(129, 129, 129, 0.28);
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 2px 5px #bec9d4;
+  z-index: 1000;
+}
+
+.nav__link {
+  text-decoration: none;
+  color: #240404;
+  padding: 0.625rem 1.25rem;
+  margin: 0 0.625rem;
+  border-radius: 0.3125rem;
+  transition: all 0.3s ease;
+}
+
+.nav__link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+{

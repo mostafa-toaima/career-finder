@@ -1,0 +1,63 @@
+<section class="journey-section">
+  <div class="container">
+    <!-- Header -->
+    <div class="section-header">
+      <h1>Start Your Journey</h1>
+      <p class="subtitle">Begin your adventure with these key steps</p>
+    </div>
+
+    <!-- Journey Cards Grid -->
+    <div class="journey-grid">
+      <!-- Search Card -->
+      <div class="journey-card">
+        <div class="card-icon">
+          <img
+            src="../../../assets/images/right-arrow-circular-symbol-svgrepo-com.svg"
+            alt="Search">
+        </div>
+        <h3>Entrepreneurshipp</h3>
+        <p>Discover opportunities tailored to your interests</p>
+        <button class="cta-button">Begin</button>
+      </div>
+
+      <!-- Planning Card -->
+      <div class="journey-card highlight-card">
+        <div class="card-icon">
+          <img
+            src="../../../assets/images/right-arrow-circular-symbol-svgrepo-com.svg"
+            alt="Search">
+        </div>
+        <h3>Carer Path</h3>
+        <p>Build your Career</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 30%"></div>
+        </div>
+        <a routerLink="/select-university">
+          <button class="cta-button">Build</button>
+        </a>
+      </div>
+
+      <!-- Connect Card -->
+      <div class="journey-card">
+        <div class="card-icon">
+          <img
+            src="../../../assets/images/right-arrow-circular-symbol-svgrepo-com.svg"
+            alt="Search">
+        </div>
+        <h3>Soft Skills</h3>
+        <p>Make life beeter</p>
+        <button [disabled]="true" class="cta-button">Start</button>
+      </div>
+    </div>
+
+    <!-- Additional Resources -->
+    <div class="resources-section">
+      <h4>Quick Links</h4>
+      <div class="resource-chips">
+        <a href="#" class="resource-chip">FAQ</a>
+        <a href="#" class="resource-chip">Webinars</a>
+        <a href="#" class="resource-chip">Toolkit</a>
+      </div>
+    </div>
+  </div>
+</section>

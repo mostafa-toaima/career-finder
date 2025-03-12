@@ -1,0 +1,171 @@
+<!-- <div class="selection-card">
+  <h2>Select Your Academic Path</h2>
+
+  <div class="form-group">
+    <label for="faculty">Select Faculty</label>
+    <select id="faculty" [(ngModel)]="selectedFaculty"
+      (change)="onFacultyChange()">
+      <option value disabled>Choose a faculty</option>
+      <option *ngFor="let faculty of faculties" [value]="faculty.name">{{
+        faculty.name }}</option>
+    </select>
+  </div>
+
+  <div class="form-group" *ngIf="sections.length">
+    <label for="section">Select Section</label>
+    <select id="section" [(ngModel)]="selectedSection">
+      <option value disabled>Choose a section</option>
+      <option *ngFor="let section of sections" [value]="section">{{ section
+        }}</option>
+    </select>
+  </div>
+
+  <button class="btn"
+    [disabled]="!selectedFaculty || !selectedSection"
+    (click)="showCareerPaths()">
+    Show Career Paths
+  </button>
+</div> -->
+
+<!-- <div class="journey-container"> -->
+  <!-- <h1 class="title">Start Your Journey</h1>
+
+  <p class="description">
+    <strong>Ready to choose your career path?</strong> Follow these simple steps
+    to get started. This guide will help you
+    understand how to select your faculty and department, and discover the best
+    tracks available based on your choices.
+    By choosing a faculty, you’ll unlock a list of departments, and upon
+    selecting a department, you’ll get a list of career tracks.
+  </p>
+
+  <div class="selection-card">
+    <h2>Select Your Faculty</h2>
+
+    <div class="row">
+      <div class="form-group col-6">
+        <label for="faculty">Faculty</label>
+        <select id="faculty" [(ngModel)]="selectedFaculty"
+          (change)="onFacultyChange()">
+          <option value disabled selected>Select a Faculty</option>
+          <option *ngFor="let faculty of faculties" [value]="faculty.name">{{
+            faculty.name }}</option>
+        </select>
+      </div>
+      <div *ngIf="selectedFaculty" class="form-group col-6">
+        <label for="department">Select Department</label>
+        <select id="department" [(ngModel)]="selectedDepartment"
+          (change)="onDepartmentChange()">
+          <option value disabled selected>Select a Department</option>
+          <option *ngFor="let department of departments"
+            [value]="department.name">{{ department.name }}</option>
+        </select>
+      </div>
+    </div>
+    <div *ngIf="selectedDepartment && tracks.length > 0"
+      class="tracks-container">
+      <h2>Available Tracks</h2>
+      <div class="tracks-boxes">
+        <div *ngFor="let track of tracks" class="track-box"
+          (click)="onTrackSelect(track)">
+          <h3>{{ track.name }}</h3>
+          <p>{{ track.description }}</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p *ngIf="selectedDepartment && tracks.length === 0">
+        No tracks available for this department.
+      </p>
+    </div>
+
+    <button class="btn" [disabled]="!selectedTrack" (click)="showCareerPath()">
+      Show Career Path
+    </button>
+  </div>
+</div> -->
+
+<div class="journey-container">
+  <div class="hero-section">
+    <h1 class="title">Start Your Journey</h1>
+    <div class="hero-gradient"></div>
+  </div>
+
+  <!-- Explanation for the user -->
+  <div class="description-card">
+    <p class="description">
+      <strong>Ready to choose your career path?</strong> Follow these simple steps
+      to discover your perfect academic journey. Select your faculty and department
+      to unlock tailored career tracks that match your aspirations.
+    </p>
+    <div class="decorative-line"></div>
+  </div>
+
+  <!-- Faculty and Department Selection -->
+  <div class="selection-card">
+    <div class="selection-header">
+      <h2>Select Your Academic Path</h2>
+      <div class="path-progress">
+        <div class="progress-step" [class.active]="selectedFaculty"></div>
+        <div class="progress-step" [class.active]="selectedDepartment"></div>
+        <div class="progress-step" [class.active]="selectedTrack"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-6">
+        <div class="input-container">
+          <i class="fas fa-university input-icon"></i>
+          <label for="faculty">Choose Faculty</label>
+          <select id="faculty" [(ngModel)]="selectedFaculty"
+            (change)="onFacultyChange()">
+            <option value disabled selected>Select a Faculty</option>
+            <option *ngFor="let faculty of faculties" [value]="faculty.name">{{
+              faculty.name }}</option>
+          </select>
+        </div>
+      </div>
+      <div *ngIf="selectedFaculty" class="form-group col-6">
+        <div class="input-container">
+          <i class="fas fa-building input-icon"></i>
+          <label for="department">Select Department</label>
+          <select id="department" [(ngModel)]="selectedDepartment"
+            (change)="onDepartmentChange()">
+            <option value disabled selected>Select a Department</option>
+            <option *ngFor="let department of departments"
+              [value]="department.name">{{ department.name }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Available Tracks -->
+    <div *ngIf="selectedDepartment" class="tracks-container">
+      <h3 class="tracks-title">Available Career Tracks</h3>
+      <div class="tracks-boxes">
+        <div *ngFor="let track of tracks" class="track-box"
+          [class.selected]="selectedTrack?.name === track.name"
+          (click)="onTrackSelect(track)">
+          <div class="track-icon">
+            <i class="fas" [class.fa-code]="track.name === 'Software Engineering'"
+              [class.fa-chart-line]="track.name === 'Data Science'"></i>
+          </div>
+          <div class="track-content">
+            <h4>{{ track.name }}</h4>
+            <p>{{ track.description }}</p>
+          </div>
+        </div>
+      </div>
+      <p *ngIf="tracks.length === 0" class="no-tracks">
+        <i class="fas fa-info-circle"></i> No tracks available for this department
+      </p>
+    </div>
+
+    <button class="cta-button" [disabled]="!selectedTrack" (click)="showCareerPath()">
+      Explore Career Path
+      <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <div class="decorative-bottom"></div>
+</div>

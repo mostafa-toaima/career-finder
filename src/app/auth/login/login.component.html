@@ -1,0 +1,33 @@
+<body>
+  <div class="container">
+    <!-- Photo Column -->
+    <div class="photo-column">
+      <img src="../../../assets/images/column.jfif" alt="Photo">
+    </div>
+
+    <!-- Form Column -->
+    <div class="form-column">
+      <div class="form-container">
+        <h2>Create An Account</h2>
+        <form action="/submit_registration" method="post">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+          </div>
+          <button type="button" (click)="login()">Continue</button>
+          <a class="link" href>Forgot Password ?</a>
+          <a class="link" routerLink="/sign-up">Switch to Create Acount?</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>

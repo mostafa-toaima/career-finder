@@ -1,0 +1,56 @@
+<body>
+  <div class="container">
+    <!-- Photo Column -->
+    <div class="photo-column">
+      <img src="../../../assets/images/column.jfif" alt="Photo">
+    </div>
+
+    <!-- Form Column -->
+    <div class="form-column">
+      <div class="form-container">
+        <h2>Create An Account</h2>
+        <form action="/submit_registration" method="post">
+          <!-- Two-column layout for fields -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstname">First Name</label>
+              <input type="text" id="firstname" name="firstname" required>
+            </div>
+            <div class="form-group">
+              <label for="lastname">Last Name</label>
+              <input type="text" id="lastname" name="lastname" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="Phone Number">Phone Number</label>
+              <input type="Phone Number" id="Phone Number" name="Phone Number"
+                required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm Password</label>
+              <input type="password" id="confirm-password"
+                name="confirm-password" required>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit">Continue</button>
+          <a class="switch" routerLink="/login">Switch to login?</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
