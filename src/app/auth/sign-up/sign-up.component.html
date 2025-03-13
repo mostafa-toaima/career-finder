@@ -1,16 +1,13 @@
-<body>
+<!-- <body>
   <div class="container">
-    <!-- Photo Column -->
     <div class="photo-column">
       <img src="../../../assets/images/column.jfif" alt="Photo">
     </div>
 
-    <!-- Form Column -->
     <div class="form-column">
       <div class="form-container">
         <h2>Create An Account</h2>
         <form action="/submit_registration" method="post">
-          <!-- Two-column layout for fields -->
           <div class="form-row">
             <div class="form-group">
               <label for="firstname">First Name</label>
@@ -45,12 +42,85 @@
                 name="confirm-password" required>
             </div>
           </div>
-
-          <!-- Submit Button -->
           <button type="submit">Continue</button>
           <a class="switch" routerLink="/login">Switch to login?</a>
         </form>
       </div>
     </div>
   </div>
-</body>
+</body> -->
+<div class="main">
+  <div class="sidebar">
+  </div>
+  <div class="content">
+    <div class="container">
+      <h2>Create an Account</h2>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="firstName">First Name</label>
+            <input type="text" formControlName="firstName" class="form-control"
+              required>
+          </div>
+          <div class="col-md-6">
+            <label for="lastName">Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control"
+              required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="email">Email</label>
+            <input type="email" formControlName="email" class="form-control"
+              required>
+          </div>
+          <div class="col-md-6">
+            <label for="mobile">Mobile</label>
+            <input type="text" formControlName="mobile" class="form-control"
+              required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="university">University</label>
+            <input type="text" formControlName="university" class="form-control"
+              required>
+          </div>
+          <div class="col-md-6">
+            <label for="faculty">Faculty</label>
+            <input type="text" formControlName="faculty" class="form-control"
+              required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="department">Department</label>
+            <input type="text" formControlName="department" class="form-control"
+              required>
+          </div>
+          <div class="col-md-6">
+            <label for="gender">Gender</label><br>
+            <input type="radio" formControlName="gender" value="Male"> Male
+            <input type="radio" formControlName="gender" value="Female"> Female
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="password">Password</label>
+            <input type="password" formControlName="password"
+              class="form-control" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3"
+          [disabled]="registerForm.invalid">Register</button>
+      </form>
+    </div>
+
+  </div>
+</div>
