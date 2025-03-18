@@ -1,7 +1,18 @@
+<ng-container *ngIf="visibleSignUp">
+  <sign-up [visible]="visibleSignUp"
+    (visibleChange)="visibleSignUp = $event"></sign-up>
+</ng-container>
+
+<ng-container *ngIf="visibleLogin">
+  <login [visible]="visibleLogin"
+    (visibleChange)="visibleLogin = $event"></login>
+</ng-container>
+
 <nav
   class="nav navbar navbar-expand-sm  navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="#">ThirdEyE</a>
+    <a class="navbar-brand" href="#"><img width="40"
+        src="../assets/images/career-goals.png" alt="Career Path"></a>
     <button
       class="navbar-toggler d-lg-none"
       type="button"
@@ -19,45 +30,17 @@
             routerLinkActive="active">Home</a>
         </li>
         <li class="nav-item">
-          <button class="btn"><a class="nav-link"
-              routerLink="./sign-up"
-              routerLinkActive="active">SignUp</a></button>
+          <button class="btn sign button" (click)="visibleSignUp = true"><a
+              class="nav-link">SignUp</a></button>
         </li>
         <li class="nav-item">
-          <button class="btn"><a class="nav-link"
-              routerLink="/login" routerLinkActive="active">Login</a></button>
+          <button class="btn login button" (click)="visibleLogin = true"><a
+              class="nav-link">Login</a></button>
         </li>
-        <!-- <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="dropdownId"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false">Dropdown</a>
-          <div
-            class="dropdown-menu"
-            aria-labelledby="dropdownId">
-            <a class="dropdown-item" href="#">Action 1</a>
-            <a class="dropdown-item" href="#">Action 2</a>
-          </div>
-        </li> -->
       </ul>
-      <!-- <form class="d-flex my-2 my-lg-0">
-        <input
-          class="form-control me-sm-2"
-          type="text"
-          placeholder="Search" />
-        <button
-          class="btn btn-outline-success my-2 my-sm-0"
-          type="submit">
-          Search
-        </button>
-      </form> -->
     </div>
   </div>
 </nav>
-
 <div class="parent container-fluid">
   <router-outlet></router-outlet>
 </div>

@@ -25,3 +25,50 @@
   transform: scale(1.05);
 }
 
+
+
+.button {
+  padding: 1px;
+  margin: 2px;
+  border-radius: 11px;
+  box-shadow: 0 6px 6px rgb(0 0 0 / 19%);
+  width: 100px;
+  transition: background-color 0.3s ease;
+}
+
+.sign {
+  background-color: #3c8fffe6;
+}
+
+.sign:hover {
+  background-color: #fff;
+  border: 1px solid #3c8fffe6;
+  transition: 0.5s;
+}
+
+.sign a {
+  color: #fff;
+}
+
+.sign a:hover {
+  color: #3c8fffe6;
+}
+
+.login {
+  border: 1px solid #3c8fffe6;
+}
+
+.login:hover {
+  background-color: #3c8fffe6;
+  transition: 0.5s;
+}
+
+.login a {
+  color: #3c8fffe6;
+
+}
+
+.login a:hover {
+  color: #fff;
+
+}

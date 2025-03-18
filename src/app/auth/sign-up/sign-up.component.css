@@ -1,19 +1,47 @@
-.main {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  overflow: hidden;
-  min-height: 90vh;
-  gap: 20px;
-}
-
-.sidebar {
-  width: 30%;
-  background: blue;
-  padding: 20px;
-}
-
 .content {
-  margin: auto;
-  width: 80%;
+  background-color: #000000a3;
+  padding: 40px;
+  width: 100%;
+  color: white;
+}
+
+::ng-deep .p-dialog-header {
+  background-color: #000000a3;
+  color: white;
+  font-size: large;
+  padding: 20px !important;
+  font-weight: bold;
+  color: #3c8fffe6;
+}
+
+.btn {
+  color: #eeeeee;
+  padding: 10px 20px;
+  border-radius: 0.375rem;
+  border: none;
+  transition: background-color 0.3s ease;
+  outline: none;
+}
+
+.button {
+  background-color: #3c8fffe6;
+}
+
+.button:hover {
+  background-color: #000000a3;
+  border: 1px solid #3c8fffe6;
+  transition: 0.5s;
+}
+
+.button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.golden {
+  border: 1px solid #3c8fffe6;
+}
+
+.golden:hover {
+  background-color: #3c8fffe6;
 }

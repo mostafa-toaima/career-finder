@@ -1,126 +1,111 @@
-<!-- <body>
-  <div class="container">
-    <div class="photo-column">
-      <img src="../../../assets/images/column.jfif" alt="Photo">
-    </div>
-
-    <div class="form-column">
-      <div class="form-container">
-        <h2>Create An Account</h2>
-        <form action="/submit_registration" method="post">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="firstname">First Name</label>
-              <input type="text" id="firstname" name="firstname" required>
-            </div>
-            <div class="form-group">
-              <label for="lastname">Last Name</label>
-              <input type="text" id="lastname" name="lastname" required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-              <label for="Phone Number">Phone Number</label>
-              <input type="Phone Number" id="Phone Number" name="Phone Number"
-                required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-              <label for="confirm-password">Confirm Password</label>
-              <input type="password" id="confirm-password"
-                name="confirm-password" required>
-            </div>
-          </div>
-          <button type="submit">Continue</button>
-          <a class="switch" routerLink="/login">Switch to login?</a>
-        </form>
-      </div>
-    </div>
-  </div>
-</body> -->
-<div class="main">
-  <div class="sidebar">
-  </div>
+<p-dialog header="Create an Account" [modal]="true" [(visible)]="visible"
+  [style]="{ width: '60rem' }" (onHide)="closeDialog()">
   <div class="content">
     <div class="container">
-      <h2>Create an Account</h2>
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
+        <!-- First Name -->
         <div class="row">
           <div class="col-md-6">
             <label for="firstName">First Name</label>
             <input type="text" formControlName="firstName" class="form-control"
               required>
+            <div *ngIf="firstNameError" class="text-danger">{{ firstNameError
+              }}</div>
           </div>
+
+          <!-- Last Name -->
           <div class="col-md-6">
             <label for="lastName">Last Name</label>
             <input type="text" formControlName="lastName" class="form-control"
               required>
+            <div *ngIf="lastNameError" class="text-danger">{{ lastNameError
+              }}</div>
           </div>
         </div>
 
+        <!-- Email -->
         <div class="row">
           <div class="col-md-6">
             <label for="email">Email</label>
             <input type="email" formControlName="email" class="form-control"
               required>
+            <div *ngIf="emailError" class="text-danger">{{ emailError }}</div>
           </div>
+
+          <!-- Mobile -->
           <div class="col-md-6">
             <label for="mobile">Mobile</label>
             <input type="text" formControlName="mobile" class="form-control"
               required>
+            <div *ngIf="mobileError" class="text-danger">{{ mobileError }}</div>
           </div>
         </div>
 
+        <!-- University, Faculty, Department -->
         <div class="row">
           <div class="col-md-6">
             <label for="university">University</label>
-            <input type="text" formControlName="university" class="form-control"
-              required>
+            <select formControlName="university" (change)="onUniversityChange()"
+              class="form-control">
+              <option *ngFor="let university of universities"
+                [value]="university.name">{{ university.name }}</option>
+            </select>
           </div>
+
           <div class="col-md-6">
             <label for="faculty">Faculty</label>
-            <input type="text" formControlName="faculty" class="form-control"
-              required>
+            <select class="form-control" formControlName="faculty"
+              (change)="onFacultyChange()">
+              <option *ngFor="let faculty of filteredFaculties"
+                [value]="faculty">{{ faculty }}</option>
+            </select>
           </div>
         </div>
 
+        <!-- Department -->
         <div class="row">
           <div class="col-md-6">
             <label for="department">Department</label>
-            <input type="text" formControlName="department" class="form-control"
-              required>
+            <select class="form-control" formControlName="department">
+              <option *ngFor="let department of filteredDepartments"
+                [value]="department">{{ department }}</option>
+            </select>
           </div>
+
+          <!-- Gender -->
           <div class="col-md-6">
             <label for="gender">Gender</label><br>
             <input type="radio" formControlName="gender" value="Male"> Male
             <input type="radio" formControlName="gender" value="Female"> Female
+            <div *ngIf="genderError" class="text-danger">{{ genderError }}</div>
           </div>
         </div>
 
+        <!-- Password -->
         <div class="row">
           <div class="col-md-6">
             <label for="password">Password</label>
             <input type="password" formControlName="password"
               class="form-control" required>
+            <div *ngIf="passwordError" class="text-danger">{{ passwordError
+              }}</div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="col-md-6">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" formControlName="confirmPassword"
+              class="form-control" required>
+            <div *ngIf="confirmPasswordError" class="text-danger">{{
+              confirmPasswordError }}</div>
           </div>
         </div>
-
-        <button type="submit" class="btn btn-primary mt-3"
-          [disabled]="registerForm.invalid">Register</button>
+        <div class="row gap-2">
+          <button type="submit" class="btn button mt-3 col-md-3">Create</button>
+          <button type="button" class="btn golden mt-3 col-md-3"
+            (click)="closeDialog()">Cancel</button>
+        </div>
       </form>
     </div>
-
   </div>
-</div>
+</p-dialog>

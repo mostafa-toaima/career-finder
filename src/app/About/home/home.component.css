@@ -1,4 +1,3 @@
-/* Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -6,21 +5,67 @@
   font-family: Arial, sans-serif;
 }
 
+/* Navbar Styles */
+.navbar {
+  background-color: #2e5172;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.navbar__list {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.navbar__item {
+  font-size: 1rem;
+}
+
+.navbar__link {
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.navbar__link:hover {
+  color: #ffdd57;
+}
 
 /* Hero Section */
 .hero {
   padding: 6rem 1rem 2rem;
   text-align: center;
+  background-image: url("../../../assets/images/te.jpg");
+  background-size: cover;
+  background-position: center;
+  color: #0b4c8a;
+  height: 85vh;
+  border-radius: 25px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 66vh;
+    border-bottom-right-radius: 15%;
+    border-bottom-left-radius: 15%;
+  }
+
 }
 
 .hero__title {
-  font-size: 3rem;
+  font-size: 2rem;
   margin-bottom: 1rem;
 }
 
 .hero__subtitle {
   font-size: 1.25rem;
-  color: #333;
+  color: #0f04048c;
 }
 
 /* Hint Section */
@@ -31,6 +76,8 @@
   gap: 2rem;
   padding: 3rem 1rem;
   flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .hint__text {
@@ -51,81 +98,134 @@
 }
 
 .hint__image {
-  width: min(100%, 31.25rem);
+  width: 100%;
+  max-width: 31.25rem;
   border-radius: 0.625rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Features Section */
-.features {
-  padding: 4rem 1rem;
-  background: rgba(246, 246, 246, 0.67);
-}
-
-.features__container {
+/* Third Eye Team Section */
+.ThirdEyeTeam {
   display: flex;
-  gap: 1.5rem;
-  max-width: 68.75rem;
-  margin: 0 auto;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  padding: 3rem 1rem;
 }
 
-.feature-card {
-  flex: 1;
-  min-width: 18.75rem;
-  max-width: 22rem;
-  padding: 1.25rem;
-  background: rgba(80, 129, 154, 0.56);
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .team-member {
+    flex-direction: column;
+    margin: 0 auto;
+  }
+
+}
+
+.sign {
+  background-color: #3c8fffe6;
+  color: #fff;
+  width: 80%;
+  padding: 6px;
+  margin: 1px;
+  border-radius: 20px;
+  box-shadow: 0 6px 6px rgb(0 0 0 / 19%);
+
+
+}
+
+.sign:hover {
+  background-color: #fff;
+  color: #3c8fffe6;
+  border: 1px solid #3c8fffe6;
+  transition: 0.5s;
+}
+
+.team-img {
+  width: 100%;
+  max-width: 31.25rem;
   border-radius: 0.625rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.feature-card:hover {
-  transform: translateY(-0.3125rem);
+.team-text {
+  max-width: 37.5rem;
+  color: #555;
 }
 
-.feature-card__icon {
+.team-heading {
+  font-size: 1.75rem;
   color: #0b4c8a;
   margin-bottom: 1rem;
+  text-align: center
 }
 
-.feature-card__title {
-  font-size: 1.375rem;
-  margin-bottom: 0.75rem;
+.team-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+
 }
 
-.feature-card__description {
-  color: #666;
-  font-size: 1rem;
+.ThirdEyeTeam .statement h1 {
+  color: #0b4c8a;
+  align-items: center;
+  font-size: 35px;
+  padding-right: 13px;
+  text-align: c;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .nav {
-    flex-direction: column;
-    align-items: center;
-  }
+.mission-vision-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  align-items: center;
+  flex-wrap: wrap;
 
-  .nav__link {
-    width: 100%;
-    text-align: center;
-    margin: 0.3125rem 0;
-  }
-
-  .hero__title {
-    font-size: 2.5rem;
-  }
-
-  .hint {
-    flex-direction: column;
-    text-align: center;
-    padding: 2rem 1rem;
-  }
 }
 
-/* Footer */
+.mission-vision-box {
+  flex: 1;
+  background-color: #d9d0d07c;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission-vision-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mission-vision-box h2 {
+  font-size: 1.75rem;
+  color: #0b4c8a;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.mission-vision-box p {
+  font-size: 1.125rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.team-member.reverse {
+  flex-direction: row-reverse;
+}
+
 .footer {
   background: #0b4c8a;
   color: white;
@@ -167,6 +267,10 @@
 .footer__links ul {
   list-style: none;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px
 }
 
 .footer__links ul li {
@@ -199,4 +303,24 @@
   padding-top: 1.5rem;
   font-size: 0.9rem;
   border-top: 1px solid #ddd;
+}
+
+
+.description-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 15px;
+  margin: -75px auto 40px;
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.decorative-line {
+  width: 60px;
+  height: 3px;
+  background: #667eea;
+  margin: 1.5rem auto;
+  border-radius: 2px;
 }
