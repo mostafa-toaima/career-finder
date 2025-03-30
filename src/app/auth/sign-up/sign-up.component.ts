@@ -7,13 +7,11 @@ import { Button } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 
 @Component({
-  selector: 'sign-up',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DialogModule],
-  templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.css',
-  providers: [MessageService]  // Add MessageService here
-
+    selector: 'sign-up',
+    imports: [CommonModule, ReactiveFormsModule, DialogModule],
+    templateUrl: './sign-up.component.html',
+    styleUrl: './sign-up.component.css',
+    providers: [MessageService] // Add MessageService here
 })
 export class SignUpComponent {
   @Input() visible: boolean = false;

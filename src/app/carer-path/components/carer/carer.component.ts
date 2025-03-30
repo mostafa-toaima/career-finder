@@ -4,11 +4,10 @@ import { RouterLink } from '@angular/router';
 import { FrontEndComponent } from '../front-end/front-end.component';
 
 @Component({
-  selector: 'app-carer',
-  standalone: true,
-  imports: [CommonModule, RouterLink, FrontEndComponent],
-  templateUrl: './carer.component.html',
-  styleUrl: './carer.component.css'
+    selector: 'app-carer',
+    imports: [CommonModule, RouterLink, FrontEndComponent],
+    templateUrl: './carer.component.html',
+    styleUrl: './carer.component.css'
 })
 export class CarerComponent implements OnInit {
   visibleFrontEnd = false;

@@ -5,11 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule, ViewportScroller } from '@angular/common';
 
 @Component({
-  selector: 'app-selcet-university',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
-  templateUrl: './selcet-university.component.html',
-  styleUrl: './selcet-university.component.css'
+    selector: 'app-selcet-university',
+    imports: [FormsModule, CommonModule],
+    templateUrl: './selcet-university.component.html',
+    styleUrl: './selcet-university.component.css'
 })
 export class SelcetUniversityComponent implements OnInit {
 

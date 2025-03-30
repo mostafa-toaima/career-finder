@@ -4,11 +4,10 @@ import { TreeNode } from 'primeng/api';
 import { OrganizationChart } from 'primeng/organizationchart';
 
 @Component({
-  selector: 'app-roadmap',
-  standalone: true,
-  imports: [CommonModule, OrganizationChart],
-  templateUrl: './roadmap.component.html',
-  styleUrl: './roadmap.component.css'
+    selector: 'app-roadmap',
+    imports: [CommonModule, OrganizationChart],
+    templateUrl: './roadmap.component.html',
+    styleUrl: './roadmap.component.css'
 })
 export class RoadmapComponent implements OnInit {
   data: TreeNode[] = [
