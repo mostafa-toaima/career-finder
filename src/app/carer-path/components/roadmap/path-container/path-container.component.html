@@ -1,0 +1,82 @@
+<div class="path-container">
+  <div class="stage-section" *ngFor="let stage of filteredStages">
+    <div class="stage-header d-flex align-items-center justify-content-between"
+      (click)="toggleStage(stage.id)"
+      [class.active]="activeStages.includes(stage.id)">
+      <h3 class="stage-title">{{ stage.name }}</h3>
+      <div class="step-arrow">
+        <i class="fas"
+          [class.fa-chevron-down]="!activeStages.includes(stage.id)"
+          [class.fa-chevron-up]="activeStages.includes(stage.id)"></i>
+      </div>
+    </div>
+
+    <div class="row m-0 d-flex align-items-center justify-content-around gap-4"
+      *ngIf="!activeStages.includes(stage.id)">
+      <div *ngFor="let step of stage.steps" class="path-step col-md-5"
+        [class.active]="activeStep === step.id"
+        [class.completed]="completedSteps.includes(step.id)"
+        [style.--accent-color]="step.color">
+
+        <div class="step-header" (click)="toggleStep(step.id)">
+          <div class="step-icon" [style.background]="step.color">
+            <i [class]="step.icon"></i>
+          </div>
+          <h4 class="step-title">{{ step.title }}</h4>
+          <div
+            class="step-info d-flex align-items-center justify-content-between">
+            <div class="step-badges">
+              <span class="badge" *ngIf="step.duration">{{ step.duration
+                }}</span>
+              <span class="badge" *ngIf="step.level">{{ step.level }}</span>
+            </div>
+            <div class="step-arrow">
+              <i class="fas" [class.fa-chevron-down]="activeStep !== step.id"
+                [class.fa-chevron-up]="activeStep === step.id"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-content" *ngIf="activeStep === step.id">
+          <p>{{ step.description }}</p>
+          <div class="skills-list">
+            <span *ngFor="let skill of step.skills" class="skill-tag">{{ skill
+              }}</span>
+          </div>
+          <div class="resources" *ngIf="step.resources?.length">
+            <h5>Resources:</h5>
+            <a *ngFor="let resource of step.resources" [href]="resource.url"
+              target="_blank">
+              <i [class]="resource.icon"></i> {{ resource.name }}
+            </a>
+          </div>
+          <div class="step-actions">
+            <button
+              *ngIf="!inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
+              (click)="startStep(step.id)">
+              <i class="fas fa-play"></i> Start Learning
+            </button>
+            <button
+              *ngIf="inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
+              (click)="completeStep(step.id)" class="in-progress">
+              <i class="fas fa-check"></i> Mark as Complete
+            </button>
+            <div *ngIf="completedSteps.includes(step.id)"
+              class="completed-badge">
+              <i class="fas fa-check-circle"></i> Completed
+              <button (click)="resetStep(step.id)" class="reset-btn">
+                <i class="fas fa-undo"></i> Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="stage-footer" *ngIf="filteredStages.length === 0">
+    <p class="text-muted text-center fw-bold no-stages">No stages found for the
+      current search.</p>
+  </div>
+</div>

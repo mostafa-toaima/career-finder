@@ -1,0 +1,72 @@
+<div class="mountain-progress-container">
+  <div class="mountain-progress"
+    [class.completed]="completedSteps.length === totalSteps">
+    <div class="mountain-range">
+      <div class="mountain" *ngFor="let stage of stages; let i = index"
+        [style.--index]="i"
+        [style.--total]="stages.length">
+        <div class="mountain-details">
+          <div class="peak"></div>
+          <div class="ridge"></div>
+          <div class="snow-cap"></div>
+          <div class="base"></div>
+          <div class="foothills"></div>
+        </div>
+        <div class="checkpoints">
+          <div class="checkpoint"
+            *ngFor="let step of stage.steps; let j = index"
+            [class.reached]="completedSteps.includes(step.id)"
+            [style.--step-index]="j"
+            [style.--step-total]="stage.steps.length">
+            <div class="flag" *ngIf="completedSteps.includes(step.id)">
+              <div class="flag-icon" [style.background]="step.color"></div>
+              <div class="flag-pole"></div>
+            </div>
+            <div class="checkpoint-tooltip"
+              *ngIf="completedSteps.includes(step.id)">
+              {{step.title}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="climber-container" [style.--progress]="getProgressPosition()">
+      <div class="climber">
+        <div class="head"></div>
+        <div class="body"></div>
+        <div class="arm left"></div>
+        <div class="arm right"></div>
+        <div class="leg left"></div>
+        <div class="leg right"></div>
+        <div class="backpack"></div>
+      </div>
+      <div class="climbing-rope"></div>
+    </div>
+
+    <div class="completion-celebration"
+      *ngIf="completedSteps.length === totalSteps">
+      <div class="sun"></div>
+      <div class="sun-rays"></div>
+      <div class="clouds">
+        <div class="cloud" *ngFor="let cloud of [1,2,3,4]"></div>
+      </div>
+      <div class="birds">
+        <div class="bird" *ngFor="let bird of [1,2,3]"></div>
+      </div>
+      <div class="confetti"
+        *ngFor="let piece of [].constructor(30); let i = index"></div>
+    </div>
+
+    <div class="progress-info">
+      <div class="progress-text">
+        <h3>Learning Journey</h3>
+        <div class="progress-percent">{{(completedSteps.length / totalSteps) *
+          100 | number:'1.0-0'}}% Complete</div>
+      </div>
+      <div class="progress-stats">
+        {{completedSteps.length}}/{{totalSteps}} milestones reached
+      </div>
+    </div>
+  </div>
+</div>

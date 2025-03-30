@@ -1,0 +1,626 @@
+.mountain-progress-container {
+  margin: 3rem auto;
+  padding: 1rem;
+}
+
+.mountain-progress {
+  position: relative;
+  height: 350px;
+  background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease;
+}
+
+.mountain-progress.completed {
+  background: linear-gradient(to bottom, #1E88E5 0%, #B3E5FC 100%);
+}
+
+.mountain-range {
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
+  padding-top: 60px;
+}
+
+.mountain {
+  flex: 1;
+  position: relative;
+  height: calc(100% - 120px - var(--index) * 30px);
+  margin: 0 -15px;
+  z-index: 2;
+}
+
+.mountain-details {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.peak {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 60px solid transparent;
+  border-right: 60px solid transparent;
+  border-bottom: 180px solid #78909C;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.snow-cap {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 80px;
+  height: 30px;
+  background: white;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.7);
+}
+
+.ridge {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: #546E7A;
+  clip-path: polygon(0% 50%, 20% 0%, 40% 80%, 60% 20%, 80% 100%, 100% 30%);
+  z-index: 2;
+}
+
+.base {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: #607D8B;
+  clip-path: polygon(0% 100%, 15% 60%, 35% 90%, 50% 70%, 65% 100%, 85% 50%, 100% 100%);
+  z-index: 1;
+}
+
+.foothills {
+  position: absolute;
+  bottom: -30px;
+  width: 120%;
+  height: 60px;
+  left: -10%;
+  background: #4DB6AC;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.checkpoints {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.checkpoint {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  border: 3px solid #5D4037;
+  bottom: calc(var(--step-index) * (100% / var(--step-total)) + 30px);
+  left: calc(50% + (var(--step-index) - var(--step-total)/2) * 15px);
+  z-index: 5;
+  transition: all 0.3s ease;
+}
+
+.checkpoint.reached {
+  transform: scale(1.2);
+  border-color: #FFA000;
+}
+
+.checkpoint.reached .flag {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+}
+
+.checkpoint.reached .flag-icon {
+  width: 20px;
+  height: 14px;
+  background: var(--color);
+  border-radius: 2px 2px 0 0;
+  position: relative;
+}
+
+.checkpoint.reached .flag-icon::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 8px;
+}
+
+.checkpoint.reached .flag-pole {
+  width: 2px;
+  height: 25px;
+  background: #5D4037;
+  margin: 0 auto;
+}
+
+.checkpoint.reached .checkpoint-tooltip {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.checkpoint.reached .checkpoint-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px 5px 0;
+  border-style: solid;
+  border-color: white transparent transparent;
+}
+
+.checkpoint.reached:hover .checkpoint-tooltip {
+  opacity: 1;
+}
+
+.climber-container {
+  position: absolute;
+  bottom: 30px;
+  left: calc(var(--progress) * 1%);
+  transform: translateX(-50%);
+  z-index: 10;
+  transition: left 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.climber {
+  position: relative;
+  width: 24px;
+  height: 40px;
+  transform: translateY(-20px);
+}
+
+.climber .head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  background: #FFCCBC;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.climber .body {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  width: 18px;
+  height: 25px;
+  background: #3F51B5;
+  border-radius: 4px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.climber .arm,
+.climber .leg {
+  position: absolute;
+  background: #303F9F;
+  z-index: 1;
+}
+
+.climber .arm {
+  width: 12px;
+  height: 3px;
+  top: 20px;
+}
+
+.climber .arm.left {
+  left: 2px;
+  transform: rotate(20deg);
+  animation: climbArmLeft 1s infinite alternate;
+}
+
+.climber .arm.right {
+  right: 2px;
+  transform: rotate(-20deg);
+  animation: climbArmRight 1s infinite alternate;
+}
+
+.climber .leg {
+  width: 3px;
+  height: 12px;
+  bottom: 0;
+}
+
+.climber .leg.left {
+  left: 7px;
+  transform: rotate(10deg);
+}
+
+.climber .leg.right {
+  right: 7px;
+  transform: rotate(-10deg);
+}
+
+.climber .backpack {
+  position: absolute;
+  top: 18px;
+  right: 2px;
+  width: 8px;
+  height: 12px;
+  background: #1A237E;
+  border-radius: 2px;
+  z-index: 0;
+}
+
+.climbing-rope {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  width: 2px;
+  height: 100px;
+  background: #795548;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.climbing-rope::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: #5D4037;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.completion-celebration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.completion-celebration .sun {
+  position: absolute;
+  top: 30px;
+  right: 50px;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, #FFEB3B, #FF9800);
+  border-radius: 50%;
+  box-shadow: 0 0 30px #FFC107;
+  animation: sunRise 2s ease-out forwards;
+}
+
+.completion-celebration .sun-rays {
+  position: absolute;
+  top: 30px;
+  right: 50px;
+  width: 60px;
+  height: 60px;
+}
+
+.completion-celebration .sun-rays::before,
+.completion-celebration .sun-rays::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 4px;
+  background: rgba(255, 235, 59, 0.5);
+  transform-origin: left center;
+}
+
+.completion-celebration .sun-rays::before {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.completion-celebration .sun-rays::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.completion-celebration .clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+}
+
+.completion-celebration .cloud {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: cloudFloat 20s linear infinite;
+}
+
+.completion-celebration .cloud:nth-child(1) {
+  width: 60px;
+  height: 30px;
+  top: 20px;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.completion-celebration .cloud:nth-child(2) {
+  width: 80px;
+  height: 40px;
+  top: 40px;
+  left: 30%;
+  animation-delay: 5s;
+}
+
+.completion-celebration .cloud:nth-child(3) {
+  width: 50px;
+  height: 25px;
+  top: 30px;
+  left: 60%;
+  animation-delay: 8s;
+}
+
+.completion-celebration .cloud:nth-child(4) {
+  width: 70px;
+  height: 35px;
+  top: 50px;
+  left: 80%;
+  animation-delay: 3s;
+}
+
+.completion-celebration .birds {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  height: 100px;
+}
+
+.completion-celebration .bird {
+  position: absolute;
+  animation: birdFly 15s linear infinite;
+}
+
+.completion-celebration .bird::before,
+.completion-celebration .bird::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 3px;
+  background: #333;
+  border-radius: 50% 50% 0 0;
+}
+
+.completion-celebration .bird::before {
+  transform: rotate(45deg);
+}
+
+.completion-celebration .bird::after {
+  right: 0;
+  transform: rotate(-45deg);
+}
+
+.completion-celebration .bird:nth-child(1) {
+  top: 20px;
+  animation-delay: 0s;
+}
+
+.completion-celebration .bird:nth-child(2) {
+  top: 40px;
+  animation-delay: 3s;
+}
+
+.completion-celebration .bird:nth-child(3) {
+  top: 60px;
+  animation-delay: 6s;
+}
+
+.completion-celebration .confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color);
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  animation: confettiFall 3s ease-in infinite;
+}
+
+.completion-celebration .confetti:nth-child(1n) {
+  --color: #f44336;
+}
+
+.completion-celebration .confetti:nth-child(2n) {
+  --color: #e91e63;
+}
+
+.completion-celebration .confetti:nth-child(3n) {
+  --color: #9c27b0;
+}
+
+.completion-celebration .confetti:nth-child(4n) {
+  --color: #673ab7;
+}
+
+.completion-celebration .confetti:nth-child(5n) {
+  --color: #3f51b5;
+}
+
+.completion-celebration .confetti:nth-child(6n) {
+  --color: #2196f3;
+}
+
+.completion-celebration .confetti:nth-child(7n) {
+  --color: #03a9f4;
+}
+
+.completion-celebration .confetti:nth-child(8n) {
+  --color: #00bcd4;
+}
+
+.completion-celebration .confetti:nth-child(9n) {
+  --color: #009688;
+}
+
+.completion-celebration .confetti:nth-child(10n) {
+  --color: #4caf50;
+}
+
+.completion-celebration .confetti:nth-child(11n) {
+  --color: #8bc34a;
+}
+
+.completion-celebration .confetti:nth-child(12n) {
+  --color: #cddc39;
+}
+
+.completion-celebration .confetti:nth-child(13n) {
+  --color: #ffeb3b;
+}
+
+.completion-celebration .confetti:nth-child(14n) {
+  --color: #ffc107;
+}
+
+.completion-celebration .confetti:nth-child(15n) {
+  --color: #ff9800;
+}
+
+.progress-info {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 100%;
+  padding: 0 20px;
+  z-index: 5;
+}
+
+.progress-info .progress-text {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.progress-info .progress-text h3 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.progress-info .progress-text .progress-percent {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1976D2;
+}
+
+.progress-info .progress-stats {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  float: right;
+}
+
+.no-stages {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+@keyframes climbArmLeft {
+  from {
+    transform: rotate(20deg);
+  }
+
+  to {
+    transform: rotate(40deg);
+  }
+}
+
+@keyframes climbArmRight {
+  from {
+    transform: rotate(-20deg);
+  }
+
+  to {
+    transform: rotate(-40deg);
+  }
+}
+
+@keyframes sunRise {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+@keyframes cloudFloat {
+  0% {
+    transform: translateX(-100px);
+  }
+
+  100% {
+    transform: translateX(calc(100vw + 100px));
+  }
+}
+
+@keyframes birdFly {
+  0% {
+    transform: translateX(-100px);
+  }
+
+  100% {
+    transform: translateX(calc(100vw + 100px));
+  }
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translate(calc(var(--x) * 1px), calc(var(--y) * -1px)) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(calc(var(--x) * 1px), calc(var(--y) * 1px)) rotate(720deg);
+    opacity: 0;
+  }
+}
