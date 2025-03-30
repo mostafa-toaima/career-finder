@@ -1,12 +1,16 @@
 <div class="angular-path">
   <div class="path-header">
     <h2>Angular Frontend Developer Path</h2>
-    <div class="controls">
-      <button (click)="toggleViewMode()" class="view-toggle">
-        <i class="fas" [class.fa-list]="!isCompactView"
-          [class.fa-grip]="isCompactView"></i>
-        {{isCompactView ? 'Detailed View' : 'Compact View'}}
-      </button>
+    <div class="controls d-flex align-items-center justify-content-between">
+      <div class="search-box">
+          <label style="width: 100px;" for="filter">Filter by:</label>
+          <select id="filter" class="form-select" [(ngModel)]="selectedFilter"
+            (change)="filterStages()">
+            <option *ngFor="let option of filterOptions" [value]="option.value">
+              {{option.label}}
+            </option>
+          </select>
+      </div>
       <div class="search-box">
         <i class="fas fa-search"></i>
         <input type="text" placeholder="Search..." [(ngModel)]="searchQuery">
@@ -88,25 +92,40 @@
   </div>
   <div class="path-container" [class.compact]="isCompactView">
     <div class="stage-section" *ngFor="let stage of filteredStages">
-      <h3 class="stage-title">{{stage.name}}</h3>
-      <div class="row d-flex align-items-center justify-content-evenly gap-4">
+      <div
+        class="stage-header d-flex align-items-center justify-content-between"
+        (click)="toggleStage(stage.id)"
+        [class.active]="activeStage === stage.id">
+        <h3 class="stage-title">{{stage.name}}</h3>
+        <div class="step-arrow">
+          <i class="fas" [class.fa-chevron-down]="activeStage !== stage.id"
+            [class.fa-chevron-up]="activeStage === stage.id"></i>
+        </div>
+      </div>
+      <div
+        class="row m-0 d-flex align-items-center justify-content-evenly gap-4"
+        *ngIf="activeStage === stage.id">
         <div *ngFor="let step of stage.steps" class="path-step col-md-5"
           [class.active]="activeStep === step.id"
           [class.completed]="completedSteps.includes(step.id)"
-          [style.--accent-color]="step.color"
-          [style.background-color]="step.backgroundColor">
+          [style.--accent-color]="step.color">
+          <!-- [style.background-color]="step.backgroundColor" -->
           <div class="step-header" (click)="toggleStep(step.id)">
             <div class="step-icon" [style.background]="step.color">
               <i [class]="step.icon"></i>
             </div>
             <h4 class="step-title">{{step.title}}</h4>
-            <div class="step-badges">
-              <span class="badge" *ngIf="step.duration">{{step.duration}}</span>
-              <span class="badge" *ngIf="step.level">{{step.level}}</span>
-            </div>
-            <div class="step-arrow">
-              <i class="fas" [class.fa-chevron-down]="activeStep !== step.id"
-                [class.fa-chevron-up]="activeStep === step.id"></i>
+            <div
+              class="step-info d-flex align-items-center justify-content-between">
+              <div class="step-badges">
+                <span class="badge"
+                  *ngIf="step.duration">{{step.duration}}</span>
+                <span class="badge" *ngIf="step.level">{{step.level}}</span>
+              </div>
+              <div class="step-arrow">
+                <i class="fas" [class.fa-chevron-down]="activeStep !== step.id"
+                  [class.fa-chevron-up]="activeStep === step.id"></i>
+              </div>
             </div>
           </div>
           <div class="step-content" *ngIf="activeStep === step.id">
@@ -123,24 +142,43 @@
               </a>
             </div>
             <div class="step-actions">
-              <button (click)="toggleComplete(step.id)"
-                [class.active]="completedSteps.includes(step.id)">
-                <i class="far"
-                  [class.fa-check-circle]="completedSteps.includes(step.id)"
-                  [class.fa-circle]="!completedSteps.includes(step.id)"></i>
-                {{completedSteps.includes(step.id) ? 'Completed' :
-                'Mark Complete'}}
+              <!-- Not Started State -->
+              <button
+                *ngIf="!inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
+                (click)="startStep(step.id)">
+                <i class="fas fa-play"></i> Start Learning
               </button>
+
+              <!-- In Progress State -->
+              <button
+                *ngIf="inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
+                (click)="completeStep(step.id)" class="in-progress">
+                <i class="fas fa-check"></i> Mark as Complete
+              </button>
+
+              <!-- Completed State -->
+              <div *ngIf="completedSteps.includes(step.id)"
+                class="completed-badge">
+                <i class="fas fa-check-circle"></i> Completed
+                <button (click)="resetStep(step.id)" class="reset-btn">
+                  <i class="fas fa-undo"></i> Reset
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="stage-footer" *ngIf="filteredStages.length === 0">
+      <p class="text-muted text-center fw-bold no-stages">No stages found for
+        the current search.</p>
+    </div>
+
   </div>
 
-  <!-- <div class="progress-tracker">
+  <div class="progress-tracker">
     <div class="progress-bar"
       [style.width]="(completedSteps.length / totalSteps) * 100 + '%'"></div>
     <span>{{completedSteps.length}}/{{totalSteps}} steps completed</span>
-  </div> -->
+  </div>
 </div>
