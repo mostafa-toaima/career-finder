@@ -19,10 +19,18 @@ export const routes: Routes = [
   },
   {
     path: 'select-university',
-    loadComponent: () => import('./university/selcet-university/selcet-university.component').then((m) => m.SelcetUniversityComponent)
+    loadComponent: () => import('./university/selcet-university/selcet-university.component').then((m) => m.SelcetUniversityComponent),
   },
   {
     path: 'features',
     loadComponent: () => import('./About/features/features.component').then((m) => m.FeaturesComponent)
+  },
+  {
+    path: 'career-path',
+    loadComponent: () => import('./carer-path/components/carer/carer.component').then((m) => m.CarerComponent),
+  },
+  {
+    path: 'roadmap',
+    loadComponent: () => import('./carer-path/components/roadmap/roadmap.component').then((m) => m.RoadmapComponent),
   }
 ];

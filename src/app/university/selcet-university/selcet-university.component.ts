@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UniversityService } from '../university.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-selcet-university',
@@ -11,49 +11,28 @@ import { CommonModule } from '@angular/common';
   templateUrl: './selcet-university.component.html',
   styleUrl: './selcet-university.component.css'
 })
-export class SelcetUniversityComponent {
-  // faculties: any[] = [];
-  // selectedFaculty = '';
-  // sections: string[] = [];
-  // selectedSection = '';
+export class SelcetUniversityComponent implements OnInit {
 
-  // constructor(private dataService: UniversityService, private router: Router) { }
-
-  // ngOnInit() {
-  //   this.faculties = this.dataService.getFaculties();
-  // }
-
-  // onFacultyChange() {
-  //   this.sections = this.dataService.getSections(this.selectedFaculty);
-  //   this.selectedSection = '';
-  // }
-
-  // showCareerPaths() {
-  //   this.router.navigate(['/career-paths'], {
-  //     queryParams: {
-  //       faculty: this.selectedFaculty,
-  //       section: this.selectedSection
-  //     }
-  //   });
-  // }
-
-
-  faculties = [{ name: 'Engineering' }, { name: 'Science' }, { name: 'Arts' }];
-  departments : any[] = [];
-  tracks : any[] = [];
+  faculties = [{ name: 'Business' }, { name: 'Engineering' }, { name: 'Science' }];
+  departments: any[] = [];
+  tracks: any[] = [];
   selectedFaculty!: string;
   selectedDepartment!: string;
   selectedTrack: any;
+  route = inject(Router);
+
+  constructor(private viewportScroller: ViewportScroller) {}
+  ngOnInit(): void {
+    this.viewportScroller.scrollToPosition([0, 0])
+  }
 
   onFacultyChange() {
-    // Fetch departments based on selected faculty
     this.departments = this.getDepartmentsForFaculty(this.selectedFaculty);
     this.selectedDepartment = '';
     this.tracks = [];
   }
 
   onDepartmentChange() {
-    // Fetch available tracks for the selected department
     this.tracks = this.getTracksForDepartment(this.selectedDepartment);
     this.selectedTrack = null;
   }
@@ -64,8 +43,9 @@ export class SelcetUniversityComponent {
   }
 
   showCareerPath() {
-    // Show career path based on selected track
-    alert(`Career path for ${this.selectedTrack.name}`);
+    this.route.navigate(['/career-path'], {
+      queryParams: { track: this.selectedTrack.name, description: this.selectedTrack.description }
+    });
   }
 
   // Mock function to simulate fetching departments for selected faculty
@@ -74,8 +54,8 @@ export class SelcetUniversityComponent {
       return [{ name: 'Computer Science' }, { name: 'Electrical Engineering' }];
     } else if (faculty === 'Science') {
       return [{ name: 'Physics' }, { name: 'Chemistry' }];
-    } else if (faculty === 'Arts') {
-      return [{ name: 'History' }, { name: 'Literature' }];
+    } else if (faculty === 'Business') {
+      return [{ name: 'BIS' }, { name: 'English' }, { name: 'Arabic' }];
     }
     return [];
   }
@@ -91,6 +71,11 @@ export class SelcetUniversityComponent {
       return [
         { name: 'Circuit Design', description: 'Create electrical circuits and systems' },
         { name: 'Power Systems', description: 'Study power generation and distribution' }
+      ];
+    } else if (department === 'BIS') {
+      return [
+        { name: 'Front End', description: 'Study front end development' },
+        { name: 'Data Analysis', description: 'Analyze and interpret complex data' }
       ];
     }
     return [];
