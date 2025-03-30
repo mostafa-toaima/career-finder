@@ -1,46 +1,48 @@
-<ng-container *ngIf="visibleSignUp">
-  <sign-up [visible]="visibleSignUp"
-    (visibleChange)="visibleSignUp = $event"></sign-up>
-</ng-container>
+<div class="content-wrapper">
+  <ng-container *ngIf="visibleSignUp">
+    <sign-up [visible]="visibleSignUp"
+      (visibleChange)="visibleSignUp = $event"></sign-up>
+  </ng-container>
 
-<ng-container *ngIf="visibleLogin">
-  <login [visible]="visibleLogin"
-    (visibleChange)="visibleLogin = $event"></login>
-</ng-container>
+  <ng-container *ngIf="visibleLogin">
+    <login [visible]="visibleLogin"
+      (visibleChange)="visibleLogin = $event"></login>
+  </ng-container>
 
-<nav
-  class="nav navbar navbar-expand-sm  navbar-light bg-light">
-  <div class="container">
-    <a class="navbar-brand" href="#"><img width="40"
-        src="assets/images/career-goals.png" alt="Career Path"></a>
-    <button
-      class="navbar-toggler d-lg-none"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#collapsibleNavId"
-      aria-controls="collapsibleNavId"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavId">
-      <ul class="navbar-nav ms-auto mt-2 mt-lg-0 d-flex align-items-center">
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="./home"
-            routerLinkActive="active">Home</a>
-        </li>
-        <li class="nav-item">
-          <button class="btn sign button" (click)="visibleSignUp = true"><a
-              class="nav-link">SignUp</a></button>
-        </li>
-        <li class="nav-item">
-          <button class="btn login button" (click)="visibleLogin = true"><a
-              class="nav-link">Login</a></button>
-        </li>
-      </ul>
+  <nav
+    class="nav navbar navbar-expand-sm  navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="#"><img width="40"
+          src="assets/images/career-goals.png" alt="Career Path"></a>
+      <button
+        class="navbar-toggler d-lg-none"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapsibleNavId"
+        aria-controls="collapsibleNavId"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav ms-auto mt-2 mt-lg-0 d-flex align-items-center">
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="./home"
+              routerLinkActive="active">Home</a>
+          </li>
+          <li class="nav-item">
+            <button class="btn sign button" (click)="visibleSignUp = true"><a
+                class="nav-link">SignUp</a></button>
+          </li>
+          <li class="nav-item">
+            <button class="btn login button" (click)="visibleLogin = true"><a
+                class="nav-link">Login</a></button>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>
 <div class="parent container-fluid">
   <router-outlet></router-outlet>
 </div>
@@ -60,3 +62,6 @@
     <p>&copy; 2025 Third Eye. All rights reserved.</p>
   </div>
 </footer>
+
+
+

@@ -1,21 +1,146 @@
-<!--
-  <section class="card animate-slide-up">
-    <h2 class="section-title">Frontend Development Roadmap</h2>
-    <div class="roadmap">
-      <div *ngFor="let step of roadmap" class="step animate-fade-in">
-        <h3 class="step-title">{{ step.title }}</h3>
-        <ul class="list-disc pl-6 text-gray-700">
-          <li *ngFor="let topic of step.topics">{{ topic }}</li>
-        </ul>
+<div class="angular-path">
+  <div class="path-header">
+    <h2>Angular Frontend Developer Path</h2>
+    <div class="controls">
+      <button (click)="toggleViewMode()" class="view-toggle">
+        <i class="fas" [class.fa-list]="!isCompactView"
+          [class.fa-grip]="isCompactView"></i>
+        {{isCompactView ? 'Detailed View' : 'Compact View'}}
+      </button>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search..." [(ngModel)]="searchQuery">
       </div>
     </div>
-  </section> -->
+  </div>
 
-  <p-organization-chart [value]="data" [collapsible]="true">
-    <ng-template let-node pTemplate="default">
-        <div class="flex flex-col items-center">
-            <img src="https://primefaces.org/cdn/primeng/images/flag/flag_placeholder.png" [alt]="node.label" [class]="'flag' + ' flag-' + node.data" width="32" />
-            <div class="mt-4 font-medium text-lg">{{ node.label }}</div>
+  <div class="mountain-progress-container">
+    <div class="mountain-progress"
+      [class.completed]="completedSteps.length === totalSteps">
+      <div class="mountain-range">
+        <div class="mountain" *ngFor="let stage of stages; let i = index"
+          [style.--index]="i"
+          [style.--total]="stages.length">
+          <div class="mountain-details">
+            <div class="peak"></div>
+            <div class="ridge"></div>
+            <div class="snow-cap"></div>
+            <div class="base"></div>
+            <div class="foothills"></div>
+          </div>
+          <div class="checkpoints">
+            <div class="checkpoint"
+              *ngFor="let step of stage.steps; let j = index"
+              [class.reached]="completedSteps.includes(step.id)"
+              [style.--step-index]="j"
+              [style.--step-total]="stage.steps.length">
+              <div class="flag" *ngIf="completedSteps.includes(step.id)">
+                <div class="flag-icon" [style.background]="step.color"></div>
+                <div class="flag-pole"></div>
+              </div>
+              <div class="checkpoint-tooltip"
+                *ngIf="completedSteps.includes(step.id)">
+                {{step.title}}
+              </div>
+            </div>
+          </div>
         </div>
-    </ng-template>
-</p-organization-chart>
+      </div>
+
+      <div class="climber-container" [style.--progress]="getProgressPosition()">
+        <div class="climber">
+          <div class="head"></div>
+          <div class="body"></div>
+          <div class="arm left"></div>
+          <div class="arm right"></div>
+          <div class="leg left"></div>
+          <div class="leg right"></div>
+          <div class="backpack"></div>
+        </div>
+        <div class="climbing-rope"></div>
+      </div>
+
+      <div class="completion-celebration"
+        *ngIf="completedSteps.length === totalSteps">
+        <div class="sun"></div>
+        <div class="sun-rays"></div>
+        <div class="clouds">
+          <div class="cloud" *ngFor="let cloud of [1,2,3,4]"></div>
+        </div>
+        <div class="birds">
+          <div class="bird" *ngFor="let bird of [1,2,3]"></div>
+        </div>
+        <div class="confetti"
+          *ngFor="let piece of [].constructor(30); let i = index"></div>
+      </div>
+
+      <div class="progress-info">
+        <div class="progress-text">
+          <h3>Learning Journey</h3>
+          <div class="progress-percent">{{(completedSteps.length / totalSteps) *
+            100 | number:'1.0-0'}}% Complete</div>
+        </div>
+        <div class="progress-stats">
+          {{completedSteps.length}}/{{totalSteps}} milestones reached
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="path-container" [class.compact]="isCompactView">
+    <div class="stage-section" *ngFor="let stage of filteredStages">
+      <h3 class="stage-title">{{stage.name}}</h3>
+      <div class="row d-flex align-items-center justify-content-evenly gap-4">
+        <div *ngFor="let step of stage.steps" class="path-step col-md-5"
+          [class.active]="activeStep === step.id"
+          [class.completed]="completedSteps.includes(step.id)"
+          [style.--accent-color]="step.color"
+          [style.background-color]="step.backgroundColor">
+          <div class="step-header" (click)="toggleStep(step.id)">
+            <div class="step-icon" [style.background]="step.color">
+              <i [class]="step.icon"></i>
+            </div>
+            <h4 class="step-title">{{step.title}}</h4>
+            <div class="step-badges">
+              <span class="badge" *ngIf="step.duration">{{step.duration}}</span>
+              <span class="badge" *ngIf="step.level">{{step.level}}</span>
+            </div>
+            <div class="step-arrow">
+              <i class="fas" [class.fa-chevron-down]="activeStep !== step.id"
+                [class.fa-chevron-up]="activeStep === step.id"></i>
+            </div>
+          </div>
+          <div class="step-content" *ngIf="activeStep === step.id">
+            <p>{{step.description}}</p>
+            <div class="skills-list">
+              <span *ngFor="let skill of step.skills"
+                class="skill-tag">{{skill}}</span>
+            </div>
+            <div class="resources" *ngIf="step.resources?.length">
+              <h5>Resources:</h5>
+              <a *ngFor="let resource of step.resources" [href]="resource.url"
+                target="_blank">
+                <i [class]="resource.icon"></i> {{resource.name}}
+              </a>
+            </div>
+            <div class="step-actions">
+              <button (click)="toggleComplete(step.id)"
+                [class.active]="completedSteps.includes(step.id)">
+                <i class="far"
+                  [class.fa-check-circle]="completedSteps.includes(step.id)"
+                  [class.fa-circle]="!completedSteps.includes(step.id)"></i>
+                {{completedSteps.includes(step.id) ? 'Completed' :
+                'Mark Complete'}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="progress-tracker">
+    <div class="progress-bar"
+      [style.width]="(completedSteps.length / totalSteps) * 100 + '%'"></div>
+    <span>{{completedSteps.length}}/{{totalSteps}} steps completed</span>
+  </div> -->
+</div>
