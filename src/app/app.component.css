@@ -74,6 +74,19 @@
 
 }
 
+.home {
+  background-color: #eee;
+  border-radius: 10px;
+  margin-right: 10px;
+  box-shadow: 0 6px 6px rgb(0 0 0 / 19%);
+  transition: 0.5s;
+}
+
+.home:hover {
+  background-color: #aaaaaa;
+  transform: scale(1.08);
+}
+
 .footer {
   background: #0b4c8a;
   color: white;
@@ -152,4 +165,3 @@
   font-size: 0.9rem;
   border-top: 1px solid #ddd;
 }
-

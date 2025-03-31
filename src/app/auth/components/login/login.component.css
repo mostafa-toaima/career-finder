@@ -1,0 +1,100 @@
+/* Dialog Container */
+::ng-deep .p-dialog {
+  border-radius: 12px !important;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Dialog Header */
+::ng-deep .p-dialog-header {
+  background: linear-gradient(135deg, #2d89ff, #6aa9ff) !important;
+  color: white !important;
+  font-size: 1.5rem !important;
+  padding: 15px 25px !important;
+  font-weight: bold;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Content */
+.content {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  width: 100%;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Input Fields */
+.input-field {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-field:focus {
+  border-color: #3c8fffe6;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Error Messages */
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.error-banner {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #ff6b6b;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* Buttons */
+.btn {
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  transition: 0.3s ease;
+  outline: none;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Primary Button */
+.button {
+  background: linear-gradient(135deg, #3c8fffe6, #6aa9ff);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #3c8fffe6;
+  border: 1px solid #3c8fffe6;
+  transition: 0.5s;
+}
+
+/* Disabled Button */
+.button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Secondary Button */
+.golden {
+  border: 1px solid #3c8fffe6;
+  background: transparent;
+}
+
+.golden:hover {
+  background: #3c8fffe6;
+}

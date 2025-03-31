@@ -1,0 +1,100 @@
+<p-dialog header="Create an Account" [modal]="true" [(visible)]="visible"
+  [style]="{ width: '60rem' }" (onHide)="closeDialog()">
+  <div class="content">
+    <div class="container">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <div class="row">
+          <!-- First Name -->
+          <div class="col-md-6">
+            <label for="firstName">First Name</label>
+            <input type="text" formControlName="firstName" class="form-control input-field" required>
+            <div *ngIf="firstNameError" class="error-message">{{ firstNameError }}</div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="col-md-6">
+            <label for="lastName">Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control input-field" required>
+            <div *ngIf="lastNameError" class="error-message">{{ lastNameError }}</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Email -->
+          <div class="col-md-6">
+            <label for="email">Email</label>
+            <input type="email" formControlName="email" class="form-control input-field" required>
+            <div *ngIf="emailError" class="error-message">{{ emailError }}</div>
+          </div>
+
+          <!-- Mobile -->
+          <div class="col-md-6">
+            <label for="mobile">Mobile</label>
+            <input type="text" formControlName="mobile" class="form-control input-field" required>
+            <div *ngIf="mobileError" class="error-message">{{ mobileError }}</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- University -->
+          <div class="col-md-6">
+            <label for="university">University</label>
+            <select formControlName="university" (change)="onUniversityChange()" class="form-control select-field">
+              <option *ngFor="let university of universities" [value]="university.name">{{ university.name }}</option>
+            </select>
+          </div>
+
+          <!-- Faculty -->
+          <div class="col-md-6">
+            <label for="faculty">Faculty</label>
+            <select formControlName="faculty" (change)="onFacultyChange()" class="form-control select-field">
+              <option *ngFor="let faculty of filteredFaculties" [value]="faculty">{{ faculty }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Department -->
+          <div class="col-md-6">
+            <label for="department">Department</label>
+            <select formControlName="department" class="form-control select-field">
+              <option *ngFor="let department of filteredDepartments" [value]="department">{{ department }}</option>
+            </select>
+          </div>
+
+          <!-- Gender -->
+          <div class="col-md-6">
+            <label for="gender">Gender</label>
+            <div class="gender-options">
+              <label><input type="radio" formControlName="gender" value="Male"> Male</label>
+              <label><input type="radio" formControlName="gender" value="Female"> Female</label>
+            </div>
+            <div *ngIf="genderError" class="error-message">{{ genderError }}</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Password -->
+          <div class="col-md-6">
+            <label for="password">Password</label>
+            <input type="password" formControlName="password" class="form-control input-field" required>
+            <div *ngIf="passwordError" class="error-message">{{ passwordError }}</div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="col-md-6">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" formControlName="confirmPassword" class="form-control input-field" required>
+            <div *ngIf="confirmPasswordError" class="error-message">{{ confirmPasswordError }}</div>
+          </div>
+        </div>
+
+        <div class="row gap-2">
+          <button type="submit" class="btn button mt-3 col-md-3">Create</button>
+          <button type="button" class="btn golden mt-3 col-md-3" (click)="closeDialog()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</p-dialog>

@@ -19,12 +19,130 @@ export class CarerService {
           icon: 'fab fa-html5',
           color: '#e34f26',
           backgroundColor: '#ffeee6',
-          description: 'Master semantic HTML5, forms, accessibility, and SEO basics',
-          skills: ['Semantic HTML', 'Accessibility', 'SEO', 'HTML5 APIs'],
+          description: ' HTML is the standard markup language for creating web pages and web applications ',
+          skills: [
+            {
+              name: 'HTML Basics',
+              description: 'HTML stands for HyperText Markup Language. It is used on the frontend and gives the structure to the webpage which you can style using CSS and make interactive using JavaScript.Visit the following resources to learn more: ',
+              resources: [
+                {
+                  name: 'Free Resources',
+                  Article1: "https://www.w3schools.com/html/html_intro.asp",
+                  Article2: "https://web.dev/learn/html",
+                  videoEn: "https://www.youtube.com/watch?v=kUMe1FH4CHE",
+                  videoAr: "https://www.youtube.com/watch?v=qfPUMV9J5yw",
+                },
+                {
+                  name: 'Premium Resources',
+                  course1: "https://scrimba.com/the-frontend-developer-career-path-c0j",
+                  course2: "https://scrimba.com/learn-responsive-web-design-c029",
+                  course3: "https://scrimba.com/from-figma-to-code-c02f",
+                  course4: "https://scrimba.com/learn-ui-design-c024",
+                }
+              ]
+            },
+            {
+              name: 'Semantic HTML',
+              description: 'Semantic HTML refers to the use of HTML markup to reinforce the meaning of web content, rather than merely defining its appearance. It involves using HTML elements that clearly describe their purpose and content. Semantic HTML improves accessibility, SEO, and code readability. Key elements include <header>, <nav>, <main>, <article>, <section>, <aside>, and <footer>. It also encompasses using appropriate heading levels (<h1> to <h6>), lists (<ul>, <ol>,<li>), and data tables (<table>, <th>, <td>). Semantic HTML helps screen readers interpret page content, enables better browser rendering, and provides clearer structure for developers. By using semantically correct elements, developers create more meaningful, accessible, and maintainable web documents that are easier for both humans and machines to understand and process.Visit the following resources to learn more: ',
+              resources: [
+                {
+                  name: 'Free Resources',
+                  Article1: "https://cs.fyi/guide/writing-semantic-html",
+                  Article2: "https://www.w3schools.com/html/html5_semantic_elements.asp",
+                  Article3: "https://web.dev/learn/html/semantic-html/",
+                  videoEn: "https://www.youtube.com/watch?v=bOUhq46fd5g",
+                  videoAr: "https://www.youtube.com/watch?v=qfPUMV9J5yw",
+
+                },
+                {
+                  name: 'Premium Resources',
+                  course1: "https://scrimba.com/the-frontend-developer-career-path-c0j",
+                  course2: "https://scrimba.com/learn-responsive-web-design-c029",
+                  course3: "https://scrimba.com/from-figma-to-code-c02f",
+                  course4: "https://scrimba.com/learn-ui-design-c024",
+                }
+              ]
+            },
+            {
+              name: 'Forms and Validations',
+              description: 'Before submitting data to the server, it is important to ensure all required form controls are filled out, in the correct format. This is called client-side form validation, and helps ensure data submitted matches the requirements set forth in the various form controls. Visit the following resources to learn more: ',
+              resources: [
+                {
+                  name: 'Free Resources',
+                  Article1: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation",
+                  Article2: "https://web.dev/learn/forms/",
+                  Article3: "https://www.w3schools.com/js/js_validation.asp",
+                  videoEn: "https://www.youtube.com/watch?v=kUMe1FH4CHE",
+                  videoAr: "https://www.youtube.com/watch?v=qfPUMV9J5yw",
+                },
+                {
+                  name: 'Premium Resources',
+                  course1: "https://scrimba.com/the-frontend-developer-career-path-c0j",
+                  course2: "https://scrimba.com/learn-responsive-web-design-c029",
+                  course3: "https://scrimba.com/from-figma-to-code-c02f",
+                  course4: "https://scrimba.com/learn-ui-design-c024",
+                }
+              ]
+            },
+            {
+              name: 'Accessibility',
+              description: 'Website accessibility is the practice of designing and developing websites that can be used by everyone, including people with disabilities. It involves implementing features and standards that make web content perceivable, operable, understandable, and robust for all users, regardless of their physical or cognitive abilities. This includes providing text alternatives for images, ensuring keyboard navigation, using sufficient color contrast, offering captions for audio content, and creating a consistent and predictable layout. Adhering to accessibility guidelines not only improves usability for people with disabilities but also enhances the overall user experience for all visitors while potentially increasing a site’s reach and legal compliance.  Visit the following resources to learn more: ',
+              resources: [
+                {
+                  name: 'Free Resources',
+                  Article1: "https://web.dev/accessibility",
+                  Article2: "https://web.dev/learn/html",
+                  videoEn: "https://www.youtube.com/playlist?list=PLNYkxOF6rcICWx0C9LVWWVqvHlYJyqw7g",
+                  Feed: "https://app.daily.dev/tags/accessibility?ref=roadmapsh",
+                },
+                {
+                  name: 'Premium Resources',
+                  course1: "https://scrimba.com/the-frontend-developer-career-path-c0j",
+                  course2: "https://scrimba.com/learn-responsive-web-design-c029",
+                  course3: "https://scrimba.com/from-figma-to-code-c02f",
+                  course4: "https://scrimba.com/learn-ui-design-c024",
+                }
+              ]
+            },
+            {
+              name: 'Basics of SEO',
+              description: 'SEO (Search Engine Optimization) basics involve strategies to improve a website’s visibility and ranking in search engine results. Key elements include creating relevant, high-quality content, proper use of keywords, optimizing meta tags and URLs, ensuring mobile-friendliness, improving site speed, and building quality backlinks. SEO also focuses on user experience, including easy navigation and responsive design. Technical aspects like XML sitemaps, HTTPS security, and structured data markup play crucial roles. Understanding user intent, regularly updating content, and adhering to search engine guidelines are essential practices. Effective SEO combines on-page optimization, off-page tactics, and technical enhancements to increase organic traffic, improve user engagement, and enhance online presence in an increasingly competitive digital landscape.  Visit the following resources to learn more: ',
+              resources: [
+                {
+                  name: 'Free Resources',
+                  course1: "https://www.youtube.com/watch?v=xsVTqzratPs",
+                  course2: "https://www.youtube.com/watch?v=8YDUP-RH_4g",
+                  Article1: "https://developers.google.com/search/docs",
+                  Feed: "https://app.daily.dev/tags/seo?ref=roadmapsh",
+                },
+                {
+                  name: 'Premium Resources',
+                  course1: "https://scrimba.com/the-frontend-developer-career-path-c0j",
+                  course2: "https://scrimba.com/learn-responsive-web-design-c029",
+                  course3: "https://scrimba.com/from-figma-to-code-c02f",
+                  course4: "https://scrimba.com/learn-ui-design-c024",
+                }
+              ]
+            }
+          ],
           resources: [
-            { name: 'MDN HTML Guide', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML', icon: 'fas fa-book' },
-            { name: 'HTML5 Doctor', url: 'http://html5doctor.com', icon: 'fas fa-stethoscope' },
-            { name: 'WebAIM', url: 'https://webaim.org', icon: 'fas fa-universal-access' }
+            {
+              name: 'Free',
+              course: 'https://www.freecodecamp.org/learn/2022/responsive-web-design/',
+              Article: 'https://www.w3schools.com/html/html_intro.asp',
+              video1: 'https://www.youtube.com/watch?v=mJgBOIoGihA',
+              video2: 'https://www.youtube.com/watch?v=pQN-pnXPaVg',
+              feed: 'https://app.daily.dev/tags/html?ref=roadmapsh',
+              icon: 'fas fa-book'
+            },
+            {
+              name: 'Premium',
+              course1: 'https://v2.scrimba.com/the-frontend-developer-career-path-c0j?via=roadmap',
+              course2: 'https://v2.scrimba.com/learn-responsive-web-design-c029?via=roadmap',
+              course3: 'https://v2.scrimba.com/from-figma-to-code-c02f?via=roadmap',
+              course4: 'https://v2.scrimba.com/learn-responsive-web-design-c029?via=roadmap',
+              icon: 'fas fa-stethoscope'
+            },
           ],
           duration: '2-3 weeks',
           level: 'Beginner'
@@ -285,7 +403,9 @@ export class CarerService {
           color: '#7b1fa2',
           backgroundColor: '#f3e5f5',
           description: 'Building and maintaining design systems',
-          skills: ['Storybook', 'Component Libraries', 'Design Tokens', 'Theming'],
+          skills: [
+            'Storybook',
+            'Component Libraries', 'Design Tokens', 'Theming'],
           resources: [
             { name: 'Storybook', url: 'https://storybook.js.org', icon: 'fas fa-book' },
             { name: 'Design Systems Repo', url: 'https://designsystemsrepo.com', icon: 'fas fa-bookmark' }

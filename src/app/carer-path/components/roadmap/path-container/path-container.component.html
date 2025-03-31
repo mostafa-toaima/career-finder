@@ -10,9 +10,8 @@
           [class.fa-chevron-up]="activeStages.includes(stage.id)"></i>
       </div>
     </div>
-
     <div class="row m-0 d-flex align-items-center justify-content-around gap-4"
-      *ngIf="!activeStages.includes(stage.id)">
+      *ngIf="activeStages.includes(stage.id)">
       <div *ngFor="let step of stage.steps" class="path-step col-md-5"
         [class.active]="activeStep === step.id"
         [class.completed]="completedSteps.includes(step.id)"
@@ -26,9 +25,15 @@
           <div
             class="step-info d-flex align-items-center justify-content-between">
             <div class="step-badges">
-              <span class="badge" *ngIf="step.duration">{{ step.duration
+              <span class="badge"
+                *ngIf="step.duration && !completedSteps.includes(step.id)">{{
+                step.duration
                 }}</span>
-              <span class="badge" *ngIf="step.level">{{ step.level }}</span>
+              <span class="badge"
+                *ngIf="step.level && !completedSteps.includes(step.id)">{{
+                step.level }}</span>
+              <span class="badge"
+                *ngIf="completedSteps.includes(step.id)">Completed</span>
             </div>
             <div class="step-arrow">
               <i class="fas" [class.fa-chevron-down]="activeStep !== step.id"
@@ -38,10 +43,26 @@
         </div>
 
         <div class="step-content" *ngIf="activeStep === step.id">
-          <p>{{ step.description }}</p>
+          <p>{{ step.description + " :" }}<button
+              class="cta-custom-button" (click)="visibleModel = true">Learn
+              More</button></p>
           <div class="skills-list">
-            <span *ngFor="let skill of step.skills" class="skill-tag">{{ skill
-              }}</span>
+            <span matTooltip="Must start working first"
+              matTooltipClass="custom-tooltip"
+              [matTooltipDisabled]="inProgressSteps.includes(step.id) || completedSteps.includes(step.id)"
+              class="skill-tag"
+              [ngStyle]="{
+                'background': completedSteps.includes(step.id) ? 'linear-gradient(to right, #2d89ff, #6aa9ff)': '#f0f0f0',
+                'color': completedSteps.includes(step.id) ? 'white' : 'black',
+                'border': completedSteps.includes(step.id) ? '1px solid #388E3C' : '1px solid #ccc',
+                'cursor': inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? 'pointer' : 'not-allowed',
+                'opacity': inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? '1' : '0.6'
+              }"
+              (click)="inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? openSkillsModal(skill) : null"
+              *ngFor="let skill of step.skills">
+              {{ skill.name }}
+            </span>
+
           </div>
           <div class="resources" *ngIf="step.resources?.length">
             <h5>Resources:</h5>
@@ -80,3 +101,8 @@
       current search.</p>
   </div>
 </div>
+
+<ng-container *ngIf="visibleModel">
+  <model [visible]="visibleModel"
+    (visibleChange)="visibleModel = $event"></model>
+</ng-container>

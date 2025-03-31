@@ -9,11 +9,11 @@
       (visibleChange)="visibleLogin = $event"></login>
   </ng-container>
 
-  <nav
-    class="nav navbar navbar-expand-sm  navbar-light bg-light">
+  <nav class="nav navbar navbar-expand-sm navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand" href="#"><img width="40"
-          src="assets/images/career-goals.png" alt="Career Path"></a>
+      <a class="navbar-brand" href="#">
+        <img width="40" src="assets/images/career-goals.png" alt="Career Path">
+      </a>
       <button
         class="navbar-toggler d-lg-none"
         type="button"
@@ -27,25 +27,40 @@
       <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav ms-auto mt-2 mt-lg-0 d-flex align-items-center">
           <li class="nav-item">
-            <a class="nav-link active" routerLink="./home"
+            <a class="nav-link active home" routerLink="/home"
               routerLinkActive="active">Home</a>
           </li>
-          <li class="nav-item">
-            <button class="btn sign button" (click)="visibleSignUp = true"><a
-                class="nav-link">SignUp</a></button>
-          </li>
-          <li class="nav-item">
-            <button class="btn login button" (click)="visibleLogin = true"><a
-                class="nav-link">Login</a></button>
-          </li>
+          <!-- Show SignUp/Login when user is NOT logged in -->
+          <ng-container *ngIf="!(user$ | async)">
+            <li class="nav-item">
+              <button class="btn sign button" (click)="visibleSignUp = true">
+                <a class="nav-link">Sign Up</a>
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="btn login button" (click)="visibleLogin = true">
+                <a class="nav-link">Login</a>
+              </button>
+            </li>
+          </ng-container>
+          <!-- Show Logout when user IS logged in -->
+          <ng-container *ngIf="user$ | async as user">
+            <li class="nav-item">
+              <button class="btn login button" (click)="logout()">
+                <a class="nav-link">Log Out</a>
+              </button>
+            </li>
+          </ng-container>
         </ul>
       </div>
     </div>
   </nav>
 </div>
+
 <div class="parent container-fluid">
   <router-outlet></router-outlet>
 </div>
+
 <footer class="footer">
   <div class="footer__container">
     <div class="footer__social">
@@ -62,6 +77,3 @@
     <p>&copy; 2025 Third Eye. All rights reserved.</p>
   </div>
 </footer>
-
-
-

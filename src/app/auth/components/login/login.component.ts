@@ -5,13 +5,14 @@ import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-    selector: 'login',
-    imports: [CommonModule, ReactiveFormsModule, DialogModule],
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.css',
-    providers: [MessageService]
+  selector: 'login',
+  imports: [CommonModule, ReactiveFormsModule, DialogModule],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
+  providers: [MessageService]
 })
 export class LoginComponent {
   @Input() visible: boolean = false;
@@ -19,6 +20,7 @@ export class LoginComponent {
   messageService = inject(MessageService);
   fb = inject(FormBuilder);
   router = inject(Router);
+  authService = inject(AuthService)
   loginError: string = '';
 
   loginForm: FormGroup = this.fb.group({
@@ -26,22 +28,19 @@ export class LoginComponent {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  async onSubmit() {
+  onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      try {
-        if (email == "mtoaima@bis.com" && password == "123456") {
+      this.authService.login(email, password).subscribe({
+        next: () => {
           this.router.navigate(['/features']);
           this.closeDialog();
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
-        } else {
-          this.loginForm.reset();
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login successful!' });
+        },
+        error: (error) => {
           this.loginError = 'Invalid email or password.';
         }
-
-      } catch (error: any) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
-      }
+      });
     } else {
       this.loginForm.markAllAsTouched();
     }

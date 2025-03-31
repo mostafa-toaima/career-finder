@@ -12,7 +12,7 @@
   border-top-right-radius: 6px;
   color: #fff;
   border-top-left-radius: 7px;
-  border: 3px solid #c6b8b8;
+  border: 3px solid #0b254754;
 }
 
 .stage-title {
@@ -33,7 +33,7 @@
 }
 
 .path-step.completed {
-  border-left: 4px solid #388e3c;
+  border-left: 4px solid #2d89ff;
 }
 
 .step-header {
@@ -66,7 +66,7 @@
 .step-badges .badge {
   margin: 2px;
   font-size: 0.7rem;
-  background: #000;
+  background: #2d89ff;
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   color: #fff;
@@ -95,6 +95,12 @@
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
+}
+
+.skill-tag:hover {
+  background: #ddd;
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .resources {
@@ -170,8 +176,6 @@
   }
 }
 
-
-/* Step Actions */
 .step-actions {
   margin-top: 12px;
 }
@@ -186,30 +190,28 @@
   transition: all 0.2s;
 }
 
-/* Start Learning Button */
 .step-actions button:first-child {
   background: #e3f2fd;
-  border-color: #2196f3;
-  color: #0d47a1;
+  border-color: #2d89ff;
+  color: #2d89ff
 }
 
-/* In Progress Button */
 .step-actions button.in-progress {
   background: #fff3e0;
   border-color: #ffb74d;
   color: #e65100;
 }
 
-/* Completed State */
 .completed-badge {
-  color: #2e7d32;
+  color: #2d89ff;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+
 .completed-badge i {
-  color: #4caf50;
+  color: #2d89ff;
 }
 
 .reset-btn {
@@ -233,4 +235,53 @@
   border-radius: 0.375rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   appearance: none;
+}
+
+::ng-deep .mat-mdc-tooltip {
+  background-color: #ff5722 !important;
+  color: white !important;
+  font-size: 14px !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  text-align: center;
+}
+
+.custom-tooltip {
+  background-color: #ff5722 !important;
+  color: white !important;
+  font-size: 14px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  text-align: center;
+  max-width: 200px;
+}
+
+.completed-skill {
+  background: linear-gradient(to right, #2d89ff, #6aa9ff) !important;
+  color: white !important;
+  border: 1px solid #1d5fcc !important;
+  font-weight: bold;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.completed-skill:hover {
+  background: linear-gradient(to right, #1d5fcc, #5599ff) !important;
+  transform: scale(1.05);
+  box-shadow: 0px 6px 12px rgba(45, 137, 255, 0.3);
+}
+
+.cta-custom-button {
+  background: white;
+  color: #2d89ff;
+  border: 2px solid #2d89ff;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-custom-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(45, 137, 255, 0.4);
 }

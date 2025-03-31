@@ -6,25 +6,21 @@
         <div class="row">
           <div class="col-12">
             <label for="email">Email</label>
-            <input type="email" formControlName="email" class="form-control"
-              required>
-            <div *ngIf="emailError" class="text-danger">{{ emailError }}</div>
+            <input type="email" formControlName="email" class="form-control input-field" required>
+            <div *ngIf="emailError" class="error-message">{{ emailError }}</div>
           </div>
           <div class="col-12">
             <label for="password">Password</label>
-            <input type="password" formControlName="password"
-              class="form-control" required>
-            <div *ngIf="passwordError" class="text-danger">{{ passwordError
-              }}</div>
+            <input type="password" formControlName="password" class="form-control input-field" required>
+            <div *ngIf="passwordError" class="error-message">{{ passwordError }}</div>
           </div>
         </div>
-        <div *ngIf="loginError" class="err text-center mt-2">
+        <div *ngIf="loginError" class="error-banner text-center mt-2">
           {{ loginError }}
         </div>
         <div class="row gap-2">
           <button type="submit" class="btn button mt-3 col-md-3">Login</button>
-          <button type="button" class="btn golden mt-3 col-md-3"
-            (click)="closeDialog()">Cancel</button>
+          <button type="button" class="btn golden mt-3 col-md-3" (click)="closeDialog()">Cancel</button>
         </div>
       </form>
     </div>

@@ -123,18 +123,13 @@ export class RoadmapComponent implements OnInit {
   // }
 
   get filteredStages() {
-    console.log('Filtering stages with:', this.selectedFilter);
     let filtered = this.stages;
-
     if (this.selectedFilter !== 'all') {
       filtered = filtered.map(stage => ({
         ...stage,
         steps: stage.steps.filter((step: any) => {
           const isCompleted = this.completedSteps.includes(step.id);
           const isInProgress = this.inProgressSteps.includes(step.id);
-
-          console.log(`Step: ${step.title}, Completed: ${isCompleted}, In Progress: ${isInProgress}`);
-
           switch (this.selectedFilter) {
             case 'completed': return isCompleted;
             case 'in-progress': return isInProgress && !isCompleted;
@@ -144,8 +139,6 @@ export class RoadmapComponent implements OnInit {
         })
       })).filter(stage => stage.steps.length > 0);
     }
-
-    console.log('Filtered stages:', filtered);
     return filtered;
   }
 

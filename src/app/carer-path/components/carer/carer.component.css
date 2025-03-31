@@ -118,9 +118,20 @@
 }
 
 .highlight-card {
-  background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 100%);
+  background: #2d89ff;
   color: white;
   transform: scale(1.05);
+}
+
+.highlight-card button {
+  background: white;
+  color: #2d89ff;
+}
+
+.highlight-card button:hover {
+  border: 2px solid white;
+  color: white;
+  background-color: transparent;
 }
 
 .journey-card:hover {
@@ -151,7 +162,7 @@
 
 /* CTA Button */
 .cta-button {
-  background: #4f46e5;
+  background: #2d89ff;
   color: white;
   border: none;
   padding: 0.8rem 2rem;
@@ -162,12 +173,14 @@
 }
 
 .cta-button:hover {
-  background: #4338ca;
+  background: transparent;
+  color: #2d89ff;
+  border: 2px solid #2d89ff;
   transform: translateY(-2px);
 }
 
 .cta-custom-button {
-  background: #4f46e5;
+  background: #2d89ff;
   color: white;
   border: none;
   border-radius: 25px;
@@ -177,7 +190,10 @@
 }
 
 .cta-custom-button:hover {
-  background: #4338ca;
+  background: transparent;
+  color: #2d89ff;
+  border: 2px solid #2d89ff;
+  padding: 0.8rem 2rem;
   transform: translateY(-2px);
 }
 
@@ -202,3 +218,39 @@
   color: white;
 }
 
+
+.hero {
+  padding: 6rem 1rem 2rem;
+  text-align: center;
+  color: #2d89ff;
+  border-radius: 25px;
+}
+
+.hero__title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.hero__subtitle {
+  font-size: 1.25rem;
+  color: #0f04048c;
+}
+
+.description-card {
+  background-color: #eee;
+  padding: 1rem;
+  border-radius: 15px;
+  margin: -75px auto 40px;
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.decorative-line {
+  width: 60px;
+  height: 3px;
+  background: #667eea;
+  margin: 1.5rem auto;
+  border-radius: 2px;
+}

@@ -1,0 +1,131 @@
+/* Dialog Styling */
+::ng-deep .p-dialog {
+  border-radius: 12px !important;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Dialog Header */
+::ng-deep .p-dialog-header {
+  background: linear-gradient(135deg, #2d89ff, #6aa9ff) !important;
+  color: white !important;
+  font-size: 1.5rem !important;
+  padding: 15px 25px !important;
+  font-weight: bold;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Content */
+.content {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  color: white;
+  border-radius: 8px;
+}
+
+/* Input Fields */
+.input-field {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-field:focus {
+  border-color: #3c8fffe6;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+
+
+/* Gender Selection */
+.gender-options label {
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+/* Style for the select dropdown */
+.select-field {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s;
+  appearance: none;
+  /* Removes default dropdown arrow */
+}
+
+/* Add hover and focus effects */
+.select-field:hover,
+.select-field:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #3c8fffe6;
+}
+
+/* Style the dropdown options */
+::ng-deep select option {
+  background: black;
+  /* Dark background */
+  color: white;
+  /* White text */
+  padding: 10px;
+}
+
+/* Highlight selected option */
+::ng-deep select option:checked {
+  background: #3c8fffe6 !important;
+  /* Blue highlight */
+  color: white !important;
+}
+
+/* Remove default browser focus outline */
+.select-field:focus {
+  outline: none;
+}
+/* Error Messages */
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Buttons */
+.btn {
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  transition: 0.3s ease;
+  outline: none;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Primary Button */
+.button {
+  background: linear-gradient(135deg, #3c8fffe6, #6aa9ff);
+}
+
+.button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #3c8fffe6;
+  border: 1px solid #3c8fffe6;
+}
+
+/* Secondary Button */
+.golden {
+  border: 1px solid #3c8fffe6;
+  background: transparent;
+}
+
+.golden:hover {
+  background: #3c8fffe6;
+}

@@ -1,13 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ModelComponent } from '../model/model.component';
 
 @Component({
   selector: 'path-container',
-  imports: [CommonModule],
+  imports: [CommonModule, MatTooltipModule, ModelComponent],
   templateUrl: './path-container.component.html',
   styleUrl: './path-container.component.css'
 })
 export class PathContainerComponent {
+  start: boolean = true;
+  inProgress: boolean = false;
+  complete: boolean = false;
+  hover: boolean = false;
+  visibleModel: boolean = false;
+
   @Input() filteredStages: any[] = [];
   @Input() activeStage: string | null = null;
   @Input() activeStep: string | null = null;
@@ -21,19 +29,22 @@ export class PathContainerComponent {
   @Output() stepCompleted = new EventEmitter<string>();
   @Output() stepReset = new EventEmitter<string>();
 
-  // toggleStage(stageId: string): void {
-  //   this.stageToggled.emit(stageId);
-  // }
-
   toggleStep(stepId: string): void {
     this.stepToggled.emit(stepId);
   }
 
   startStep(stepId: string): void {
+    this.hover = false
+    this.start = false;
+    this.complete = false;
+    this.inProgress = true;
     this.stepStarted.emit(stepId);
   }
 
   completeStep(stepId: string): void {
+    this.start = false;
+    this.complete = true;
+    this.inProgress = false;
     this.stepCompleted.emit(stepId);
   }
 
@@ -55,6 +66,11 @@ export class PathContainerComponent {
     this.stageToggled.emit(this.activeStages);
   }
 
+  openSkillsModal(step: any): void {
+    // Implement the logic to open the skills modal here
+    console.log('Open skills modal for step:', step);
+
+  }
 
 
 }

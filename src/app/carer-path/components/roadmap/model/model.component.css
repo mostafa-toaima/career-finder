@@ -1,4 +1,3 @@
-/* Dialog Styling */
 ::ng-deep .p-dialog {
   border-radius: 12px !important;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3) !important;
@@ -55,40 +54,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Buttons */
-.btn {
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  outline: none;
-}
-
-.button {
-  background-color: #3c8fffe6;
-}
-
-.button:hover {
-  background-color: #000000a3;
-  border: 1px solid #3c8fffe6;
-  transition: 0.5s;
-  transform: scale(1.05);
-}
-
-.button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.golden {
-  border: 1px solid #3c8fffe6;
-}
-
-.golden:hover {
-  background-color: #3c8fffe6;
-}
-
 /* Links */
 .content a {
   color: #2d89ff;
@@ -100,10 +65,8 @@
   text-decoration: underline;
 }
 
-/* Lists */
 .content ul {
   font-size: 14px;
-  padding-left: 20px;
 }
 
 .content ul li {
@@ -117,5 +80,6 @@
 @media (max-width: 768px) {
   .content ul {
     padding: 10px;
+
   }
 }

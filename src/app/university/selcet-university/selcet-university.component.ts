@@ -73,7 +73,7 @@ export class SelcetUniversityComponent implements OnInit {
       ];
     } else if (department === 'BIS') {
       return [
-        { name: 'Front End', description: 'Study front end development' },
+        { name: 'Front End', description: 'Study front end development'  },
         { name: 'Data Analysis', description: 'Analyze and interpret complex data' }
       ];
     }

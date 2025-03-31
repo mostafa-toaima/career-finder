@@ -5,19 +5,20 @@ import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-    selector: 'sign-up',
-    imports: [CommonModule, ReactiveFormsModule, DialogModule],
-    templateUrl: './sign-up.component.html',
-    styleUrl: './sign-up.component.css',
-    providers: [MessageService] // Add MessageService here
+  selector: 'sign-up',
+  imports: [CommonModule, ReactiveFormsModule, DialogModule],
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.css',
+  providers: [MessageService] // Add MessageService here
 })
 export class SignUpComponent {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>()
   messageService = inject(MessageService);
-
+  authService = inject(AuthService)
   fb = inject(FormBuilder);
   router = inject(Router);
 
@@ -73,17 +74,19 @@ export class SignUpComponent {
     }
   }
 
-  async onSubmit() {
+  onSubmit() {
     if (this.registerForm.valid) {
       const { email, password } = this.registerForm.value;
-      try {
-        this.router.navigate(['/features']);
-        this.closeDialog();
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
-
-      } catch (error: any) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
-      }
+      this.authService.register(email, password).subscribe({
+        next: () => {
+          this.router.navigate(['/features']);
+          this.closeDialog();
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
+        },
+        error: (error) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+        }
+      });
     } else {
       this.registerForm.markAllAsTouched();
     }
