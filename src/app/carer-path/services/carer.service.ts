@@ -27,17 +27,23 @@ export class CarerService {
               resources: [
                 {
                   name: 'Free Resources',
-                  Article1: "https://www.w3schools.com/html/html_intro.asp",
-                  Article2: "https://web.dev/learn/html",
-                  videoEn: "https://www.youtube.com/watch?v=kUMe1FH4CHE",
-                  videoAr: "https://www.youtube.com/watch?v=qfPUMV9J5yw",
+                  articles: [
+                    { type: "Article", title: 'W3Schools: Learn HTML', url: 'https://www.w3schools.com/html/html_intro.asp' },
+                    { type: "Article", title: 'web.dev: Learn HTML', url: 'https://web.dev/learn/html' }
+                  ],
+                  videos: [
+                    { type: "English Video", title: "HTML Full Course - Build a Website Tutorial", url: 'https://www.youtube.com/watch?v=kUMe1FH4CHE' },
+                    { type: "Arabic video", title: "HTML Full Course", url: 'https://www.youtube.com/watch?v=qfPUMV9J5yw' }
+                  ]
                 },
                 {
                   name: 'Premium Resources',
-                  course1: "https://scrimba.com/the-frontend-developer-career-path-c0j",
-                  course2: "https://scrimba.com/learn-responsive-web-design-c029",
-                  course3: "https://scrimba.com/from-figma-to-code-c02f",
-                  course4: "https://scrimba.com/learn-ui-design-c024",
+                  videos: [
+                    { type: "English Video", title: "Scrimba - Frontend Developer Career Path", url: 'https://scrimba.com/the-frontend-developer-career-path-c0j' },
+                    { type: "English Video", title: "Scrimba - Learn Responsive Web Design", url: 'https://scrimba.com/learn-responsive-web-design-c029' },
+                    { type: "English Video", title: "Scrimba - From Figma to Code", url: 'https://scrimba.com/from-figma-to-code-c02f' },
+                    { type: "English Video", title: "seScrima - Learn UI Design", url: 'https://scrimba.com/learn-ui-design-c024' }
+                  ]
                 }
               ]
             },

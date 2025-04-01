@@ -89,38 +89,6 @@ export class RoadmapComponent implements OnInit {
     this.inProgressSteps = this.inProgressSteps.filter(id => id !== stepId);
     this.completedSteps = this.completedSteps.filter(id => id !== stepId);
   }
-  // get filteredStages() {
-  //   let filtered = this.stages;
-  //   if (this.searchQuery) {
-  //     const query = this.searchQuery.toLowerCase();
-  //     filtered = filtered.map(stage => ({
-  //       ...stage,
-  //       steps: stage.steps.filter((step: any) =>
-  //         step.title.toLowerCase().includes(query) ||
-  //         step.description.toLowerCase().includes(query) ||
-  //         step.skills.some((skill: string) => skill.toLowerCase().includes(query))
-  //       )
-  //     })).filter(stage => stage.steps.length > 0);
-  //   }
-  //   if (this.selectedFilter !== 'all') {
-  //     filtered = filtered.map(stage => ({
-  //       ...stage,
-  //       steps: stage.steps.filter((step: any) => {
-  //         const isCompleted = this.completedSteps.includes(step.id);
-  //         const isInProgress = this.inProgressSteps.includes(step.id);
-
-  //         switch (this.selectedFilter) {
-  //           case 'completed': return isCompleted;
-  //           case 'in-progress': return isInProgress && !isCompleted;
-  //           case 'not-started': return !isCompleted && !isInProgress;
-  //           default: return true;
-  //         }
-  //       })
-  //     })).filter(stage => stage.steps.length > 0);
-  //   }
-
-  //   return filtered;
-  // }
 
   get filteredStages() {
     let filtered = this.stages;

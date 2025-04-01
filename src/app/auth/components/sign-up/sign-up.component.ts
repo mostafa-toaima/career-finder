@@ -27,9 +27,9 @@ export class SignUpComponent {
       name: 'Tanta',
       faculties: ['Engineering', 'Science', 'Business'],
       departments: {
+        'Business': ['BIS', 'English', 'Arabic'],
         'Engineering': ['Computer Science', 'Civil'],
-        'Science': ['Physics', 'Chemistry'],
-        'Business': ['Finance', 'Management']
+        'Science': ['Physics', 'Chemistry']
       }
     },
     { name: 'Mansoura', faculties: ['Engineering', 'Arts', 'Law'], departments: { 'Engineering': ['Software', 'Mechanical'], 'Arts': ['History', 'Philosophy'], 'Law': ['Criminal', 'Civil'] } },

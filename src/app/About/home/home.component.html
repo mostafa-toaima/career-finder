@@ -23,29 +23,29 @@
     src="assets/images/20943960.jpg"
     alt="Career Guidance Image">
 </section>
-<section class="ThirdEyeTeam">
-  <div class="team-member">
-    <div class="team-text">
-      <h2 class="team-heading">Third Eye Team</h2>
-      <p class="team-description">
-        We are a team of dedicated professionals on a mission to simplify career
-        decision-making. Our platform is designed to help you find the right
-        career path and solve the confusion often faced when choosing a field.
+<section class="hint">
+  <div class="hint__text">
+    <!-- <div class="team-text"> -->
+    <h2 class="hint__heading">Third Eye Team</h2>
+    <p class="hint__description">
+      We are a team of dedicated professionals on a mission to simplify career
+      decision-making. Our platform is designed to help you find the right
+      career path and solve the confusion often faced when choosing a field.
 
-        With our intelligent tools and thoughtful guidance, we provide clear
-        insights to empower you to explore the best opportunities and make
-        informed decisions.
-        <br>
-        <strong style="color: brown;">Let us be your third eye in a world full
-          of endless choices!</strong>
-      </p>
-      <button class="btn sign"><a class="nav-link"
-          (click)="signUp()">SignUp</a></button>
-    </div>
-    <img class="team-img"
-      src="assets/images/photo_2025-03-10_02-57-01.jpg"
-      alt="Team Member Image">
+      With our intelligent tools and thoughtful guidance, we provide clear
+      insights to empower you to explore the best opportunities and make
+      informed decisions.
+      <br>
+      <strong style="color: brown;">Let us be your third eye in a world full
+        of endless choices!</strong>
+    </p>
+    <button class="btn sign"><a class="nav-link"
+        (click)="signUp()">SignUp</a></button>
   </div>
+  <!-- </div> -->
+  <img class="hint__image"
+    src="assets/images/photo_2025-03-10_02-57-01.jpg"
+    alt="Team Member Image">
   <div>
     <div class="statement">
       <h1>Why Choosing Us ?</h1>
@@ -78,7 +78,6 @@
     </div>
   </div>
 </section>
-
 
 <ng-container>
   <sign-up [visible]="visible"></sign-up>

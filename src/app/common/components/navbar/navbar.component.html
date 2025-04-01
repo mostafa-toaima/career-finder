@@ -1,0 +1,57 @@
+<nav class="nav navbar navbar-expand-sm navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img width="40" src="assets/images/career-goals.png" alt="Career Path">
+    </a>
+    <button
+      class="navbar-toggler d-lg-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#collapsibleNavId"
+      aria-controls="collapsibleNavId"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav ms-auto mt-2 mt-lg-0 d-flex align-items-center">
+        <li class="nav-item">
+          <button class="btn login button">
+            <a class="nav-link"
+              [routerLink]="currentRoute === '/home' ? '/select-university' : '/home'">
+              {{ currentRoute === '/home' && (user$ | async) ? 'Start' : 'Home' }}
+            </a>
+          </button>
+        </li>
+        <ng-container *ngIf="!(user$ | async)">
+          <li class="nav-item">
+            <button class="btn sign button" (click)="visibleSignUp = true">
+              <a class="nav-link">Sign Up</a>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="btn login button" (click)="visibleLogin = true">
+              <a class="nav-link">Login</a>
+            </button>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="user$ | async as user">
+          <li class="nav-item">
+            <button class="btn sign button" (click)="logout()">
+              <a class="nav-link">Log Out</a>
+            </button>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<sign-up *ngIf="visibleSignUp"
+  [visible]="visibleSignUp"
+  (visibleChange)="visibleSignUp = $event">
+</sign-up>
+<login *ngIf="visibleLogin"
+  [visible]="visibleLogin"
+  (visibleChange)="visibleLogin = $event">
+</login>

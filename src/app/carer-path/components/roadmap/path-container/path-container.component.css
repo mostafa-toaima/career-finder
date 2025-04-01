@@ -285,3 +285,58 @@
   transform: scale(1.1);
   box-shadow: 0 4px 12px rgba(45, 137, 255, 0.4);
 }
+
+/* status-section.css */
+.status-option {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.status-radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.status-label {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  background-color: #e5e7eb;
+  color: #4b5563;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.status-label:hover {
+  background-color: #d1d5db;
+}
+
+.status-label.active {
+  color: white;
+}
+
+.status-label.start.active {
+  background-color: #3b82f6;
+}
+
+.status-label.in-progress.active {
+  background-color: #f59e0b;
+}
+
+.status-label.complete.active {
+  background-color: #10b981;
+}
+
+/* skill-tag styles */
+.skill-tag {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+}

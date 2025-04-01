@@ -103,6 +103,11 @@
 </div>
 
 <ng-container *ngIf="visibleModel">
-  <model [visible]="visibleModel"
-    (visibleChange)="visibleModel = $event"></model>
+  <step-model [visible]="visibleModel"
+    (visibleChange)="visibleModel = $event"></step-model>
 </ng-container>
+
+<skill-model
+  [(visible)]="showSkillModal"
+    [data]="skillModalData">
+</skill-model>

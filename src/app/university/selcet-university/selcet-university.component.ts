@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule, ViewportScroller } from '@angular/common';
 
 @Component({
-    selector: 'app-selcet-university',
-    imports: [FormsModule, CommonModule],
-    templateUrl: './selcet-university.component.html',
-    styleUrl: './selcet-university.component.css'
+  selector: 'app-selcet-university',
+  imports: [FormsModule, CommonModule],
+  templateUrl: './selcet-university.component.html',
+  styleUrl: './selcet-university.component.css'
 })
 export class SelcetUniversityComponent implements OnInit {
 
@@ -20,7 +20,7 @@ export class SelcetUniversityComponent implements OnInit {
   selectedTrack: any;
   route = inject(Router);
 
-  constructor(private viewportScroller: ViewportScroller) {}
+  constructor(private viewportScroller: ViewportScroller) { }
   ngOnInit(): void {
     this.viewportScroller.scrollToPosition([0, 0])
   }
@@ -46,8 +46,6 @@ export class SelcetUniversityComponent implements OnInit {
       queryParams: { track: this.selectedTrack.name, description: this.selectedTrack.description }
     });
   }
-
-  // Mock function to simulate fetching departments for selected faculty
   getDepartmentsForFaculty(faculty: string) {
     if (faculty === 'Engineering') {
       return [{ name: 'Computer Science' }, { name: 'Electrical Engineering' }];
@@ -58,8 +56,6 @@ export class SelcetUniversityComponent implements OnInit {
     }
     return [];
   }
-
-  // Mock function to simulate fetching tracks for selected department
   getTracksForDepartment(department: string) {
     if (department === 'Computer Science') {
       return [
@@ -73,7 +69,7 @@ export class SelcetUniversityComponent implements OnInit {
       ];
     } else if (department === 'BIS') {
       return [
-        { name: 'Front End', description: 'Study front end development'  },
+        { name: 'Front End', description: 'Study front end development' },
         { name: 'Data Analysis', description: 'Analyze and interpret complex data' }
       ];
     }

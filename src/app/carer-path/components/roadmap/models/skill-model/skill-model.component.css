@@ -1,0 +1,309 @@
+::ng-deep .p-dialog {
+  border-radius: 12px !important;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+::ng-deep .p-dialog-header {
+  background: linear-gradient(135deg, #2d89ff, #6aa9ff) !important;
+  color: #fff !important;
+  font-size: 1.5rem !important;
+  padding: 15px 25px !important;
+  font-weight: bold;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+::ng-deep .p-dialog-content {
+  padding: 25px !important;
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+::ng-deep .p-dialog-footer {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  text-align: right;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+::ng-deep .p-dialog .p-dialog-close-icon {
+  font-size: 1.4rem !important;
+  color: #fff !important;
+  transition: 0.3s;
+}
+
+::ng-deep .p-dialog .p-dialog-close-icon:hover {
+  color: #f5f5f5 !important;
+  transform: scale(1.1);
+}
+
+/* Content Styling */
+.content {
+  padding: 30px;
+  width: 100%;
+  color: #000;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Links */
+.content a {
+  color: #2d89ff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.content a:hover {
+  text-decoration: underline;
+}
+
+.content ul {
+  font-size: 14px;
+}
+
+.content ul li {
+  margin-bottom: 10px;
+}
+
+.content ul strong {
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .content ul {
+    padding: 10px;
+
+  }
+}
+
+.article {
+  background-color: yellow;
+  padding: 6px;
+  border-radius: 9px;
+}
+
+.video {
+  background-color: rgb(107, 26, 183);
+  padding: 6px;
+  border-radius: 9px;
+}
+
+/* Article and Video Type Indicators */
+.article,
+.video {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 8px;
+  color: white !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.article {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  border-left: 3px solid #FF8C00;
+}
+
+.video {
+  background: linear-gradient(135deg, #8A2BE2, #9932CC);
+  border-left: 3px solid #6A5ACD;
+}
+
+/* List item styling */
+.content ul li {
+  margin-bottom: 12px;
+  transition: transform 0.2s;
+}
+
+.content ul li:hover {
+  transform: translateX(5px);
+}
+
+/* Link styling */
+.content ul li a {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 0;
+  transition: all 0.3s ease;
+}
+
+.content ul li a i {
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+/* Hover effects */
+.content ul li a:hover {
+  transform: none;
+  text-decoration: none;
+  padding-left: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+  .article,
+  .video {
+    font-size: 0.65rem;
+    padding: 3px 6px;
+  }
+
+  .content ul li a {
+    flex-wrap: wrap;
+  }
+}
+/* Status button styling */
+.status-section {
+  transition: all 0.3s ease;
+}
+
+.bg-blue-500 {
+  background-color: #3b82f6;
+}
+
+.bg-yellow-500 {
+  background-color: #eab308;
+}
+
+.bg-green-500 {
+  background-color: #22c55e;
+}
+
+/* Style for status indicators */
+.article::before,
+.video::before {
+  content: "•";
+  margin-right: 4px;
+}
+
+.article {
+  color: #3b82f6;
+}
+
+.video {
+  color: #ef4444;
+}
+
+/* status-selector.component.css */
+.status-option {
+  position: relative;
+  cursor: pointer;
+}
+
+.status-label {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  background-color: #e5e7eb;
+  /* bg-gray-200 */
+  color: #4b5563;
+  /* text-gray-600 */
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.status-label:hover {
+  background-color: #d1d5db;
+  /* bg-gray-300 */
+}
+
+.status-label.active {
+  color: white;
+}
+
+.status-label.active[class*="start"] {
+  background-color: #3b82f6;
+  /* bg-blue-500 */
+}
+
+.status-label.active[class*="in-progress"] {
+  background-color: #f59e0b;
+  /* bg-yellow-500 */
+}
+
+.status-label.active[class*="complete"] {
+  background-color: #10b981;
+  /* bg-green-500 */
+}
+
+/* Hide the actual radio input visually but keep it accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Add this to your component's CSS file */
+.status-section {
+  font-family: inherit;
+}
+
+.status-option {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.status-radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.status-label {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  background-color: #e5e7eb;
+  /* bg-gray-200 */
+  color: #4b5563;
+  /* text-gray-600 */
+  font-weight: 500;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.status-label:hover {
+  background-color: #d1d5db;
+  /* bg-gray-300 */
+}
+
+.status-label.active {
+  color: white;
+}
+
+.status-label.start.active {
+  background-color: #3b82f6;
+  /* bg-blue-500 */
+}
+
+.status-label.in-progress.active {
+  background-color: #f59e0b;
+  /* bg-yellow-500 */
+}
+
+.status-label.complete.active {
+  background-color: #10b981;
+  /* bg-green-500 */
+}
+
+
