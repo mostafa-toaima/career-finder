@@ -53,8 +53,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Available Tracks -->
     <div *ngIf="selectedDepartment" class="tracks-container">
       <h3 class="tracks-title">Available Career Tracks</h3>
       <div class="tracks-boxes">
@@ -78,12 +76,26 @@
       </p>
     </div>
 
-    <button class="cta-button" [disabled]="!selectedTrack"
-      (click)="showCareerPath()">
-      Explore Career Path
-      <i class="fas fa-arrow-right"></i>
-    </button>
+    <div
+      class="row d-flex justify-content-center align-items-center gap-2 mt-4">
+      <button class="cta-button col-md-4" [disabled]="!selectedTrack"
+        (click)="showCareerPath()">
+        Explore Career Path
+        <i class="fas fa-arrow-right"></i>
+      </button>
+      <button class="cta-button col-md-4"
+        [disabled]="!selectedFaculty || !selectedDepartment"
+        (click)="openHelperForm(selectedFaculty, selectedDepartment)">
+        Explore with AI
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
   </div>
 
   <div class="decorative-bottom"></div>
 </div>
+
+<custom-model
+  [(visible)]="displayFormAIModal"
+  [data]="modalData">
+  <custom-model />

@@ -200,20 +200,12 @@ select:focus {
 }
 
 .cta-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 1rem 2rem;
-  border: none;
   border-radius: 50px;
   font-size: 1.1rem;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 2rem auto 0;
-  display: block;
 }
 
 .cta-button:disabled {

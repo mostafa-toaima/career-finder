@@ -1,5 +1,9 @@
-<p-dialog header="Create an Account" [modal]="true" [(visible)]="visible"
-  [style]="{ width: '60rem' }" (onHide)="closeDialog()">
+<p-dialog
+
+header="Create an Account" [modal]="true" [(visible)]="visible"
+  [style]="{ width: '60rem' }" (onHide)="closeDialog()"
+
+  >
   <div class="content">
     <div class="container">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -89,7 +93,9 @@
             <div *ngIf="confirmPasswordError" class="error-message">{{ confirmPasswordError }}</div>
           </div>
         </div>
-
+        <div *ngIf="registerError" class="error-banner text-center mt-2">
+          {{ registerError }}
+        </div>
         <div class="row gap-2">
           <button type="submit" class="btn button mt-3 col-md-3">Create</button>
           <button type="button" class="btn golden mt-3 col-md-3" (click)="closeDialog()">Cancel</button>

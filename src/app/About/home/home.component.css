@@ -104,15 +104,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Third Eye Team Section */
-.ThirdEyeTeam {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3rem;
-  padding: 3rem 1rem;
-}
-
 .team-member {
   display: flex;
   align-items: center;
@@ -174,12 +165,12 @@
 
 }
 
-.ThirdEyeTeam .statement h1 {
+.hint .statement h1 {
   color: #0b4c8a;
   align-items: center;
   font-size: 35px;
   padding-right: 13px;
-  text-align: center;
+  text-align: center !important;
 }
 
 .mission-vision-container {

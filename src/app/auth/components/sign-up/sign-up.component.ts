@@ -17,6 +17,7 @@ import { AuthService } from '../../services/auth.service';
 export class SignUpComponent {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>()
+  @Output() registerSuccess = new EventEmitter<boolean>()
   messageService = inject(MessageService);
   authService = inject(AuthService)
   fb = inject(FormBuilder);
@@ -40,6 +41,7 @@ export class SignUpComponent {
   selectedFaculty: string = '';
   filteredFaculties: string[] = [];
   filteredDepartments: string[] = [];
+  registerError: string = '';
 
   registerForm: FormGroup = this.fb.group({
     firstName: ['', Validators.required],
@@ -76,16 +78,29 @@ export class SignUpComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      const { email, password } = this.registerForm.value;
-      this.authService.register(email, password).subscribe({
+      const { firstName, email, password, mobile } = this.registerForm.value;
+      const data = {
+        name: firstName,
+        email,
+        password,
+        mobile,
+      }
+      this.authService.register(data.email, data.password).subscribe({
         next: () => {
-          this.router.navigate(['/features']);
+          this.registerSuccess.emit(true);
+          this.registerError = '';
           this.closeDialog();
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
+          this.router.navigate(['/features']);
         },
         error: (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+          if (error?.code === 'auth/email-already-in-use') {
+            this.registerError = 'This email is already in use. Please try logging in or use a different email.';
+          } else {
+            this.registerError = 'An error occurred. Please try again later.';
+          }
         }
+
+
       });
     } else {
       this.registerForm.markAllAsTouched();

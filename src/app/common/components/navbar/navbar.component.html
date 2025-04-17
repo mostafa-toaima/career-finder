@@ -19,7 +19,8 @@
           <button class="btn login button">
             <a class="nav-link"
               [routerLink]="currentRoute === '/home' ? '/select-university' : '/home'">
-              {{ currentRoute === '/home' && (user$ | async) ? 'Start' : 'Home' }}
+              {{ currentRoute === '/home' && (user$ | async) ? 'Start' : 'Home'
+              }}
             </a>
           </button>
         </li>

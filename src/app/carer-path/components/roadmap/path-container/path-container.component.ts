@@ -69,15 +69,10 @@ export class PathContainerComponent {
     this.stageToggled.emit(this.activeStages);
   }
 
-  // openSkillsModal(step: any): void {
-  //   this.skillModalData = step;
-  //   this.showSkillModal = true;
-  // }
-
   openSkillsModal(skill: any): void {
     this.skillModalData = {
       ...skill,
-      status: this.skillStatuses[skill.id] || 'start' // Default to 'start' if no status
+      status: this.skillStatuses[skill.id] || 'start'
     };
     this.showSkillModal = true;
   }

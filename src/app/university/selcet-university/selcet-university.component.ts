@@ -3,10 +3,11 @@ import { UniversityService } from '../university.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, ViewportScroller } from '@angular/common';
+import { ModelComponent } from './model/model.component';
 
 @Component({
   selector: 'app-selcet-university',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ModelComponent],
   templateUrl: './selcet-university.component.html',
   styleUrl: './selcet-university.component.css'
 })
@@ -19,7 +20,8 @@ export class SelcetUniversityComponent implements OnInit {
   selectedDepartment!: string;
   selectedTrack: any;
   route = inject(Router);
-
+  displayFormAIModal: boolean = false;
+  modalData: any;
   constructor(private viewportScroller: ViewportScroller) { }
   ngOnInit(): void {
     this.viewportScroller.scrollToPosition([0, 0])
@@ -52,7 +54,7 @@ export class SelcetUniversityComponent implements OnInit {
     } else if (faculty === 'Science') {
       return [{ name: 'Physics' }, { name: 'Chemistry' }];
     } else if (faculty === 'Business') {
-      return [{ name: 'BIS' }, { name: 'English' }, { name: 'Arabic' }];
+      return [{ name: 'Business Information Systems' }, { name: 'English' }, { name: 'Arabic' }];
     }
     return [];
   }
@@ -67,7 +69,7 @@ export class SelcetUniversityComponent implements OnInit {
         { name: 'Circuit Design', description: 'Create electrical circuits and systems' },
         { name: 'Power Systems', description: 'Study power generation and distribution' }
       ];
-    } else if (department === 'BIS') {
+    } else if (department === 'Business Information Systems') {
       return [
         { name: 'Front End', description: 'Study front end development' },
         { name: 'Data Analysis', description: 'Analyze and interpret complex data' }
@@ -75,4 +77,14 @@ export class SelcetUniversityComponent implements OnInit {
     }
     return [];
   }
+
+  openHelperForm(selectedFaculty: any, selectedDepartment: any) {
+    const values = {
+      selectedFaculty,
+      selectedDepartment,
+    }
+    this.modalData = values
+    this.displayFormAIModal = true;
+  }
+
 }

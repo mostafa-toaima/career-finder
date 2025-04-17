@@ -15,6 +15,32 @@ import { LoginComponent } from '../../../auth/components/login/login.component';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  //   visibleSignUp = false;
+  //   visibleLogin = false;
+  //   authService = inject(AuthService);
+  //   user$: Observable<User | null>;
+  //   currentRoute: string = '';
+
+  //   isLoggedIn: boolean = false;
+  //   isAdmin: boolean = false;
+  //   isUser: boolean = false;
+  //   registerSuccess = false;
+
+  //   constructor(private router: Router) {
+  //     this.user$ = this.authService.user$;
+  //     this.router.events.subscribe(() => {
+  //       this.currentRoute = this.router.url;
+  //     });
+
+  //     localStorage.getItem('token') ? this.isLoggedIn = true : this.isLoggedIn = false;
+  //   }
+
+  //   logout() {
+  //     this.authService.logout().subscribe(() => {
+  //       localStorage.removeItem('token');
+  //       this.router.navigate(['']);
+  //     });
+  //   }
   visibleSignUp = false;
   visibleLogin = false;
   authService = inject(AuthService);

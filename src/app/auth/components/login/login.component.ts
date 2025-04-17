@@ -16,6 +16,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent {
   @Input() visible: boolean = false;
+  @Input() registerSuccess: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>()
   messageService = inject(MessageService);
   fb = inject(FormBuilder);
@@ -30,15 +31,15 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe({
-        next: () => {
+      this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe({
+        next: (res) => {
+          console.log('Login successful', this.loginForm.value, res);
           this.router.navigate(['/features']);
           this.closeDialog();
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login successful!' });
         },
         error: (error) => {
-          this.loginError = 'Invalid email or password.';
+          console.error('Login error:', error);
+          this.loginError = error.errors[0]?.message || 'Invalid email or password.';
         }
       });
     } else {
@@ -48,6 +49,7 @@ export class LoginComponent {
 
   showDialog() {
     this.visible = true;
+
   }
 
   closeDialog() {
