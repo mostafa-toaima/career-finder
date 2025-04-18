@@ -1,22 +1,24 @@
-<p-dialog header="Create Your Account" [modal]="true" [(visible)]="visible" 
-          [style]="{ width: '50rem' }" (onHide)="closeDialog()"
-          [breakpoints]="{ '960px': '75vw', '640px': '90vw' }">
+<p-dialog header="Create Your Account" [modal]="true" [(visible)]="visible"
+  [style]="{ width: '50rem' }" (onHide)="closeDialog()"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }">
   <div class="dialog-container">
     <div class="dialog-content">
+      @if (!isSubmitting) {
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row">
           <!-- Personal Info -->
           <div class="col-md-6">
             <h5 class="section-title">Personal Information</h5>
-            
+
             <div class="form-group my-2">
               <label for="firstName">First Name</label>
               <div class="input-wrapper">
                 <i class="pi pi-user input-icon"></i>
                 <input type="text" formControlName="firstName" id="firstName"
-                       class="form-control input-field" placeholder="John">
+                  class="form-control input-field" placeholder="John">
               </div>
-              <div *ngIf="firstNameError" class="error-message">{{ firstNameError }}</div>
+              <div *ngIf="firstNameError" class="error-message">{{
+                firstNameError }}</div>
             </div>
 
             <div class="form-group my-2">
@@ -24,9 +26,10 @@
               <div class="input-wrapper">
                 <i class="pi pi-user input-icon"></i>
                 <input type="text" formControlName="lastName" id="lastName"
-                       class="form-control input-field" placeholder="Doe">
+                  class="form-control input-field" placeholder="Doe">
               </div>
-              <div *ngIf="lastNameError" class="error-message">{{ lastNameError }}</div>
+              <div *ngIf="lastNameError" class="error-message">{{ lastNameError
+                }}</div>
             </div>
 
             <div class="form-group my-2">
@@ -34,9 +37,10 @@
               <div class="input-wrapper">
                 <i class="pi pi-envelope input-icon"></i>
                 <input type="email" formControlName="email" id="email"
-                       class="form-control input-field" placeholder="your@email.com">
+                  class="form-control input-field" placeholder="your@email.com">
               </div>
-              <div *ngIf="emailError" class="error-message">{{ emailError }}</div>
+              <div *ngIf="emailError" class="error-message">{{ emailError
+                }}</div>
             </div>
 
             <div class="form-group my-2">
@@ -44,9 +48,10 @@
               <div class="input-wrapper">
                 <i class="pi pi-phone input-icon"></i>
                 <input type="text" formControlName="mobile" id="mobile"
-                       class="form-control input-field" placeholder="+1234567890">
+                  class="form-control input-field" placeholder="+1234567890">
               </div>
-              <div *ngIf="mobileError" class="error-message">{{ mobileError }}</div>
+              <div *ngIf="mobileError" class="error-message">{{ mobileError
+                }}</div>
             </div>
 
             <div class="form-group my-2">
@@ -54,29 +59,35 @@
               <div class="gender-options">
                 <label class="gender-option">
                   <input type="radio" formControlName="gender" value="Male">
-                  <span class="gender-label"><i class="pi pi-male me-1"></i>Male</span>
+                  <span class="gender-label"><i
+                      class="pi pi-male me-1"></i>Male</span>
                 </label>
                 <label class="gender-option">
                   <input type="radio" formControlName="gender" value="Female">
-                  <span class="gender-label"><i class="pi pi-female me-1"></i>Female</span>
+                  <span class="gender-label"><i
+                      class="pi pi-female me-1"></i>Female</span>
                 </label>
               </div>
-              <div *ngIf="genderError" class="error-message">{{ genderError }}</div>
+              <div *ngIf="genderError" class="error-message">{{ genderError
+                }}</div>
             </div>
           </div>
 
           <!-- Academic Info -->
           <div class="col-md-6">
             <h5 class="section-title">Academic Information</h5>
-            
+
             <div class="form-group my-2">
               <label for="university">University</label>
               <div class="input-wrapper">
                 <i class="pi pi-building input-icon"></i>
-                <select formControlName="university" id="university" 
-                        class="form-control select-field" (change)="onUniversityChange()">
-                  <option value="" disabled selected>Select your university</option>
-                  <option *ngFor="let university of universities" [value]="university.name">
+                <select formControlName="university" id="university"
+                  class="form-control select-field"
+                  (change)="onUniversityChange()">
+                  <option value disabled selected>Select your
+                    university</option>
+                  <option *ngFor="let university of universities"
+                    [value]="university.name">
                     {{ university.name }}
                   </option>
                 </select>
@@ -87,10 +98,12 @@
               <label for="faculty">Faculty</label>
               <div class="input-wrapper">
                 <i class="pi pi-book input-icon"></i>
-                <select formControlName="faculty" id="faculty" 
-                        class="form-control select-field" (change)="onFacultyChange()">
-                  <option value="" disabled selected>Select your faculty</option>
-                  <option *ngFor="let faculty of filteredFaculties" [value]="faculty">
+                <select formControlName="faculty" id="faculty"
+                  class="form-control select-field"
+                  (change)="onFacultyChange()">
+                  <option value disabled selected>Select your faculty</option>
+                  <option *ngFor="let faculty of filteredFaculties"
+                    [value]="faculty">
                     {{ faculty }}
                   </option>
                 </select>
@@ -101,10 +114,12 @@
               <label for="department">Department</label>
               <div class="input-wrapper">
                 <i class="pi pi-briefcase input-icon"></i>
-                <select formControlName="department" id="department" 
-                        class="form-control select-field">
-                  <option value="" disabled selected>Select your department</option>
-                  <option *ngFor="let department of filteredDepartments" [value]="department">
+                <select formControlName="department" id="department"
+                  class="form-control select-field">
+                  <option value disabled selected>Select your
+                    department</option>
+                  <option *ngFor="let department of filteredDepartments"
+                    [value]="department">
                     {{ department }}
                   </option>
                 </select>
@@ -116,19 +131,10 @@
               <div class="input-wrapper">
                 <i class="pi pi-lock input-icon"></i>
                 <input type="password" formControlName="password" id="password"
-                       class="form-control input-field" placeholder="••••••••">
+                  class="form-control input-field" placeholder="••••••••">
               </div>
-              <div *ngIf="passwordError" class="error-message">{{ passwordError }}</div>
-            </div>
-
-            <div class="form-group my-2">
-              <label for="confirmPassword">Confirm Password</label>
-              <div class="input-wrapper">
-                <i class="pi pi-lock input-icon"></i>
-                <input type="password" formControlName="confirmPassword" id="confirmPassword"
-                       class="form-control input-field" placeholder="••••••••">
-              </div>
-              <div *ngIf="confirmPasswordError" class="error-message">{{ confirmPasswordError }}</div>
+              <div *ngIf="passwordError" class="error-message">{{ passwordError
+                }}</div>
             </div>
           </div>
         </div>
@@ -137,7 +143,8 @@
         <div class="form-check terms-check">
           <input type="checkbox" class="form-check-input" id="terms" required>
           <label class="form-check-label" for="terms">
-            I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
+            I agree to the <a href="#" class="terms-link">Terms of Service</a>
+            and <a href="#" class="terms-link">Privacy Policy</a>
           </label>
         </div>
 
@@ -147,20 +154,45 @@
         </div>
 
         <!-- Submit Button -->
-        <div class="d-flex gap-3 mt-4">
-          <button type="submit" class="btn btn-primary flex-grow-1">
-            <i class="pi pi-user-plus me-2"></i>Create Account
-          </button>
-          <button type="button" class="btn btn-outline-secondary" (click)="closeDialog()">
-            <i class="pi pi-times me-2"></i>Cancel
-          </button>
+
+        <button type="submit" class="btn btn-primary w-100"
+          [disabled]="registerForm.invalid || isSubmitting">
+          <i class="pi pi-user-plus me-2"></i>Create Account
+        </button>
+        <div class="text-center mt-3">
+          Already have an account? <a type="button"
+            class="login-link" (click)="switchToLogin()">Log in</a>
         </div>
 
-        <!-- Login Link -->
-        <!-- <div class="text-center mt-3">
-          Already have an account? <a href="#" class="login-link" (click)="switchToLogin()">Log in</a>
-        </div> -->
+        <div class="social-login">
+          <p class="divider">or continue with</p>
+          <div
+            class="social-buttons deck justify-content-center text-align-center">
+            <span disabled style="color: #db4437;"><i class="pi pi-google"
+                disabled></i> Google</span>
+            <span disabled style="color: #3b5998;"><i
+                class="pi pi-facebook me-2"></i> Facebook</span>
+
+          </div>
+        </div>
       </form>
+      }
+      @else{
+      <div class="loading-state">
+        <div class="loading-animation">
+          <div class="spinner">
+            <div class="orbit"></div>
+            <div class="planet"></div>
+          </div>
+          <h3>Creating Your Account</h3>
+          <p class="loading-text">Analyzing your unique profile...</p>
+          <div class="loading-tips">
+            <p><i class="pi pi-lightbulb"></i> Tip: The more specific your
+              goals, the better our recommendations</p>
+          </div>
+        </div>
+      </div>
+      }
     </div>
   </div>
 </p-dialog>

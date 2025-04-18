@@ -245,4 +245,9 @@
   .social-buttons {
     flex-direction: column;
   }
+
+  .flex-custom {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }

@@ -246,3 +246,85 @@
     flex-direction: column;
   }
 }
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  background: #f8f9fa;
+}
+
+.loading-animation {
+  text-align: center;
+  max-width: 400px;
+  padding: 2rem;
+}
+
+.spinner {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+}
+
+.orbit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(67, 97, 238, 0.3);
+  border-radius: 50%;
+  animation: spin 15s linear infinite;
+}
+
+.planet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  background: #4361ee;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(67, 97, 238, 0.5);
+}
+
+.loading-animation h3 {
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.loading-text {
+  color: #718096;
+  margin-bottom: 1.5rem;
+}
+
+.progress-tracker {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4361ee, #3a0ca3);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.loading-tips {
+  background: #edf2f7;
+  padding: 0.75rem;
+  border-radius: 8px;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.loading-tips i {
+  color: #4361ee;
+  margin-right: 0.5rem;
+}

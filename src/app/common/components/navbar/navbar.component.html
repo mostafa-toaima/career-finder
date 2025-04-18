@@ -38,9 +38,9 @@
         <li class="nav-item">
           <a class="nav-link"
             [class.logged-in]="user$ | async"
-            [routerLink]="'/select-university'"
+            [routerLink]="'/build-career'"
             routerLinkActive="active"
-            (click)="handleNavigationClick('/select-university')">
+            (click)="handleNavigationClick('/build-career')">
             <i class="fas fa-briefcase me-1"></i> Build Career
           </a>
         </li>
@@ -125,6 +125,9 @@
   (click)="closeMobileMenu()"></div>
 
 <login *ngIf="showLogin" [visible]="showLogin"
-  (visibleChange)="showLogin = $event"></login>
+  (visibleChange)="showLogin = $event"
+  (requestSignUp)="toggleToSignup()"></login>
+
+
 <sign-up *ngIf="showSignUp" [visible]="showSignUp"
-  (visibleChange)="showSignUp = $event"></sign-up>
+  (visibleChange)="showSignUp = $event" (requestToLogin)="toggleToLogin()" ></sign-up>

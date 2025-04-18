@@ -13,7 +13,7 @@ export const routes: Routes = [
     loadComponent: () => import('./About/home/home.component').then((m) => m.HomeComponent),
   },
   {
-    path: 'select-university',
+    path: 'build-career',
     loadComponent: () => import('./university/selcet-university/selcet-university.component').then((m) => m.SelectUniversityComponent),
     canActivate: [AuthGuard]
   },
@@ -30,6 +30,5 @@ export const routes: Routes = [
   {
     path: 'roadmap',
     loadComponent: () => import('./carer-path/components/roadmap/roadmap.component').then((m) => m.RoadmapComponent),
-    canActivate: [AuthGuard]
   }
 ];

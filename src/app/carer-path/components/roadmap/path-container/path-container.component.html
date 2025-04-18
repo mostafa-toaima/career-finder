@@ -1,113 +1,143 @@
 <div class="path-container">
   <div class="stage-section" *ngFor="let stage of filteredStages">
-    <div class="stage-header d-flex align-items-center justify-content-between"
-      (click)="toggleStage(stage.id)"
-      [class.active]="activeStages.includes(stage.id)">
+    <div class="stage-header"
+      [class.active]="activeStages.includes(stage.id)"
+      (click)="toggleStage(stage.id)">
       <h3 class="stage-title">{{ stage.name }}</h3>
-      <div class="step-arrow">
-        <i class="fas"
-          [class.fa-chevron-down]="!activeStages.includes(stage.id)"
-          [class.fa-chevron-up]="activeStages.includes(stage.id)"></i>
+      <div class="stage-progress">
+        <span class="completed">{{completedStages.length}}</span>
+        <span class="total">/{{ stage.steps.length }} steps</span>
       </div>
+      <i class="fas"
+        [class.fa-chevron-down]="!activeStages.includes(stage.id)"
+        [class.fa-chevron-up]="activeStages.includes(stage.id)"></i>
     </div>
-    <div class="row m-0 d-flex align-items-center justify-content-around gap-4"
-      *ngIf="activeStages.includes(stage.id)">
-      <div *ngFor="let step of stage.steps" class="path-step col-md-5"
-        [class.active]="activeStep === step.id"
-        [class.completed]="completedSteps.includes(step.id)"
-        [style.--accent-color]="step.color">
 
-        <div class="step-header" (click)="toggleStep(step.id)">
-          <div class="step-icon" [style.background]="step.color">
-            <i [class]="step.icon"></i>
-          </div>
-          <h4 class="step-title">{{ step.title }}</h4>
-          <div
-            class="step-info d-flex align-items-center justify-content-between">
-            <div class="step-badges">
-              <span class="badge"
-                *ngIf="step.duration && !completedSteps.includes(step.id)">{{
-                step.duration
-                }}</span>
-              <span class="badge"
-                *ngIf="step.level && !completedSteps.includes(step.id)">{{
-                step.level }}</span>
-              <span class="badge"
-                *ngIf="completedSteps.includes(step.id)">Completed</span>
+    <div class="stage-content" *ngIf="activeStages.includes(stage.id)">
+      <div class="step-cards">
+        <div class="step-card" *ngFor="let step of stage.steps"
+          [class.active]="activeStep === step.id"
+          [class.completed]="completedSteps.includes(step.id)"
+          [class.in-progress]="inProgressSteps.includes(step.id)">
+          <div class="step-header" (click)="toggleStep(step.id)">
+            <div class="step-icon" [style.background]="step.color">
+              <i [class]="step.icon"></i>
             </div>
-            <div class="step-arrow">
-              <i class="fas" [class.fa-chevron-down]="activeStep !== step.id"
-                [class.fa-chevron-up]="activeStep === step.id"></i>
+            <div class="step-info">
+              <h4 class="step-title">{{ step.title }}</h4>
+              <div class="step-meta">
+                <span class="duration" *ngIf="step.duration">
+                  <i class="fas fa-clock"></i> {{ step.duration }}
+                </span>
+                <span class="level" *ngIf="step.level">
+                  <i class="fas fa-signal"></i> {{ step.level }}
+                </span>
+                <span class="status-badge completed"
+                  *ngIf="completedSteps.includes(step.id)">
+                  <i class="fas fa-check-circle"></i> Completed
+                </span>
+                <span class="status-badge in-progress"
+                  *ngIf="inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)">
+                  <i class="fas fa-spinner"></i> In Progress
+                </span>
+              </div>
             </div>
+            <i class="fas"
+              [class.fa-chevron-down]="activeStep !== step.id"
+              [class.fa-chevron-up]="activeStep === step.id"></i>
           </div>
-        </div>
 
-        <div class="step-content" *ngIf="activeStep === step.id">
-          <p>{{ step.description + " :" }}<button
-              class="cta-custom-button" (click)="visibleModel = true">Learn
-              More</button></p>
-          <div class="skills-list">
-            <span matTooltip="Must start working first"
-              matTooltipClass="custom-tooltip"
-              [matTooltipDisabled]="inProgressSteps.includes(step.id) || completedSteps.includes(step.id)"
-              class="skill-tag"
-              [ngStyle]="{
-                'background': completedSteps.includes(step.id) ? 'linear-gradient(to right, #2d89ff, #6aa9ff)': '#f0f0f0',
-                'color': completedSteps.includes(step.id) ? 'white' : 'black',
-                'border': completedSteps.includes(step.id) ? '1px solid #388E3C' : '1px solid #ccc',
-                'cursor': inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? 'pointer' : 'not-allowed',
-                'opacity': inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? '1' : '0.6'
-              }"
-              (click)="inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? openSkillsModal(skill) : null"
-              *ngFor="let skill of step.skills">
-              {{ skill.name }}
-            </span>
-
-          </div>
-          <div class="resources" *ngIf="step.resources?.length">
-            <h5>Resources:</h5>
-            <a *ngFor="let resource of step.resources" [href]="resource.url"
-              target="_blank">
-              <i [class]="resource.icon"></i> {{ resource.name }}
-            </a>
-          </div>
-          <div class="step-actions">
-            <button
-              *ngIf="!inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
-              (click)="startStep(step.id)">
-              <i class="fas fa-play"></i> Start Learning
-            </button>
-            <button
-              *ngIf="inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
-              (click)="completeStep(step.id)" class="in-progress">
-              <i class="fas fa-check"></i> Mark as Complete
-            </button>
-            <div *ngIf="completedSteps.includes(step.id)"
-              class="completed-badge">
-              <i class="fas fa-check-circle"></i> Completed
-              <button (click)="resetStep(step.id)" class="reset-btn">
-                <i class="fas fa-undo"></i> Reset
+          <div class="step-details" *ngIf="activeStep === step.id">
+            <div class="step-description">
+              <p>{{ step.description }}</p>
+              <button class="learn-more-btn" (click)="openStepModel()">
+                <i class="fas fa-book-open"></i> Learn More
               </button>
             </div>
+
+            <div class="step-skills" *ngIf="step.skills?.length">
+              <h5><i class="fas fa-lightbulb"></i> Skills You'll Learn:</h5>
+              <div class="skills-list">
+                <ng-container *ngFor="let skill of step.skills">
+                  <span
+                    *ngIf="skill.name; else noSkill"
+                    matTooltip="Must Begin Step"
+                    matTooltipClass="custom-tooltip"
+                    [matTooltipDisabled]="inProgressSteps.includes(step.id) || completedSteps.includes(step.id)"
+                    class="skill-tag"
+                    [ngStyle]="{
+        'background': completedSteps.includes(step.id) ? 'linear-gradient(to right, #2d89ff, #6aa9ff)': '#f0f0f0',
+        'color': completedSteps.includes(step.id) ? 'white' : 'black',
+        'border': completedSteps.includes(step.id) ? '1px solid #388E3C' : '1px solid #ccc',
+        'cursor': inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? 'pointer' : 'not-allowed',
+        'opacity': inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? '1' : '0.6'
+      }"
+                    (click)="inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? openSkillsModal(skill) : null">
+                    {{ skill.name }}
+                  </span>
+
+                  <ng-template #noSkill>
+                    <span class="skill-tag no-skill"
+                      style="cursor: not-allowed; opacity: 0.6;">No skill</span>
+                  </ng-template>
+                </ng-container>
+
+              </div>
+            </div>
+
+            <div class="step-resources" *ngIf="step.resources?.length">
+              <h5><i class="fas fa-link"></i> Resources:</h5>
+              <div class="resources-list">
+                <a *ngFor="let resource of step.resources"
+                  [href]="resource.url" target="_blank">
+                  <i [class]="resource.icon"></i> {{ resource.name }}
+                </a>
+              </div>
+            </div>
+
+            <div class="step-actions">
+              <button
+                *ngIf="!inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
+                (click)="startStep(step.id)">
+                <i class="fas fa-play"></i> Begin Step
+              </button>
+              <button
+                *ngIf="inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
+                (click)="completeStep(step.id)" class="in-progress">
+                <i class="fas fa-check"></i> Mark Complete
+              </button>
+              <div *ngIf="completedSteps.includes(step.id)"
+                class="completed-actions">
+                <span class="completed-text">
+                  <i class="fas fa-check-circle"></i> Completed
+                </span>
+                <button (click)="resetStep(step.id)" class="reset-btn">
+                  <i class="fas fa-undo"></i> Reset
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 
-  <div class="stage-footer" *ngIf="filteredStages.length === 0">
-    <p class="text-muted text-center fw-bold no-stages">No stages found for the
-      current search.</p>
+  <div class="empty-state" *ngIf="filteredStages.length === 0">
+    <div class="empty-icon">
+      <i class="fas fa-search"></i>
+    </div>
+    <h4>No Learning Paths Found</h4>
+    <p>Try adjusting your search or filter criteria</p>
+    <button class="reset-filters-btn" (click)="resetFilters()">
+      <i class="fas fa-filter"></i> Reset Filters
+    </button>
   </div>
 </div>
 
-<ng-container *ngIf="visibleModel">
-  <step-model [visible]="visibleModel"
-    (visibleChange)="visibleModel = $event"></step-model>
-</ng-container>
+<step-model [visible]="visibleModel"
+  (visibleChange)="visibleModel = $event"></step-model>
 
 <skill-model
   [(visible)]="showSkillModal"
-    [data]="skillModalData">
+  [data]="skillModalData">
 </skill-model>

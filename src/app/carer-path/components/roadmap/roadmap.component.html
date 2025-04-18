@@ -1,4 +1,4 @@
-<div class="path">
+<div class="career-path-container">
   <path-header
     [title]="Title"
     [selectedFilter]="selectedFilter"
@@ -7,11 +7,18 @@
     (searchQueryChange)="onSearchChange($event)">
   </path-header>
 
-  <progress-track
-    [completedSteps]="completedSteps"
-    [totalSteps]="totalSteps"
-    [stages]="stages">
-  </progress-track>
+  <div class="path-visualization">
+    <div class="progress-summary">
+      <div class="progress-bar-container">
+        <div class="progress-bar"
+          [style.width]="(completedSteps.length / totalSteps) * 100 + '%'">
+          <div class="progress-label">{{completedSteps.length}}/{{totalSteps}}
+            steps completed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <path-container
     [filteredStages]="filteredStages"
     [activeStage]="activeStage"
@@ -23,11 +30,6 @@
     (stepStarted)="startStep($event)"
     (stepCompleted)="completeStep($event)"
     (stepReset)="resetStep($event)"
-    >
+    (resetFilter)="resetFilter()">
   </path-container>
-  <div class="progress-tracker">
-    <div class="progress-bar"
-      [style.width]="(completedSteps.length / totalSteps) * 100 + '%'"></div>
-    <span>{{completedSteps.length}}/{{totalSteps}} steps completed</span>
-  </div>
 </div>

@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Button } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { AuthService } from '../../services/auth.service';
+import { SignUpComponent } from '../sign-up/sign-up.component';
 
 @Component({
   selector: 'login',
-  imports: [CommonModule, ReactiveFormsModule, DialogModule],
+  imports: [CommonModule, ReactiveFormsModule, DialogModule, SignUpComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   providers: [MessageService]
@@ -18,11 +18,14 @@ export class LoginComponent {
   @Input() visible: boolean = false;
   @Input() registerSuccess: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>()
+  @Output() requestSignUp = new EventEmitter<boolean>()
   messageService = inject(MessageService);
   fb = inject(FormBuilder);
   router = inject(Router);
   authService = inject(AuthService)
   loginError: string = '';
+  isSubmitting: boolean = false;
+  showSignUp: boolean = false;
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -31,15 +34,24 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      this.isSubmitting = true;
       this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe({
         next: (res) => {
           console.log('Login successful', this.loginForm.value, res);
+          this.isSubmitting = false;
+          this.messageService.add({ severity: 'success', summary: 'Login Successful', detail: 'Welcome back!' });
           this.router.navigate(['/features']);
           this.closeDialog();
         },
         error: (error) => {
+          this.isSubmitting = false;
+          this.messageService.add({ severity: 'error', summary: 'Login Failed', detail: error?.message || 'Invalid email or password.' });
+          this.loginForm.reset();
           console.error('Login error:', error);
           this.loginError = error?.message || 'Invalid email or password.';
+        },
+        complete: () => {
+          this.isSubmitting = false;
         }
       });
     } else {
@@ -79,4 +91,8 @@ export class LoginComponent {
     return '';
   }
 
+  switchToSignup() {
+    this.closeDialog();
+    this.requestSignUp.emit();
+  }
 }

@@ -18,7 +18,9 @@ export class PathContainerComponent {
   visibleModel: boolean = false;
   showSkillModal: boolean = false;
   skillModalData: any;
+  completedStages: any[] = [];
   skillStatuses: { [key: string]: string } = {}; // 'start' | 'in-progress' | 'complete'
+
   @Input() filteredStages: any[] = [];
   @Input() activeStage: string | null = null;
   @Input() activeStep: string | null = null;
@@ -31,6 +33,7 @@ export class PathContainerComponent {
   @Output() stepStarted = new EventEmitter<string>();
   @Output() stepCompleted = new EventEmitter<string>();
   @Output() stepReset = new EventEmitter<string>();
+  @Output() resetFilter = new EventEmitter<string>();
 
   toggleStep(stepId: string): void {
     this.stepToggled.emit(stepId);
@@ -63,13 +66,22 @@ export class PathContainerComponent {
   toggleStage(stageId: any): void {
     if (this.activeStages.includes(stageId)) {
       this.activeStages = this.activeStages.filter((id: any) => id !== stageId);
+
+      console.log('activeStages', this.activeStages);
+
     } else {
       this.activeStages.push(stageId);
     }
     this.stageToggled.emit(this.activeStages);
   }
 
+  hasNamedSkills(step: any): boolean {
+    return step.skills?.some((skill: any) => !!skill.name);
+  }
+
   openSkillsModal(skill: any): void {
+    console.log('skill', skill);
+
     this.skillModalData = {
       ...skill,
       status: this.skillStatuses[skill.id] || 'start'
@@ -108,5 +120,14 @@ export class PathContainerComponent {
           'opacity': '0.6'
         };
     }
+  }
+
+  openStepModel() {
+    this.visibleModel = true;
+
+  }
+
+  resetFilters() {
+    this.resetFilter.emit();
   }
 }

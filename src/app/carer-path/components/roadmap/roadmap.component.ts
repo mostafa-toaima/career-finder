@@ -6,12 +6,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { FormsModule } from '@angular/forms';
 import { CarerService } from '../../services/carer.service';
-import { ProgressTrackComponent } from './progress-track/progress-track.component';
 import { PathHeaderComponent } from './path-header/path-header.component';
 import { PathContainerComponent } from './path-container/path-container.component';
 
 @Component({
-  imports: [CommonModule, CardModule, ChipModule, AvatarModule, FormsModule, ProgressTrackComponent, PathHeaderComponent, PathContainerComponent],
+  imports: [CommonModule, CardModule, ChipModule, AvatarModule, FormsModule, PathHeaderComponent, PathContainerComponent],
   templateUrl: './roadmap.component.html',
   styleUrl: './roadmap.component.css',
   animations: [
@@ -53,7 +52,6 @@ export class RoadmapComponent implements OnInit {
     this.searchQuery = this.searchQuery;
   }
   onFilterChange(value: any): void {
-    console.log('Filter changed to:', value);
     if (['all', 'completed', 'in-progress', 'not-started'].includes(value)) {
       this.selectedFilter = value;
     } else {
@@ -88,6 +86,11 @@ export class RoadmapComponent implements OnInit {
   resetStep(stepId: string): void {
     this.inProgressSteps = this.inProgressSteps.filter(id => id !== stepId);
     this.completedSteps = this.completedSteps.filter(id => id !== stepId);
+  }
+
+  resetFilter() {
+    this.selectedFilter = 'all';
+    this.searchQuery = '';
   }
 
   get filteredStages() {

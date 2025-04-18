@@ -57,18 +57,15 @@ export class NavbarComponent implements OnInit {
   }
 
   handleNavigationClick(route: string) {
-    // Check if the user is logged in
     this.user$.subscribe(user => {
       if (user) {
-        // If the user is logged in, navigate to the target route
         this.router.navigate([route]);
       } else {
-        // If the user is not logged in, show the login modal
         this.openLogin();
       }
     });
   }
-  
+
   logout() {
     this.authService.logout().subscribe(() => {
       this.router.navigate(['/home']);
@@ -87,7 +84,20 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+
+  toggleToSignup() {
+    this.showSignUp = !this.showSignUp;
+    this.showLogin = false;
+  }
+
+  toggleToLogin() {
+    this.showLogin = !this.showLogin;
+    this.showSignUp = false;
+  }
+
   ngOnDestroy() {
     document.body.style.overflow = '';
   }
+
+
 }

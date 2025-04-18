@@ -17,6 +17,7 @@ import { AuthService } from '../../services/auth.service';
 export class SignUpComponent {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>()
+  @Output() requestToLogin = new EventEmitter<boolean>()
   @Output() registerSuccess = new EventEmitter<boolean>()
   messageService = inject(MessageService);
   authService = inject(AuthService)
@@ -42,6 +43,7 @@ export class SignUpComponent {
   filteredFaculties: string[] = [];
   filteredDepartments: string[] = [];
   registerError: string = '';
+  isSubmitting: boolean = false;
 
   registerForm: FormGroup = this.fb.group({
     firstName: ['', Validators.required],
@@ -52,7 +54,6 @@ export class SignUpComponent {
     department: ['', Validators.required],
     mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     gender: ['', Validators.required]
   });
 
@@ -78,6 +79,7 @@ export class SignUpComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
+      this.isSubmitting = true;
       const { firstName, email, password, mobile } = this.registerForm.value;
       const data = {
         name: firstName,
@@ -87,12 +89,14 @@ export class SignUpComponent {
       }
       this.authService.register(data.email, data.password).subscribe({
         next: () => {
+          this.isSubmitting = false;
           this.registerSuccess.emit(true);
           this.registerError = '';
           this.closeDialog();
           this.router.navigate(['/features']);
         },
         error: (error) => {
+          this.isSubmitting = false;
           if (error?.code === 'auth/email-already-in-use') {
             this.registerError = 'This email is already in use. Please try logging in or use a different email.';
           } else {
@@ -115,6 +119,17 @@ export class SignUpComponent {
     this.visible = false;
     this.visibleChange.emit(false);
   }
+
+  switchToLogin() {
+    this.requestToLogin.emit();
+    this.closeDialog();
+  }
+
+
+
+
+
+
   // Custom error messages
   get firstNameError() {
     const control = this.registerForm.get('firstName');
@@ -161,17 +176,6 @@ export class SignUpComponent {
     }
     if (control?.hasError('minlength') && control?.touched) {
       return 'Password must be at least 6 characters long.';
-    }
-    return '';
-  }
-
-  get confirmPasswordError() {
-    const control = this.registerForm.get('confirmPassword');
-    if (control?.hasError('required') && control?.touched) {
-      return 'Confirm Password is required.';
-    }
-    if (control?.hasError('minlength') && control?.touched) {
-      return 'Confirm Password must be at least 6 characters long.';
     }
     return '';
   }
