@@ -292,4 +292,8 @@
   .journey-card {
     padding: 2rem 1.5rem;
   }
+
+  .section-header {
+    top: 40px;
+  }
 }

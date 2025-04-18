@@ -64,14 +64,14 @@
                   <label>Faculty</label>
                   <div class="input-with-icon">
                     <i class="pi pi-book"></i>
-                    <input type="text" [value]="data?.selectedFaculty" disabled>
+                    <input type="text" [value]="data?.faculty?.name" disabled>
                   </div>
                 </div>
                 <div class="form-group">
                   <label>Department</label>
                   <div class="input-with-icon">
                     <i class="pi pi-briefcase"></i>
-                    <input type="text" [value]="data?.selectedDepartment"
+                    <input type="text" [value]="data.department?.name"
                       disabled>
                   </div>
                 </div>
@@ -304,6 +304,7 @@
     </ng-container>
 
     <!-- Results View -->
+    <!-- Results View -->
     <ng-container *ngIf="showResults && !isSubmitting">
       <div class="results-view">
         <div class="results-header">
@@ -319,130 +320,80 @@
 
         <div class="results-content">
           <!-- Career Path Recommendation -->
-          <div class="result-card highlight">
-            <div class="card-icon">
-              <i class="pi pi-briefcase"></i>
-            </div>
+          <div class="result-card highlight"
+            *ngIf="aiResponse['Recommended Career Path']">
             <div class="card-content">
-              <h3>Recommended Career Path</h3>
-              <p class="path-name">Tech-focused Business
-                Management/Entrepreneurship within International Business</p>
-              <p class="path-description">
-                This path leverages your Business Information Systems
-                background, interest in programming,
-                leadership skills, and desire for an international business
-                environment.
+              <h3 class="card-title fw-bold">Recommended Career Path <i
+                  class="pi pi-briefcase"></i>
+              </h3>
+              <p
+                class="path-name text-muted">{{aiResponse['Recommended Career Path']}}</p>
+              <p class="path-description"
+                *ngIf="aiResponse['Career Description']">
+                {{aiResponse['Career Description']}}
               </p>
             </div>
           </div>
 
           <!-- Why This Path -->
-          <div class="result-card">
-            <div class="card-icon">
-              <i class="pi pi-question-circle"></i>
-            </div>
+          <div class="result-card" *ngIf="aiResponse['Why This Path Fits You']">
             <div class="card-content">
-              <h3>Why This Path Fits You</h3>
+              <h3 class="card-title fw-bold">Why This Path Fits You <i
+                  class="pi pi-question-circle"></i></h3>
               <div class="fit-reasons">
-                <div class="reason-item">
-                  <div class="reason-icon academic">
-                    <i class="pi pi-book"></i>
+                <ng-container
+                  *ngIf="isArray(aiResponse['Why This Path Fits You'])">
+                  <div class="reason-item"
+                    *ngFor="let reason of aiResponse['Why This Path Fits You']">
+                    <div class="reason-icon">
+                      <i class="pi pi-check-circle"></i>
+                    </div>
+                    <div [innerHTML]="reason | safeHtml"></div>
                   </div>
-                  <div>
-                    <h4>Academic Alignment</h4>
-                    <p>Your degree provides a strong foundation in both business
-                      principles and technical understanding.</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="!isArray(aiResponse['Why This Path Fits You'])">
+                  <div class="reason-item">
+                    <div class="reason-icon">
+                      <i class="pi pi-check-circle"></i>
+                    </div>
+                    <div>{{aiResponse['Why This Path Fits You']}}</div>
                   </div>
-                </div>
-                <div class="reason-item">
-                  <div class="reason-icon strength">
-                    <i class="pi pi-star"></i>
-                  </div>
-                  <div>
-                    <h4>Strengths Match</h4>
-                    <p>Your leadership and design skills are valuable for
-                      management and entrepreneurial roles.</p>
-                  </div>
-                </div>
-                <div class="reason-item">
-                  <div class="reason-icon tech">
-                    <i class="pi pi-code"></i>
-                  </div>
-                  <div>
-                    <h4>Tech Advantage</h4>
-                    <p>Your programming interest helps in understanding tech
-                      projects and businesses.</p>
-                  </div>
-                </div>
-                <div class="reason-item">
-                  <div class="reason-icon global">
-                    <i class="pi pi-globe"></i>
-                  </div>
-                  <div>
-                    <h4>International Focus</h4>
-                    <p>Aligns with your dream of managing an international
-                      company.</p>
-                  </div>
-                </div>
+                </ng-container>
               </div>
             </div>
           </div>
 
+          <!-- Similar updates for other sections -->
+
           <!-- Action Plan -->
-          <div class="result-card">
-            <div class="card-icon">
-              <i class="pi pi-list-check"></i>
-            </div>
+          <div class="result-card" *ngIf="aiResponse['Your Action Plan']">
             <div class="card-content">
-              <h3>Your Action Plan</h3>
+              <h3 class="card-title fw-bold">Your Action Plan <i
+                  class="pi pi-list-check"></i></h3>
               <div class="action-steps">
-                <div class="step-item">
-                  <div class="step-number">1</div>
-                  <div class="step-content">
-                    <h4>Targeted Internships</h4>
-                    <p>Seek internships in businesses operating internationally,
-                      preferably with a tech focus.</p>
-                  </div>
-                </div>
-                <div class="step-item">
-                  <div class="step-number">2</div>
-                  <div class="step-content">
-                    <h4>Strategic Networking</h4>
-                    <p>Connect with professionals in international business and
-                      tech entrepreneurship.</p>
-                  </div>
-                </div>
-                <div class="step-item">
-                  <div class="step-number">3</div>
-                  <div class="step-content">
-                    <h4>Business Plan Draft</h4>
-                    <p>Start outlining your future business ideas and plans.</p>
-                  </div>
-                </div>
-                <div class="step-item">
-                  <div class="step-number">4</div>
-                  <div class="step-content">
-                    <h4>Communication Skills</h4>
-                    <p>Enhance both written and verbal communication
-                      abilities.</p>
-                  </div>
+                <div class="timeline-section"
+                  *ngFor="let timeline of aiResponse['Your Action Plan']">
+                  <h4 class="text-muted  h6">{{timeline.Timeline}}</h4>
+                  <ul>
+                    <li *ngFor="let item of timeline.ActionItems"
+                      [innerHTML]="item | safeHtml"></li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Pro Tips -->
-          <div class="result-card tips">
-            <div class="card-icon">
-              <i class="pi pi-lightbulb"></i>
-            </div>
+          <div class="result-card tips"
+            *ngIf="aiResponse['Pro Tips for Success']">
             <div class="card-content">
-              <h3>Pro Tips for Success</h3>
+              <h3 class="card-title fw-bold">Pro Tips for Success <i
+                  class="pi pi-lightbulb"></i>
+              </h3>
               <ul class="tips-list">
-                <li>Embrace continuous learning even without formal study</li>
-                <li>Reframe problem-solving as interesting puzzles</li>
-                <li>Find a mentor in international business</li>
-                <li>Start outlining your future business plan now</li>
+                <li *ngFor="let tip of aiResponse['Pro Tips for Success']"
+                  [innerHTML]="tip | safeHtml"></li>
               </ul>
             </div>
           </div>

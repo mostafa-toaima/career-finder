@@ -11,37 +11,67 @@ export class GeminiService {
     this.genAI = new GoogleGenerativeAI('AIzaSyAvSVWL2YJ3_LpG3Ke1R3AH3WaH3EWTBPc'); // 🔥 Replace with your Gemini API Key
   }
 
-  async sendFormDataToGemini(formData: any): Promise<string> {
+  async sendFormDataToGemini(formData: any): Promise<any> {
     const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
 
     const prompt = `
-                      I am building a smart career advisor for university students. Please act as a professional career guidance counselor and help analyze this student's input. Based on the following details, suggest:
+    I am building a smart career advisor for university students. Please provide a detailed career analysis in the following exact JSON format:
 
-                      1. A suitable career path or domain.
-                      2. Reasons for this suggestion.
-                      3. Any recommended next steps (like skills, certifications, or internships).
-                      4. Optional advice to help the student make the most of their strengths and interests.
+    {
+      "Recommended Career Path": "The most suitable career path",
+      "Career Description": "Detailed description of why this path is suitable",
+      "Why This Path Fits You": [
+        "Reason 1",
+        "Reason 2",
+        "Reason 3"
+      ],
+      "Your Action Plan": [
+        {
+          "Timeline": "Timeframe",
+          "ActionItems": [
+            "Action 1",
+            "Action 2"
+          ]
+        }
+      ],
+      "Pro Tips for Success": [
+        "Tip 1",
+        "Tip 2"
+      ]
+    }
 
-                      Here is the student's data:
-                      - Faculty: ${formData.faculty}
-                      - Department: ${formData.department}
-                      - Favorite Subjects or Topics: ${formData.favoriteSubjects}
-                      - Strengths: ${formData.strengths}
-                      - Preferred Work Type: ${formData.workPreference}
-                      - Preferred Work Environment: ${formData.environment}
-                      - Enjoys Problem Solving: ${formData.problemSolving}
-                      - Willing to Study Further or Get Certifications: ${formData.studyWillingness}
-                      - Research Interest (0–10): ${formData.researchInterest}
-                      - Task Style Preference: ${formData.taskStyle}
-                      - Interested in Starting a Business: ${formData.entrepreneurship}
-                      - Dream Job or Career Goal: ${formData.goal}
+    Base your analysis on these student details:
+    - Faculty: ${formData.faculty}
+    - Department: ${formData.department}
+    - Favorite Subjects: ${formData.favoriteSubjects}
+    - Strengths: ${formData.strengths}
+    - Work Preference: ${formData.workPreference}
+    - Work Environment: ${formData.environment}
+    - Problem Solving: ${formData.problemSolving}
+    - Study Willingness: ${formData.studyWillingness}
+    - Research Interest: ${formData.researchInterest}
+    - Task Style: ${formData.taskStyle}
+    - Entrepreneurship: ${formData.entrepreneurship}
+    - Career Goal: ${formData.goal}
 
-                      Be detailed, helpful, and motivating. Output should be structured with headings if possible.
-                      `;
+    IMPORTANT: Return ONLY valid JSON in the specified format.
+  `;
 
+    try {
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text();
+      // Return both text and parsed JSON for better error handling
+      const responseText = response.text();
+      try {
+        return JSON.parse(responseText);
+      } catch (e) {
+        // If parsing fails, return the text for manual parsing
+        return responseText;
+      }
+    } catch (error) {
+      console.error('Error calling Gemini API:', error);
+      throw error;
+    }
   }
 }

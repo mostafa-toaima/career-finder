@@ -6,11 +6,12 @@ import { GeminiService } from '../../../common/service/gemini.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { SafeHtmlPipe } from '../../../common/pipes/safe-html.pipe';
 
 @Component({
   selector: 'custom-model',
   standalone: true,
-  imports: [CommonModule, DialogModule, ReactiveFormsModule, ProgressSpinnerModule, ToastModule],
+  imports: [CommonModule, DialogModule, ReactiveFormsModule, ProgressSpinnerModule, ToastModule, SafeHtmlPipe],
   templateUrl: './model.component.html',
   styleUrls: ['./model.component.css'],
   providers: [MessageService]
@@ -115,7 +116,7 @@ export class ModelComponent implements OnInit {
   }
 
   private parseAiResponse(response: any): any {
-    // If the response is already an object, return it directly
+    // If response is already an object (like from error case), return it
     if (typeof response === 'object' && response !== null) {
       return response;
     }
@@ -123,38 +124,65 @@ export class ModelComponent implements OnInit {
     // If it's a string, try to parse it
     if (typeof response === 'string') {
       try {
-        return JSON.parse(response);
+        // First try to parse as pure JSON
+        const jsonResponse = JSON.parse(response);
+        if (jsonResponse && typeof jsonResponse === 'object') {
+          return jsonResponse;
+        }
       } catch (e) {
-        // If not JSON, try to extract key-value pairs
-        const result: any = {};
-        const lines = response.split('\n');
+        console.log('Response is not pure JSON, trying alternative parsing');
+      }
 
-        let currentKey = '';
-        let currentValue = '';
-
-        lines.forEach(line => {
-          if (line.endsWith(':')) {
-            if (currentKey) {
-              result[currentKey] = currentValue.trim();
-            }
-            currentKey = line;
-            currentValue = '';
-          } else {
-            currentValue += line + '\n';
-          }
-        });
-
-        if (currentKey) {
-          result[currentKey] = currentValue.trim();
+      // Alternative parsing for non-JSON responses
+      try {
+        // Try to extract JSON from markdown or other formatted responses
+        const jsonStart = response.indexOf('{');
+        const jsonEnd = response.lastIndexOf('}');
+        if (jsonStart >= 0 && jsonEnd > jsonStart) {
+          const jsonString = response.substring(jsonStart, jsonEnd + 1);
+          return JSON.parse(jsonString);
         }
 
-        return result;
+        // If no JSON found, try to structure the response manually
+        return this.structureTextResponse(response);
+      } catch (parseError) {
+        console.error('Error parsing AI response:', parseError);
+        return {
+          'Recommended Career Path': 'Error parsing response',
+          'Career Description': 'We encountered an issue processing your career analysis.',
+          'Why This Path Fits You': 'Please try again later.',
+          'Your Action Plan': 'Contact support if the problem persists.',
+          'Pro Tips for Success': ''
+        };
       }
     }
 
-    return {};
+    return {
+      'Recommended Career Path': 'Invalid response format',
+      'Career Description': 'The system returned an unexpected response format.',
+      'Why This Path Fits You': 'Please try again later.',
+      'Your Action Plan': 'Contact support if the problem persists.',
+      'Pro Tips for Success': ''
+    };
   }
 
+  private structureTextResponse(text: string): any {
+    const result: any = {};
+    const sections = text.split('\n\n');
+
+    sections.forEach(section => {
+      const lines = section.split('\n');
+      if (lines.length > 0) {
+        const key = lines[0].replace(':', '').trim();
+        const value = lines.slice(1).join('\n').trim();
+        if (key && value) {
+          result[key] = value;
+        }
+      }
+    });
+
+    return result;
+  }
   private markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
       control.markAsTouched();
@@ -199,5 +227,9 @@ export class ModelComponent implements OnInit {
   isFieldInvalid(name: string) {
     const control = this.getFormControl(name);
     return control?.invalid && (control?.dirty || control?.touched);
+  }
+
+  isArray(value: any): boolean {
+    return Array.isArray(value);
   }
 }
