@@ -1,84 +1,198 @@
+<!-- Hero Section -->
 <section class="hero">
-  <div class="description-card">
-    <h1 class="hero__title">Career Crafters</h1>
-    <p class="hero__subtitle">Discover Your Path, Shape Your Future</p>
-    <div class="decorative-line"></div>
-  </div>
-</section>
-<section class="hint">
-  <div class="hint__text">
-    <h2 class="hint__heading">Feeling Lost in Career Choices? You're Not
-      Alone!</h2>
-    <p class="hint__description">
-      Choosing the right career can feel like a challenge with so many options
-      out there. One minute, you might feel drawn to creativity,
-      and the next, you're thinking about something more analytical. The good
-      news? Finding your path doesn’t have to be stressful!
-      By focusing on your strengths, passions, and real-life experiences,
-      you can make a confident decision that truly suits you. Let’s simplify
-      this journey together!
-    </p>
-  </div>
-  <img class="hint__image"
-    src="assets/images/20943960.jpg"
-    alt="Career Guidance Image">
-</section>
-<section class="hint">
-  <div class="hint__text">
-    <!-- <div class="team-text"> -->
-    <h2 class="hint__heading">Third Eye Team</h2>
-    <p class="hint__description">
-      We are a team of dedicated professionals on a mission to simplify career
-      decision-making. Our platform is designed to help you find the right
-      career path and solve the confusion often faced when choosing a field.
-
-      With our intelligent tools and thoughtful guidance, we provide clear
-      insights to empower you to explore the best opportunities and make
-      informed decisions.
-      <br>
-      <strong style="color: brown;">Let us be your third eye in a world full
-        of endless choices!</strong>
-    </p>
-    <button class="btn sign"><a class="nav-link"
-        (click)="signUp()">SignUp</a></button>
-  </div>
-  <!-- </div> -->
-  <img class="hint__image"
-    src="assets/images/photo_2025-03-10_02-57-01.jpg"
-    alt="Team Member Image">
-  <div>
-    <div class="statement">
-      <h1>Why Choosing Us ?</h1>
-      <div class="decorative-line"></div>
-    </div>
-    <div class="mission-vision-container">
-      <div class="mission-vision-box">
-        <h2 class="team-heading">Our Mission</h2>
-        <p class="team-description">
-          Our mission is to guide you through the maze of career decisions. We
-          use
-          a blend of data-driven insights and personal experience to ensure that
-          you feel confident in your career path. <br>
-          Join us today and get personalized career advice that truly makes a
-          difference!
-        </p>
-      </div>
-      <div class="mission-vision-box">
-        <h2 class="team-heading">Our Vision</h2>
-        <p class="team-description">
-          "Our vision is to empower individuals to discover, pursue, and excel
-          in
-          their ideal career paths by providing personalized guidance,
-          comprehensive resources, and actionable insights. We aim to be the
-          ultimate platform that bridges the gap between potential and
-          opportunity,
-          helping users build fulfilling and successful professional lives."
-        </p>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Shape Your Future with CareerPath</h1>
+      <p class="subtitle">Discover personalized career paths tailored to your
+        unique strengths and aspirations</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary" (click)="signUp()">Get Started</button>
+        <button class="btn btn-outline">Explore Features</button>
       </div>
     </div>
   </div>
 </section>
 
-<ng-container>
-  <sign-up [visible]="visible"></sign-up>
-</ng-container>
+<!-- Problem Statement Section -->
+<section class="problem-section">
+  <div class="container">
+    <div class="section-content">
+      <div class="text-content">
+        <h2>Feeling overwhelmed by career choices?</h2>
+        <p class="lead-text">You're not alone. 72% of professionals feel
+          uncertain about their career path at some point.</p>
+        <p>Between creative passions and analytical pursuits, finding the right
+          balance can be challenging. Our platform helps you navigate these
+          decisions with confidence by matching your skills and interests with
+          real career opportunities.</p>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">85%</div>
+            <div class="stat-label">Users report increased clarity</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">3x</div>
+            <div class="stat-label">Faster career decision making</div>
+          </div>
+        </div>
+      </div>
+      <div class="image-content">
+        <img src="../../../assets/images/how1.jpg"
+          alt="Person considering career options" class="section-image">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+  <div class="container">
+    <div class="section-content reversed">
+      <div class="text-content">
+        <h2>The CareerPath Advantage</h2>
+        <p class="team-tagline">Your trusted career navigation system</p>
+        <p>Our team of career specialists, data scientists, and industry experts
+          have created a comprehensive platform that cuts through the noise of
+          career choices. We combine artificial intelligence with human insight
+          to deliver personalized recommendations.</p>
+        <blockquote class="team-quote">
+          "Let us be your third eye in a world full of endless possibilities"
+        </blockquote>
+        <button class="btn btn-primary" (click)="signUp()">Join Our
+          Community</button>
+      </div>
+      <div class="image-content">
+        <img src="../../../assets/images/team.jpg"
+          alt="CareerPath team"
+          class="section-image team-photo">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission/Vision Section -->
+<section class="values-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Why CareerPath Stands Out</h2>
+      <p class="section-subtitle">Our core principles that guide your
+        success</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">
+          <i class="icon-compass"></i>
+        </div>
+        <h3>Our Mission</h3>
+        <p>To guide you through the maze of career decisions using data-driven
+          insights and personalized experience, ensuring you feel confident in
+          your chosen path.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">
+          <i class="icon-vision"></i>
+        </div>
+        <h3>Our Vision</h3>
+        <p>To become the global platform that bridges potential with
+          opportunity, empowering individuals to build fulfilling professional
+          lives through intelligent career guidance.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">
+          <i class="icon-method"></i>
+        </div>
+        <h3>Our Method</h3>
+        <p>Combining AI analysis with human expertise to provide actionable
+          career roadmaps tailored to your unique profile and market
+          demands.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Success Stories</h2>
+      <p class="section-subtitle">Hear from people who found their path</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="rating">
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+          </div>
+          <blockquote>
+            "CareerPath completely transformed my approach to my career. The personalized roadmap helped me transition from marketing to UX design in just 6 months!"
+          </blockquote>
+        </div>
+        <div class="testimonial-author">
+          <img src="../../../assets/images/mostafa.jpg" alt="mustafa"
+            class="author-avatar">
+          <div class="author-info">
+            <h4>Mustafa Ibrahem</h4>
+            <p>UX Designer at TechSolutions</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="rating">
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+          </div>
+          <blockquote>
+            "I was stuck in a career rut for years. CareerPath's assessment pinpointed skills I didn't even realize I had, leading me to my dream job in data analytics."
+          </blockquote>
+        </div>
+        <div class="testimonial-author">
+          <img src="../../../assets/images/sara.jpg" alt="Michael Chen"
+            class="author-avatar">
+          <div class="author-info">
+            <h4>Sara Khaled</h4>
+            <p>Data Analyst at FinCorp</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="rating">
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star-half"></i>
+          </div>
+          <blockquote>
+            "As a recent graduate, I was overwhelmed by options. The career matching system showed me paths I'd never considered but that fit my personality perfectly."
+          </blockquote>
+        </div>
+        <div class="testimonial-author">
+          <img src="../../../assets/images/shehawy.jpg" alt="Priya Patel"
+            class="author-avatar">
+          <div class="author-info">
+            <h4>Ahmed Shehawy</h4>
+            <p>Product Manager at StartUp Labs</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonials-cta">
+      <button class="btn btn-outline-light">View More Success
+        Stories</button>
+    </div>
+  </div>
+</section>
+

@@ -1,5 +1,4 @@
 <div class="career-journey">
-  <!-- Hero Section -->
   <section class="journey-hero">
     <div class="hero-content">
       <h1 class="hero-title">Discover Your Career Path</h1>
@@ -9,8 +8,6 @@
     </div>
     <div class="hero-overlay"></div>
   </section>
-
-  <!-- Introduction Card -->
   <section class="intro-card">
     <p class="intro-text">
       <strong>Ready to shape your future?</strong> Follow these simple steps to
@@ -29,7 +26,6 @@
           }
         </div>
       </header>
-
       <div class="selection-forms">
         <div class="form-group">
           <label class="form-label" for="faculty">
@@ -67,12 +63,9 @@
           </select>
         </div>
         }
-
-        <!-- Career Tracks -->
         @if (selectedDepartment) {
         <div class="tracks-section">
           <h3 class="tracks-title">Explore Career Tracks</h3>
-
           @if (tracks.length > 0) {
           <div class="tracks-grid">
             @for (track of tracks; track track.id) {
@@ -99,7 +92,6 @@
         </div>
         }
       </div>
-
       <div class="action-buttons">
         <button
           class="action-button primary"
