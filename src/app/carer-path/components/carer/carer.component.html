@@ -1,81 +1,100 @@
 <ng-container *ngIf="visibleFrontEnd">
-  <front-end [visible]="visibleFrontEnd"
-    (visibleChange)="visibleFrontEnd = $event"></front-end>
+  <front-end [visible]="visibleFrontEnd" (visibleChange)="visibleFrontEnd = $event"></front-end>
 </ng-container>
 
-<section class="journey-section mx-auto p-8 animate-fade-in ">
-  <div class>
-    <section class="hero">
-      <div class="description-card">
-        <h1 class="hero__title">Frontend Developer Journey</h1>
-        <p class="hero__subtitle">Unlock the Power of Frontend Development</p>
-        <div class="decorative-line"></div>
-      </div>
-    </section>
-    <div class="journey-grid container-fluid">
-      <div class="journey-card animate-slide-up text-start">
+<section class="frontend-journey">
+  <!-- Hero Section -->
+  <div class="journey-hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Frontend Developer Journey</h1>
+      <p class="hero-subtitle">Master the art of creating beautiful, interactive web experiences</p>
+      <div class="hero-divider"></div>
+    </div>
+  </div>
+
+  <!-- Introduction Section -->
+  <div class="container journey-container">
+    <div class="intro-section">
+      <div class="intro-card">
         <h2 class="section-title">Introduction to Frontend Development</h2>
-        <p class="section-text">
-          Frontend development focuses on creating visually appealing,
-          interactive, and responsive web applications. It involves
-          mastering UI/UX principles, web technologies, and frameworks to build
-          engaging digital experiences. <button class="cta-custom-button"
-            (click)="visibleFrontEnd = true">Learn
-            More</button>
+        <p class="section-description">
+          Frontend development is the art of creating visually appealing, interactive, and responsive web applications. 
+          It combines design sensibility with technical skills to build engaging digital experiences that users love.
         </p>
+        <button class="learn-more-btn" (click)="visibleFrontEnd = true">
+          Explore Path <i class="pi pi-arrow-right"></i>
+        </button>
       </div>
-      <div class="journey-card animate-slide-up text-start">
-        <h2 class="section-title">Why Choose Frontend Development?</h2>
-        <ul class="list-disc pl-6 text-gray-700">
-          <li>🎨 <strong>Creativity & Design</strong> – Craft visually stunning
-            interfaces.</li>
-          <li>🚀 <strong>High Demand</strong> – Essential for businesses in the
-            digital era.</li>
-          <li>🖥️ <strong>Interactive Experience</strong> – Directly shape user
-            interactions.</li>
+
+      <div class="benefits-card">
+        <h2 class="section-title">Why Learn Frontend Development?</h2>
+        <ul class="benefits-list">
+          <li class="benefit-item">
+            <div class="benefit-icon">
+              <i class="pi pi-palette"></i>
+            </div>
+            <div class="benefit-content">
+              <h3>Creative Expression</h3>
+              <p>Bring designs to life with code and create stunning interfaces</p>
+            </div>
+          </li>
+          <li class="benefit-item">
+            <div class="benefit-icon">
+              <i class="pi pi-chart-line"></i>
+            </div>
+            <div class="benefit-content">
+              <h3>High Demand</h3>
+              <p>One of the most sought-after skills in the tech industry</p>
+            </div>
+          </li>
+          <li class="benefit-item">
+            <div class="benefit-icon">
+              <i class="pi pi-users"></i>
+            </div>
+            <div class="benefit-content">
+              <h3>User Impact</h3>
+              <p>Directly shape how users interact with digital products</p>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
-    <div class="journey-grid container-fluid">
-      <div class="journey-card">
+
+    <!-- Learning Path Cards -->
+    <div class="path-cards">
+      <div class="path-card">
         <div class="card-icon">
-          <img
-            src="assets/images/right-arrow-circular-symbol-svgrepo-com.svg"
-            alt="Search">
+          <i class="pi pi-question-circle"></i>
         </div>
-        <h3>Questions & Quizzes</h3>
-        <p class="fw-bolder text-muted">Show Frequently Asked Questions and Test
-          your Knowledge</p>
-        <button class="cta-button">Begin</button>
+        <h3>Knowledge Check</h3>
+        <p>Test your understanding with interactive quizzes and challenges</p>
+        <button class="path-btn">Begin Assessment</button>
       </div>
-      <div class="journey-card highlight-card">
+
+      <div class="path-card highlight-card">
         <div class="card-icon">
-          <img
-            src="assets/images/right-arrow-circular-symbol-svgrepo-com.svg"
-            alt="Search">
+          <i class="pi pi-map"></i>
         </div>
-        <h3>Roadmap</h3>
-        <p>Step by step guide to becoming a modern frontend developer in
-          2025</p>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 30%"></div>
+        <h3>Learning Roadmap</h3>
+        <p>Step-by-step guide to becoming a frontend developer in 2025</p>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress" style="width: 30%"></div>
+          </div>
+          <span class="progress-text">30% Complete</span>
         </div>
         <a routerLink="/roadmap">
-          <button class="cta-button">Start</button>
+          <button class="path-btn highlight-btn">Start Journey</button>
         </a>
       </div>
 
-      <!-- Connect Card -->
-      <div class="journey-card">
+      <div class="path-card">
         <div class="card-icon">
-          <img
-            src="assets/images/right-arrow-circular-symbol-svgrepo-com.svg"
-            alt="Search">
+          <i class="pi pi-code"></i>
         </div>
-        <h3>Projects</h3>
-        <p class="fw-bolder text-muted">Project ideas to take you from beginner
-          to advanced in Frontend</p>
-        <button [disabled]="true" class="cta-button">Build Now</button>
+        <h3>Hands-on Projects</h3>
+        <p>Build real-world applications from beginner to advanced levels</p>
+        <button class="path-btn" [disabled]="true">Coming Soon</button>
       </div>
     </div>
   </div>

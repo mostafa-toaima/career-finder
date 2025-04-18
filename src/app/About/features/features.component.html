@@ -2,51 +2,82 @@
   <div class="container">
     <!-- Header -->
     <div class="section-header">
-      <h1>Start Your Journey</h1>
-      <p class="subtitle">Begin your adventure with these key steps</p>
+      <h2 class="section-title">Begin Your Professional Journey</h2>
+      <p class="section-subtitle">Three pathways to unlock your potential</p>
     </div>
 
     <!-- Journey Cards Grid -->
     <div class="journey-grid">
-      <!-- Search Card -->
+      <!-- Entrepreneurship Card -->
       <div class="journey-card">
+        <div class="card-decoration"></div>
         <div class="card-icon">
-          <img
-            src="assets/images/right-arrow-circular-symbol-svgrepo-com.svg"
-            alt="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+          </svg>
         </div>
-        <h3>Entrepreneurshipp</h3>
-        <p>Discover opportunities tailored to your interests</p>
-        <button class="cta-button">Begin</button>
+        <h3>Entrepreneurship</h3>
+        <p>Launch your dream venture with our startup toolkit and resources</p>
+        <div class="card-footer">
+          <button class="cta-button">
+            Explore Path
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5 10a.75.75 0 0 1 .75-.75h6.638L10.23 7.29a.75.75 0 1 1 1.04-1.08l3.5 3.25a.75.75 0 0 1 0 1.08l-3.5 3.25a.75.75 0 1 1-1.04-1.08l2.158-1.96H5.75A.75.75 0 0 1 5 10Z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      <!-- Planning Card -->
-      <div class="journey-card highlight-card">
+      <!-- Career Path Card (Highlighted) -->
+      <div class="journey-card featured">
+        <div class="card-decoration"></div>
+        <div class="card-badge">Most Popular</div>
         <div class="card-icon">
-          <img
-            src="assets/images/right-arrow-circular-symbol-svgrepo-com.svg"
-            alt="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
+          </svg>
         </div>
-        <h3>Carer Path</h3>
-        <p>Build your Career</p>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 30%"></div>
+        <h3>Career Path</h3>
+        <p>Build your ideal career with personalized roadmap</p>
+        <div class="progress-container">
+          <div class="progress-info">
+            <span>Your progress</span>
+            <span>30%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 30%"></div>
+          </div>
         </div>
-        <a routerLink="/select-university">
-          <button class="cta-button">Build</button>
-        </a>
+        <div class="card-footer">
+          <a routerLink="/select-university">
+            <button class="cta-button primary">
+              Continue Journey
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 10a.75.75 0 0 1 .75-.75h6.638L10.23 7.29a.75.75 0 1 1 1.04-1.08l3.5 3.25a.75.75 0 0 1 0 1.08l-3.5 3.25a.75.75 0 1 1-1.04-1.08l2.158-1.96H5.75A.75.75 0 0 1 5 10Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </a>
+        </div>
       </div>
 
-      <!-- Connect Card -->
+      <!-- Soft Skills Card -->
       <div class="journey-card">
+        <div class="card-decoration"></div>
         <div class="card-icon">
-          <img
-            src="assets/images/right-arrow-circular-symbol-svgrepo-com.svg"
-            alt="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+          </svg>
         </div>
         <h3>Soft Skills</h3>
-        <p>Make life beeter</p>
-        <button [disabled]="true" class="cta-button">Start</button>
+        <p>Enhance your interpersonal skills for life and work</p>
+        <div class="card-footer">
+          <button class="cta-button" [disabled]="true">
+            Coming Soon
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5 10a.75.75 0 0 1 .75-.75h6.638L10.23 7.29a.75.75 0 1 1 1.04-1.08l3.5 3.25a.75.75 0 0 1 0 1.08l-3.5 3.25a.75.75 0 1 1-1.04-1.08l2.158-1.96H5.75A.75.75 0 0 1 5 10Z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>

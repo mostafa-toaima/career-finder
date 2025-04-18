@@ -5,7 +5,8 @@ import { AuthGuard } from './auth/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./About/home/home.component').then((m) => m.HomeComponent)
+    redirectTo: 'home',
+    pathMatch: 'full'
   },
   {
     path: 'home',
@@ -13,7 +14,7 @@ export const routes: Routes = [
   },
   {
     path: 'select-university',
-    loadComponent: () => import('./university/selcet-university/selcet-university.component').then((m) => m.SelcetUniversityComponent),
+    loadComponent: () => import('./university/selcet-university/selcet-university.component').then((m) => m.SelectUniversityComponent),
     canActivate: [AuthGuard]
   },
   {

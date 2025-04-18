@@ -45,17 +45,14 @@
   background-size: cover;
   background-position: center;
   color: #0b4c8a;
-  height: 85vh;
+  height: 100vh;
   border-radius: 25px;
 }
 
 @media (max-width: 768px) {
-  .hero {
-    height: 66vh;
-    border-bottom-right-radius: 15%;
-    border-bottom-left-radius: 15%;
+  .description-card {
+    top: 0px;
   }
-
 }
 
 .hero__title {
@@ -229,6 +226,7 @@
   z-index: 1;
   max-width: 800px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  top: 60px;
 }
 
 .decorative-line {

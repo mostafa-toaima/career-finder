@@ -1,101 +1,126 @@
-<div class="journey-container">
-  <div class="hero-section">
-    <h1 class="title">Start Your Journey</h1>
-    <div class="hero-gradient"></div>
-  </div>
-  <div class="description-card">
-    <p class="description">
-      <strong>Ready to choose your career path?</strong> Follow these simple
-      steps
-      to discover your perfect academic journey. Select your faculty and
-      department
-      to unlock tailored career tracks that match your aspirations.
-    </p>
-    <div class="decorative-line"></div>
-  </div>
-  <div class="selection-card">
-    <div class="selection-header">
-      <h2>Select Your Academic Path</h2>
-      <div class="path-progress">
-        <div class="progress-step" [class.active]="selectedFaculty"></div>
-        <div class="progress-step" [class.active]="selectedDepartment"></div>
-        <div class="progress-step" [class.active]="selectedTrack"></div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group col-md-6">
-        <div class="input-container">
-          <div class="d-flex align-items-center mb-1 gap-1">
-            <label for="faculty">Choose Faculty</label>
-            <img width="28px" src="assets/images/school.png">
-          </div>
-          <select id="faculty" [(ngModel)]="selectedFaculty"
-            (change)="onFacultyChange()">
-            <option value disabled selected>Select a Faculty</option>
-            <option *ngFor="let faculty of faculties" [value]="faculty.name">{{
-              faculty.name }}</option>
-          </select>
-        </div>
-      </div>
-      <div *ngIf="selectedFaculty" class="form-group col-md-6">
-        <div class="input-container">
-          <div class="d-flex align-items-center mb-1 gap-1">
-            <label for="department">Select Department</label>
-            <img width="28px" src="assets/images/graduation.png">
-          </div>
-          <select id="department" [(ngModel)]="selectedDepartment"
-            (change)="onDepartmentChange()">
-            <option value disabled selected>Select a Department</option>
-            <option *ngFor="let department of departments"
-              [value]="department.name">{{ department.name }}</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="selectedDepartment" class="tracks-container">
-      <h3 class="tracks-title">Available Career Tracks</h3>
-      <div class="tracks-boxes">
-        <div *ngFor="let track of tracks" class="track-box"
-          [class.selected]="selectedTrack?.name === track.name"
-          (click)="onTrackSelect(track)">
-          <div class="track-icon">
-            <i class="fas"
-              [class.fa-code]="track.name === 'Software Engineering'"
-              [class.fa-chart-line]="track.name === 'Data Science'"></i>
-          </div>
-          <div class="track-content">
-            <h4>{{ track.name }}</h4>
-            <p>{{ track.description }}</p>
-          </div>
-        </div>
-      </div>
-      <p *ngIf="tracks.length === 0" class="no-tracks">
-        <i class="fas fa-info-circle"></i> No tracks available for this
-        department
+<div class="career-journey">
+  <!-- Hero Section -->
+  <section class="journey-hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Discover Your Career Path</h1>
+      <p class="hero-subtitle">
+        Find the perfect academic journey tailored to your aspirations
       </p>
     </div>
+    <div class="hero-overlay"></div>
+  </section>
 
-    <div
-      class="row d-flex justify-content-center align-items-center gap-2 mt-4">
-      <button class="cta-button col-md-4" [disabled]="!selectedTrack"
-        (click)="showCareerPath()">
-        Explore Career Path
-        <i class="fas fa-arrow-right"></i>
-      </button>
-      <button class="cta-button col-md-4"
-        [disabled]="!selectedFaculty || !selectedDepartment"
-        (click)="openHelperForm(selectedFaculty, selectedDepartment)">
-        Explore with AI
-        <i class="fas fa-arrow-right"></i>
-      </button>
+  <!-- Introduction Card -->
+  <section class="intro-card">
+    <p class="intro-text">
+      <strong>Ready to shape your future?</strong> Follow these simple steps to
+      uncover career tracks that align with your goals. Select your faculty and
+      department to explore tailored opportunities.
+    </p>
+    <div class="divider"></div>
+  </section>
+  <section class="selection-process">
+    <div class="process-card">
+      <header class="process-header">
+        <h2 class="process-title">Chart Your Academic Journey</h2>
+        <div class="progress-indicator">
+          @for (step of getProgressSteps(); track $index) {
+          <div class="progress-step" [class.active]="step.active"></div>
+          }
+        </div>
+      </header>
+
+      <div class="selection-forms">
+        <div class="form-group">
+          <label class="form-label" for="faculty">
+            <fa-icon [icon]="icons.school" class="label-icon"></fa-icon>
+            Choose Your Faculty
+          </label>
+          <select
+            id="faculty"
+            class="form-select"
+            [(ngModel)]="selectedFaculty"
+            (change)="onFacultyChange()">
+            <option [ngValue]="null" disabled selected>Select a Faculty</option>
+            @for (faculty of faculties; track faculty.id) {
+            <option [ngValue]="faculty">{{ faculty.name }}</option>
+            }
+          </select>
+        </div>
+        @if (selectedFaculty) {
+        <div class="form-group">
+          <label class="form-label" for="department">
+            <fa-icon [icon]="icons.graduation" class="label-icon"></fa-icon>
+            Select Your Department
+          </label>
+          <select
+            id="department"
+            class="form-select"
+            [(ngModel)]="selectedDepartment"
+            (change)="onDepartmentChange()">
+            <option [ngValue]="null" disabled selected>
+              Select a Department
+            </option>
+            @for (department of departments; track department.id) {
+            <option [ngValue]="department">{{ department.name }}</option>
+            }
+          </select>
+        </div>
+        }
+
+        <!-- Career Tracks -->
+        @if (selectedDepartment) {
+        <div class="tracks-section">
+          <h3 class="tracks-title">Explore Career Tracks</h3>
+
+          @if (tracks.length > 0) {
+          <div class="tracks-grid">
+            @for (track of tracks; track track.id) {
+            <article
+              class="track-card"
+              [class.selected]="selectedTrack?.id === track.id"
+              (click)="onTrackSelect(track)">
+              <div class="track-icon">
+                <fa-icon [icon]="track.icon"></fa-icon>
+              </div>
+              <div class="track-details">
+                <h4 class="track-name">{{ track.name }}</h4>
+                <p class="track-description">{{ track.description }}</p>
+              </div>
+            </article>
+            }
+          </div>
+          } @else {
+          <div class="no-tracks">
+            <fa-icon [icon]="icons.info"></fa-icon>
+            <p>No tracks available for this department</p>
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="action-buttons">
+        <button
+          class="action-button primary"
+          [disabled]="!selectedTrack"
+          (click)="exploreCareerPath()">
+          Explore Career Path
+          <fa-icon [icon]="icons.arrow"></fa-icon>
+        </button>
+
+        <button
+          class="action-button secondary"
+          [disabled]="!selectedFaculty || !selectedDepartment"
+          (click)="openHelperModal()">
+          Get AI Recommendations
+          <fa-icon [icon]="icons.arrow"></fa-icon>
+        </button>
+      </div>
     </div>
-  </div>
 
-  <div class="decorative-bottom"></div>
+    <div class="process-decoration"></div>
+  </section>
 </div>
 
-<custom-model
-  [(visible)]="displayFormAIModal"
-  [data]="modalData">
-  <custom-model />
+<custom-model [(visible)]="showModal" [data]="modalData"></custom-model>

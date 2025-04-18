@@ -1,58 +1,130 @@
-<nav class="nav navbar navbar-expand-sm navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-glass shadow-sm fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="#">
-      <img width="40" src="assets/images/career-goals.png" alt="Career Path">
+    <!-- Brand Logo with Animation -->
+    <a class="navbar-brand d-flex footer-logo"
+      routerLink="/home">
+      <img src="assets/images/career-goals.png" width="40"
+        alt="CareerPath Logo">
+      <span>CareerPath</span>
     </a>
-    <button
-      class="navbar-toggler d-lg-none"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#collapsibleNavId"
-      aria-controls="collapsibleNavId"
-      aria-expanded="false"
+
+    <!-- Mobile Toggle Button -->
+    <button class="navbar-toggler" type="button"
+      (click)="toggleMobileMenu()"
+      [attr.aria-expanded]="mobileMenuOpen"
       aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavId">
-      <ul class="navbar-nav ms-auto mt-2 mt-lg-0 d-flex align-items-center">
+
+    <!-- Main Navigation -->
+    <div class="collapse navbar-collapse" [class.show]="mobileMenuOpen">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <button class="btn login button">
-            <a class="nav-link"
-              [routerLink]="currentRoute === '/home' ? '/select-university' : '/home'">
-              {{ currentRoute === '/home' && (user$ | async) ? 'Start' : 'Home'
-              }}
-            </a>
-          </button>
+          <a class="nav-link" routerLink="/home" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeMobileMenu()">
+            <i class="fas fa-home me-1"></i> Home
+          </a>
         </li>
-        <ng-container *ngIf="!(user$ | async)">
+        <li class="nav-item">
+          <a class="nav-link"
+            [class.logged-in]="user$ | async"
+            [routerLink]="'/features'"
+            routerLinkActive="active"
+            (click)="handleNavigationClick('/features')">
+            <i class="fas fa-star me-1"></i> Features
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+            [class.logged-in]="user$ | async"
+            [routerLink]="'/select-university'"
+            routerLinkActive="active"
+            (click)="handleNavigationClick('/select-university')">
+            <i class="fas fa-briefcase me-1"></i> Build Career
+          </a>
+        </li>
+
+        <!-- Conditional Links -->
+        <ng-container *ngIf="selectedUniversity$ | async">
           <li class="nav-item">
-            <button class="btn sign button" (click)="visibleSignUp = true">
-              <a class="nav-link">Sign Up</a>
-            </button>
+            <a class="nav-link" routerLink="/career-path"
+              routerLinkActive="active" (click)="closeMobileMenu()">
+              <i class="fas fa-project-diagram me-1"></i> Career Path
+            </a>
           </li>
           <li class="nav-item">
-            <button class="btn login button" (click)="visibleLogin = true">
-              <a class="nav-link">Login</a>
-            </button>
-          </li>
-        </ng-container>
-        <ng-container *ngIf="user$ | async as user">
-          <li class="nav-item">
-            <button class="btn sign button" (click)="logout()">
-              <a class="nav-link">Log Out</a>
-            </button>
+            <a class="nav-link" routerLink="/roadmap" routerLinkActive="active"
+              (click)="closeMobileMenu()">
+              <i class="fas fa-map-marked-alt me-1"></i> Roadmap
+            </a>
           </li>
         </ng-container>
       </ul>
+
+      <!-- Auth Section -->
+      <div class="d-flex align-items-center">
+        <ng-container *ngIf="!(user$ | async)">
+          <div class="d-flex align-items-center logining gap-lg-3">
+            <button class="btn btn-outline-primary w-30" (click)="openLogin()">
+              <i class="fas fa-sign-in-alt me-1"></i> Login
+            </button>
+            <button class="btn btn-primary w-70" (click)="openSignUp()">
+              <i class="fas fa-user-plus me-1"></i> Sign Up
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="user$ | async as user">
+          <div class="dropdown">
+            <button class="btn dropdown-toggle user-dropdown-toggle"
+              type="button" id="userDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              (click)="toggleUserDropdown()">
+              <span class="user-avatar me-1">
+                <img *ngIf="user.photoURL" [src]="user.photoURL"
+                  class="rounded-circle" width="32" height="32" alt="User">
+                <span *ngIf="!user.photoURL"
+                  class="avatar-fallback rounded-circle">
+                  {{ user.displayName?.charAt(0) || user.email?.charAt(0) }}
+                </span>
+              </span>
+              {{ user.displayName || 'Account' }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end"
+              [class.show]="showUserDropdown">
+              <li><h6 class="dropdown-header">{{ user.email }}</h6></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-user-circle me-2"></i> Profile
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-cog me-2"></i> Settings
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item text-danger" type="button"
+                  (click)="logout()">
+                  <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+              </li>
+            </ul>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 </nav>
 
-<sign-up *ngIf="visibleSignUp"
-  [visible]="visibleSignUp"
-  (visibleChange)="visibleSignUp = $event">
-</sign-up>
-<login *ngIf="visibleLogin"
-  [visible]="visibleLogin"
-  (visibleChange)="visibleLogin = $event">
-</login>
+<div class="mobile-menu-overlay" [class.active]="mobileMenuOpen"
+  (click)="closeMobileMenu()"></div>
+
+<login *ngIf="showLogin" [visible]="showLogin"
+  (visibleChange)="showLogin = $event"></login>
+<sign-up *ngIf="showSignUp" [visible]="showSignUp"
+  (visibleChange)="showSignUp = $event"></sign-up>

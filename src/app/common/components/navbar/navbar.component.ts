@@ -1,62 +1,93 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, HostListener, OnInit, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '@angular/fire/auth';
+import { UniversityService } from '../../../university/university.service';
 import { CommonModule } from '@angular/common';
-import { SignUpComponent } from '../../../auth/components/sign-up/sign-up.component';
 import { LoginComponent } from '../../../auth/components/login/login.component';
+import { SignUpComponent } from '../../../auth/components/sign-up/sign-up.component';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
-  imports: [CommonModule, RouterLink, SignUpComponent, LoginComponent],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css'],
+  imports: [CommonModule, RouterLink, SignUpComponent, LoginComponent, RouterLinkActive],
+  standalone: true,
 })
-export class NavbarComponent {
-  //   visibleSignUp = false;
-  //   visibleLogin = false;
-  //   authService = inject(AuthService);
-  //   user$: Observable<User | null>;
-  //   currentRoute: string = '';
+export class NavbarComponent implements OnInit {
+  mobileMenuOpen = false;
+  showUserDropdown = false;
+  showLogin = false;
+  showSignUp = false;
 
-  //   isLoggedIn: boolean = false;
-  //   isAdmin: boolean = false;
-  //   isUser: boolean = false;
-  //   registerSuccess = false;
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private universityService = inject(UniversityService);
 
-  //   constructor(private router: Router) {
-  //     this.user$ = this.authService.user$;
-  //     this.router.events.subscribe(() => {
-  //       this.currentRoute = this.router.url;
-  //     });
+  user$: Observable<User | null> = this.authService.user$;
+  selectedUniversity$ = this.universityService.selectedUniversity$;
 
-  //     localStorage.getItem('token') ? this.isLoggedIn = true : this.isLoggedIn = false;
-  //   }
+  ngOnInit() {
+    // Initialize any required functionality
+  }
 
-  //   logout() {
-  //     this.authService.logout().subscribe(() => {
-  //       localStorage.removeItem('token');
-  //       this.router.navigate(['']);
-  //     });
-  //   }
-  visibleSignUp = false;
-  visibleLogin = false;
-  authService = inject(AuthService);
-  user$: Observable<User | null>;
-  currentRoute: string = '';
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+    this.toggleBodyOverflow();
+  }
 
-  constructor(private router: Router) {
-    this.user$ = this.authService.user$;
-    this.router.events.subscribe(() => {
-      this.currentRoute = this.router.url;
+  closeMobileMenu() {
+    this.mobileMenuOpen = false;
+    this.toggleBodyOverflow();
+  }
+
+  toggleUserDropdown() {
+    this.showUserDropdown = !this.showUserDropdown;
+  }
+
+  openLogin() {
+    this.showLogin = true;
+    this.closeMobileMenu();
+  }
+
+  openSignUp() {
+    this.showSignUp = true;
+    this.closeMobileMenu();
+  }
+
+  handleNavigationClick(route: string) {
+    // Check if the user is logged in
+    this.user$.subscribe(user => {
+      if (user) {
+        // If the user is logged in, navigate to the target route
+        this.router.navigate([route]);
+      } else {
+        // If the user is not logged in, show the login modal
+        this.openLogin();
+      }
+    });
+  }
+  
+  logout() {
+    this.authService.logout().subscribe(() => {
+      this.router.navigate(['/home']);
+      this.showUserDropdown = false;
     });
   }
 
-  logout() {
-    this.authService.logout().subscribe(() => {
-      this.router.navigate(['']);
-    });
+  private toggleBodyOverflow() {
+    document.body.style.overflow = this.mobileMenuOpen ? 'hidden' : '';
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (window.innerWidth > 991.98 && this.mobileMenuOpen) {
+      this.closeMobileMenu();
+    }
+  }
+
+  ngOnDestroy() {
+    document.body.style.overflow = '';
   }
 }

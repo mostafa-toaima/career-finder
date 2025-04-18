@@ -39,7 +39,7 @@ export class LoginComponent {
         },
         error: (error) => {
           console.error('Login error:', error);
-          this.loginError = error.errors[0]?.message || 'Invalid email or password.';
+          this.loginError = error?.message || 'Invalid email or password.';
         }
       });
     } else {
