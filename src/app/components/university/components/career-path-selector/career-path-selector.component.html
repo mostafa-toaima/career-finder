@@ -1,0 +1,159 @@
+<div class="career-selector-container">
+  <!-- Animated Hero Section -->
+  <section class="career-hero" @fadeIn>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title" @slideInDown>Discover Your Perfect Career Path</h1>
+
+    </div>
+  </section>
+
+  <!-- Floating Intro Card -->
+  <section class="intro-card" @fadeInUp>
+    <div class="intro-content">
+      <p class="intro-text">
+        <span class="highlight-text">Ready to shape your future?</span> Follow
+        these simple steps to uncover career tracks that align perfectly with
+        your goals.
+      </p>
+      <div class="animated-divider"></div>
+    </div>
+  </section>
+
+  <!-- Main Selection Process -->
+  <section class="selection-process">
+    <!-- Decorative elements -->
+    <div class="process-decoration"></div>
+    <div class="floating-dots"></div>
+
+    <!-- Process Card -->
+    <div class="process-card" @scaleIn>
+      <header class="process-header">
+        <h2 class="process-title">Chart Your Academic Journey</h2>
+
+        <!-- Animated Progress Steps -->
+        <div class="progress-track">
+          <div class="progress-step" [class.active]="!!selectedFaculty"
+            @bounceIn>
+            <div class="step-icon">1</div>
+            <span class="step-label">Faculty</span>
+          </div>
+          <div class="progress-connector"
+            [class.active]="!!selectedFaculty"></div>
+
+          <div class="progress-step" [class.active]="!!selectedDepartment"
+            @bounceIn>
+            <div class="step-icon">2</div>
+            <span class="step-label">Department</span>
+          </div>
+          <div class="progress-connector"
+            [class.active]="!!selectedDepartment"></div>
+
+          <div class="progress-step" [class.active]="!!selectedTrack" @bounceIn>
+            <div class="step-icon">3</div>
+            <span class="step-label">Track</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Selection Forms -->
+      <div class="selection-forms">
+        <!-- Faculty Selection -->
+        <div class="form-group" @fadeInRight>
+          <label class="form-label" for="faculty">
+            <i class="icon fas fa-university"></i>
+            <span>Choose Your Faculty</span>
+          </label>
+          <div class="select-wrapper">
+            <select id="faculty" [(ngModel)]="selectedFaculty"
+              (change)="onFacultyChange()">
+              <option [ngValue]="null" disabled selected>Select a
+                Faculty</option>
+              @for (faculty of faculties; track faculty.id) {
+              <option [ngValue]="faculty">{{ faculty.name }}</option>
+              }
+            </select>
+            <div class="select-arrow"></div>
+          </div>
+        </div>
+
+        <!-- Department Selection -->
+        @if (selectedFaculty) {
+        <div class="form-group" @fadeInRight>
+          <label class="form-label" for="department">
+            <i class="icon fas fa-graduation-cap"></i>
+            <span>Select Your Department</span>
+          </label>
+          <div class="select-wrapper">
+            <select id="department" [(ngModel)]="selectedDepartment"
+              (change)="onDepartmentChange()">
+              <option [ngValue]="null" disabled selected>Select a
+                Department</option>
+              @for (department of departments; track department.id) {
+              <option [ngValue]="department">{{ department.name }}</option>
+              }
+            </select>
+            <div class="select-arrow"></div>
+          </div>
+        </div>
+        }
+
+        <!-- Tracks Section -->
+        @if (selectedDepartment) {
+        <div class="tracks-section" @fadeInUp>
+          <h3 class="section-title">
+            <i class="fas fa-route"></i>
+            <span>Explore Career Tracks</span>
+          </h3>
+
+          @if (tracks.length > 0) {
+          <div class="tracks-grid">
+            @for (track of tracks; track track.id) {
+            <article class="track-card"
+              [class.selected]="selectedTrack?.id === track.id"
+              (click)="onTrackSelect(track)">
+              <div class="track-icon">
+                <i class="fas fa-{{track.icon || 'info'}}"></i>
+              </div>
+              <div class="track-details">
+                <h4>{{ track.name }}</h4>
+                <p>{{ track.description }}</p>
+              </div>
+              <div class="track-hover-effect"></div>
+            </article>
+            }
+          </div>
+          } @else {
+          <div class="empty-state" @fadeIn>
+            <div class="empty-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <p>No tracks available for this department</p>
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons" @fadeInUp>
+        <button
+          class="explore-button"
+          [disabled]="!selectedTrack"
+          (click)="exploreCareerPath()">
+          Explore Career Path <fa-icon [icon]="icons.arrow"></fa-icon>
+        </button>
+
+        <button class="secondary-btn"
+          [disabled]="!selectedFaculty || !selectedDepartment"
+          (click)="openHelperModal()">
+          <i class="fas fa-robot"></i>
+          <span>Get AI Recommendations</span>
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- AI Modal Component -->
+<ai-model [(visible)]="showModal" [data]="modalData"></ai-model>

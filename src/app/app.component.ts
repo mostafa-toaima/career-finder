@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { AuthService } from './auth/services/auth.service';
-import { Observable } from 'rxjs';
-import { User } from '@angular/fire/auth';
+import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from './common/components/footer/footer.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
 

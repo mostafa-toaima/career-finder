@@ -1,0 +1,413 @@
+<p-dialog
+  header="{{showResults ? 'Your Career Roadmap' : 'Discover Your Passion'}}"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '62rem', maxHeight: '90vh' }"
+  (onHide)="closeDialog()"
+  [closable]="!isSubmitting">
+
+  <div class="content p-4">
+    <p-toast position="top-right"></p-toast>
+
+    <!-- Loading State -->
+    <div *ngIf="isSubmitting" class="loading-state">
+      <div class="loading-animation">
+        <div class="spinner">
+          <div class="orbit"></div>
+          <div class="planet"></div>
+        </div>
+        <h3>Building Your Career Roadmap</h3>
+        <p class="loading-text">Analyzing your unique profile...</p>
+        <div class="progress-tracker">
+          <div class="progress-fill" [style.width.%]="loadingProgress"></div>
+        </div>
+        <div class="loading-tips">
+          <p><i class="pi pi-lightbulb"></i> Tip: The more specific your goals,
+            the better our recommendations</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form View -->
+    <ng-container *ngIf="!showResults && !isSubmitting">
+      <div class="form-scrollable">
+        <div class="form-header">
+          <h2><i class="pi pi-compass"></i> Career Path Finder</h2>
+          <p class="subtitle">Answer these questions to get personalized career
+            guidance</p>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-container">
+          <div class="progress-info">
+            <span>Profile Completion: {{progress}}%</span>
+            <span class="status-indicator"
+              [ngClass]="{'complete': progress === 100}">
+              {{progress === 100 ? 'Ready to analyze!' : 'Complete all fields'}}
+            </span>
+          </div>
+          <div class="progress-tracker">
+            <div class="progress-fill" [style.width.%]="progress"></div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="aiForm; else loadingForm">
+          <form [formGroup]="aiForm" class="career-form">
+            <!-- Faculty and Department -->
+            <div class="form-section">
+              <div class="section-header">
+                <i class="pi pi-building"></i>
+                <h3>Academic Background</h3>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Faculty</label>
+                  <div class="input-with-icon">
+                    <i class="pi pi-book"></i>
+                    <input type="text" [value]="data?.faculty?.name" disabled>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Department</label>
+                  <div class="input-with-icon">
+                    <i class="pi pi-briefcase"></i>
+                    <input type="text" [value]="data.department?.name"
+                      disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interests and Strengths -->
+            <div class="form-section">
+              <div class="section-header">
+                <i class="pi pi-heart"></i>
+                <h3>Your Profile</h3>
+              </div>
+              <div class="form-row">
+                <div class="form-group"
+                  [ngClass]="{'error': isFieldInvalid('favoriteSubjects')}">
+                  <label>Favorite Subjects <span
+                      class="required">*</span></label>
+                  <textarea formControlName="favoriteSubjects"
+                    placeholder="What subjects excite you? (min. 10 chars)"></textarea>
+                  <div class="error-message"
+                    *ngIf="isFieldInvalid('favoriteSubjects')">
+                    Please share at least 10 characters about your favorite
+                    subjects
+                  </div>
+                </div>
+                <div class="form-group"
+                  [ngClass]="{'error': isFieldInvalid('strengths')}">
+                  <label>Your Strengths <span class="required">*</span></label>
+                  <textarea formControlName="strengths"
+                    placeholder="What are you naturally good at? (min. 10 chars)"></textarea>
+                  <div class="error-message"
+                    *ngIf="isFieldInvalid('strengths')">
+                    Please describe your strengths (min. 10 characters)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Work Preferences -->
+            <div class="form-section">
+              <div class="section-header">
+                <i class="pi pi-sitemap"></i>
+                <h3>Work Preferences</h3>
+              </div>
+              <div class="form-row">
+                <div class="form-group"
+                  [ngClass]="{'error': isFieldInvalid('workPreference')}">
+                  <label>Preferred Work Type <span
+                      class="required">*</span></label>
+                  <select formControlName="workPreference">
+                    <option value="N/A">Select preference</option>
+                    <option value="People">Working with People</option>
+                    <option value="Data">Working with Data</option>
+                    <option value="Technology">Working with Technology</option>
+                    <option value="Mix">Mix of these</option>
+                  </select>
+                </div>
+                <div class="form-group"
+                  [ngClass]="{'error': isFieldInvalid('environment')}">
+                  <label>Work Environment <span
+                      class="required">*</span></label>
+                  <select formControlName="environment">
+                    <option value="N/A">Select environment</option>
+                    <option value="Office">Traditional Office</option>
+                    <option value="Remote">Fully Remote</option>
+                    <option value="Field">Field Work</option>
+                    <option value="Hybrid">Hybrid Model</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skills and Approach -->
+            <div class="form-section">
+              <div class="section-header">
+                <i class="pi pi-cog"></i>
+                <h3>Skills & Approach</h3>
+              </div>
+              <div class="form-row">
+                <div class="form-group"
+                  [ngClass]="{'error': isFieldInvalid('problemSolving')}">
+                  <label>Enjoy Problem Solving? <span
+                      class="required">*</span></label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" formControlName="problemSolving"
+                        value="Yes">
+                      <span class="radio-checkmark"></span>
+                      <span class="radio-label">Yes, I love challenges</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" formControlName="problemSolving"
+                        value="No">
+                      <span class="radio-checkmark"></span>
+                      <span class="radio-label">Not really</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group"
+                  [ngClass]="{'error': isFieldInvalid('studyWillingness')}">
+                  <label>Open to Further Study? <span
+                      class="required">*</span></label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" formControlName="studyWillingness"
+                        value="Yes">
+                      <span class="radio-checkmark"></span>
+                      <span class="radio-label">Yes, I'm willing</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" formControlName="studyWillingness"
+                        value="No">
+                      <span class="radio-checkmark"></span>
+                      <span class="radio-label">No, not interested</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Career Goals -->
+            <div class="form-section">
+              <div class="section-header">
+                <i class="pi pi-star"></i>
+                <h3>Aspirations</h3>
+              </div>
+              <div class="form-row">
+                <div class="form-group"
+                  [ngClass]="{'error': isFieldInvalid('entrepreneurship')}">
+                  <label>Entrepreneurial Interest <span
+                      class="required">*</span></label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" formControlName="entrepreneurship"
+                        value="Yes">
+                      <span class="radio-checkmark"></span>
+                      <span class="radio-label">Yes, want to start
+                        business</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" formControlName="entrepreneurship"
+                        value="No">
+                      <span class="radio-checkmark"></span>
+                      <span class="radio-label">No, prefer employment</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group"
+                  [ngClass]="{'error': isFieldInvalid('taskStyle')}">
+                  <label>Work Style <span class="required">*</span></label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" formControlName="taskStyle"
+                        value="Structured">
+                      <span class="radio-checkmark"></span>
+                      <span class="radio-label">Structured</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" formControlName="taskStyle"
+                        value="Creative">
+                      <span class="radio-checkmark"></span>
+                      <span class="radio-label">Creative</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" formControlName="taskStyle"
+                        value="Both">
+                      <span class="radio-checkmark"></span>
+                      <span class="radio-label">Both</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Final Questions -->
+            <div class="form-section">
+              <div class="section-header">
+                <i class="pi pi-question-circle"></i>
+                <h3>Final Details</h3>
+              </div>
+              <div class="form-row">
+                <div class="form-group"
+                  [ngClass]="{'error': isFieldInvalid('goal')}">
+                  <label>Dream Career Goal <span
+                      class="required">*</span></label>
+                  <textarea formControlName="goal"
+                    placeholder="Describe your ultimate career aspiration (min. 20 chars)"></textarea>
+                  <div class="error-message" *ngIf="isFieldInvalid('goal')">
+                    Please provide at least 20 characters about your career
+                    goals
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Research Interest (0-10)</label>
+                  <div class="range-container">
+                    <span
+                      class="range-value">{{aiForm.get('researchInterest')?.value
+                      || 0}}</span>
+                    <input type="range" min="0" max="10"
+                      formControlName="researchInterest">
+                    <div class="range-labels">
+                      <span>Low</span>
+                      <span>High</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+
+        <ng-template #loadingForm>
+          <div class="loading-form">
+            <p-progressspinner></p-progressspinner>
+            <p>Preparing your career assessment...</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="form-footer">
+        <button type="button" class="btn btn-outline" (click)="closeDialog()">
+          <i class="pi pi-times"></i> Cancel
+        </button>
+        <button type="button" class="btn btn-primary"
+          (click)="onSubmit()"
+          [disabled]="isSubmitting || aiForm.invalid">
+          <i class="pi pi-send"></i> Generate My Career Plan
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- Results View -->
+    <!-- Results View -->
+    <ng-container *ngIf="showResults && !isSubmitting">
+      <div class="results-view">
+        <div class="results-header">
+          <div class="header-content">
+            <h2><i class="pi pi-map"></i> Your Career Roadmap</h2>
+            <p class="subtitle">Personalized guidance based on your profile</p>
+            <div class="user-context">
+              <span class="context-badge">{{data?.selectedFaculty}}</span>
+              <span class="context-badge">{{data?.selectedDepartment}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-content">
+          <!-- Career Path Recommendation -->
+          <div class="result-card highlight"
+            *ngIf="aiResponse['Recommended Career Path']">
+            <div class="card-content">
+              <h3 class="card-title fw-bold">Recommended Career Path <i
+                  class="pi pi-briefcase"></i>
+              </h3>
+              <p
+                class="path-name text-muted">{{aiResponse['Recommended Career Path']}}</p>
+              <p class="path-description"
+                *ngIf="aiResponse['Career Description']">
+                {{aiResponse['Career Description']}}
+              </p>
+            </div>
+          </div>
+
+          <!-- Why This Path -->
+          <div class="result-card" *ngIf="aiResponse['Why This Path Fits You']">
+            <div class="card-content">
+              <h3 class="card-title fw-bold">Why This Path Fits You <i
+                  class="pi pi-question-circle"></i></h3>
+              <div class="fit-reasons">
+                <ng-container
+                  *ngIf="isArray(aiResponse['Why This Path Fits You'])">
+                  <div class="reason-item"
+                    *ngFor="let reason of aiResponse['Why This Path Fits You']">
+                    <div class="reason-icon">
+                      <i class="pi pi-check-circle"></i>
+                    </div>
+                    <div [innerHTML]="reason | safeHtml"></div>
+                  </div>
+                </ng-container>
+                <ng-container
+                  *ngIf="!isArray(aiResponse['Why This Path Fits You'])">
+                  <div class="reason-item">
+                    <div class="reason-icon">
+                      <i class="pi pi-check-circle"></i>
+                    </div>
+                    <div>{{aiResponse['Why This Path Fits You']}}</div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+
+          <!-- Similar updates for other sections -->
+
+          <!-- Action Plan -->
+          <div class="result-card" *ngIf="aiResponse['Your Action Plan']">
+            <div class="card-content">
+              <h3 class="card-title fw-bold">Your Action Plan <i
+                  class="pi pi-list-check"></i></h3>
+              <div class="action-steps">
+                <div class="timeline-section"
+                  *ngFor="let timeline of aiResponse['Your Action Plan']">
+                  <h4 class="text-muted  h6">{{timeline.Timeline}}</h4>
+                  <ul>
+                    <li *ngFor="let item of timeline.ActionItems"
+                      [innerHTML]="item | safeHtml"></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pro Tips -->
+          <div class="result-card tips"
+            *ngIf="aiResponse['Pro Tips for Success']">
+            <div class="card-content">
+              <h3 class="card-title fw-bold">Pro Tips for Success <i
+                  class="pi pi-lightbulb"></i>
+              </h3>
+              <ul class="tips-list">
+                <li *ngFor="let tip of aiResponse['Pro Tips for Success']"
+                  [innerHTML]="tip | safeHtml"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-footer">
+          <button class="btn btn-outline" (click)="showResults = false">
+            <i class="pi pi-pencil"></i> Edit My Responses
+          </button>
+          <button class="btn btn-primary" (click)="closeDialog()">
+            <i class="pi pi-check"></i> Start My Journey
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</p-dialog>

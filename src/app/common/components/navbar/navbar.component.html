@@ -1,6 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-glass shadow-sm fixed-top">
   <div class="container">
-    <!-- Brand Logo with Animation -->
     <a class="navbar-brand d-flex footer-logo"
       routerLink="/home">
       <img src="assets/images/career-goals.png" width="40"
@@ -8,7 +7,6 @@
       <span>CareerPath</span>
     </a>
 
-    <!-- Mobile Toggle Button -->
     <button class="navbar-toggler" type="button"
       (click)="toggleMobileMenu()"
       [attr.aria-expanded]="mobileMenuOpen"
@@ -16,7 +14,6 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Main Navigation -->
     <div class="collapse navbar-collapse" [class.show]="mobileMenuOpen">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -46,7 +43,7 @@
         </li>
 
         <!-- Conditional Links -->
-        <ng-container *ngIf="selectedUniversity$ | async">
+        <!-- <ng-container>
           <li class="nav-item">
             <a class="nav-link" routerLink="/career-path"
               routerLinkActive="active" (click)="closeMobileMenu()">
@@ -59,7 +56,7 @@
               <i class="fas fa-map-marked-alt me-1"></i> Roadmap
             </a>
           </li>
-        </ng-container>
+        </ng-container> -->
       </ul>
 
       <!-- Auth Section -->
@@ -76,20 +73,22 @@
         </ng-container>
 
         <ng-container *ngIf="user$ | async as user">
-          <div class="dropdown">
+          <div class="dropdown d-flex align-items-center user-dropdown">
+            <span class="user-avatar me-1">
+              <img *ngIf="user.photoURL" [src]="user.photoURL"
+                (error)="useFallback($event)"
+                class="rounded-circle" width="32" height="32" alt="User">
+
+              <span *ngIf="!user.photoURL"
+                class="avatar-fallback rounded-circle">
+                {{ user.displayName?.charAt(0) || user.email?.charAt(0) }}
+              </span>
+            </span>
             <button class="btn dropdown-toggle user-dropdown-toggle"
               type="button" id="userDropdown"
               data-bs-toggle="dropdown"
               aria-expanded="false"
               (click)="toggleUserDropdown()">
-              <span class="user-avatar me-1">
-                <img *ngIf="user.photoURL" [src]="user.photoURL"
-                  class="rounded-circle" width="32" height="32" alt="User">
-                <span *ngIf="!user.photoURL"
-                  class="avatar-fallback rounded-circle">
-                  {{ user.displayName?.charAt(0) || user.email?.charAt(0) }}
-                </span>
-              </span>
               {{ user.displayName || 'Account' }}
             </button>
             <ul class="dropdown-menu dropdown-menu-end"
@@ -128,6 +127,6 @@
   (visibleChange)="showLogin = $event"
   (requestSignUp)="toggleToSignup()"></login>
 
-
 <sign-up *ngIf="showSignUp" [visible]="showSignUp"
-  (visibleChange)="showSignUp = $event" (requestToLogin)="toggleToLogin()" ></sign-up>
+  (visibleChange)="showSignUp = $event"
+  (requestToLogin)="toggleToLogin()"></sign-up>

@@ -1,12 +1,13 @@
 import { Component, HostListener, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../../auth/services/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '@angular/fire/auth';
-import { UniversityService } from '../../../university/university.service';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from '../../../auth/components/login/login.component';
-import { SignUpComponent } from '../../../auth/components/sign-up/sign-up.component';
+import { SignUpComponent } from '../../../components/auth/components/sign-up/sign-up.component';
+import { LoginComponent } from '../../../components/auth/components/login/login.component';
+import { AuthService } from '../../../components/auth/services/auth.service';
+import { UniversityService } from '../../../components/university/services/university.service';
+
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,7 @@ import { SignUpComponent } from '../../../auth/components/sign-up/sign-up.compon
   imports: [CommonModule, RouterLink, SignUpComponent, LoginComponent, RouterLinkActive],
   standalone: true,
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   mobileMenuOpen = false;
   showUserDropdown = false;
   showLogin = false;
@@ -26,11 +27,7 @@ export class NavbarComponent implements OnInit {
   private universityService = inject(UniversityService);
 
   user$: Observable<User | null> = this.authService.user$;
-  selectedUniversity$ = this.universityService.selectedUniversity$;
 
-  ngOnInit() {
-    // Initialize any required functionality
-  }
 
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
@@ -65,6 +62,11 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
+
+  useFallback(event: Event) {
+    (event.target as HTMLImageElement).src = 'assets/images/default-avatar.png';
+  }
+
 
   logout() {
     this.authService.logout().subscribe(() => {

@@ -1,0 +1,94 @@
+<p-dialog header="Welcome Back" [modal]="true" [(visible)]="visible"
+  (onHide)="closeDialog()" [style]="{ width: '30rem' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }">
+  <div class="dialog-container">
+    <div class="dialog-content">
+      @if (!isSubmitting) {
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group my-2">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <i class="pi pi-envelope input-icon"></i>
+            <input type="email" formControlName="email" id="email"
+              class="form-control input-field" placeholder="your@email.com">
+          </div>
+          <div *ngIf="emailError" class="error-message">{{ emailError }}</div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group my-2">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <i class="pi pi-lock input-icon"></i>
+            <input type="password" formControlName="password" id="password"
+              class="form-control input-field" placeholder="••••••••">
+          </div>
+          <div *ngIf="passwordError" class="error-message">{{ passwordError
+            }}</div>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">Remember me</label>
+          </div>
+
+          <button
+            style="pointer-events: none; cursor: not-allowed; opacity: 0.5 ; color: #6b7280; background-color: #e5e7eb; border-color: #e5e7eb;"
+            type="button"
+            disabled
+            title="comming soon..">
+            <a href="#" class="forgot-password"
+              title="Coming soon">Forgot password?</a> </button>
+        </div>
+
+        <!-- Error Banner -->
+        <div *ngIf="loginError" class="error-banner">
+          <i class="pi pi-exclamation-triangle me-2"></i>{{ loginError }}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100 mb-3"
+          [disabled]="loginForm.invalid || isSubmitting">
+          <i class="pi pi-sign-in me-2"></i>Login
+        </button>
+        <div class="text-center mt-3">
+          Don't have an account? <a class="signup-link"
+            type="button"
+            (click)="switchToSignup()">Sign up</a>
+        </div>
+        <div class="social-login">
+          <p class="divider">or continue with</p>
+          <div
+            class="social-buttons deck justify-content-center text-align-center">
+            <button type="button" class="btn btn-social btn-google"
+              (click)="onGoogleLogin()"
+              [disabled]="isSubmitting">
+              <span><i class="pi pi-google"
+                  disabled></i> Google</span>
+            </button>
+
+          </div>
+        </div>
+      </form>
+      }@else{
+      <div class="loading-state">
+        <div class="loading-animation">
+          <div class="spinner">
+            <div class="orbit"></div>
+            <div class="planet"></div>
+          </div>
+          <h3>Logining In Your Account</h3>
+          <p class="loading-text"> Analyzing your unique profile...</p>
+          <div class="loading-tips">
+            <p><i class="pi pi-lightbulb"></i> Tip: The more specific your
+              goals, the better our recommendations</p>
+          </div>
+        </div>
+      </div>
+      }
+
+    </div>
+  </div>
+</p-dialog>
