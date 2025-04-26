@@ -5,9 +5,9 @@ import { ChipModule } from 'primeng/chip';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { FormsModule } from '@angular/forms';
-import { CarerService } from '../../services/carer.service';
-import { PathHeaderComponent } from './path-header/path-header.component';
 import { PathContainerComponent } from './path-container/path-container.component';
+import { TrackService } from '../../services/track.service';
+import { PathHeaderComponent } from './path-header/path-header.component';
 
 @Component({
   imports: [CommonModule, CardModule, ChipModule, AvatarModule, FormsModule, PathHeaderComponent, PathContainerComponent],
@@ -42,8 +42,8 @@ export class RoadmapComponent implements OnInit {
   inProgressSteps: string[] = [];
   filterOptions: any[] = []
   stages: any[] = [];
-  constructor(private viewportScroller: ViewportScroller, private careerService: CarerService) {
-    this.stages = this.careerService.stages;
+  constructor(private viewportScroller: ViewportScroller, private trackService: TrackService) {
+    this.stages = this.trackService.stages;
   }
   ngOnInit(): void {
     this.viewportScroller.scrollToPosition([0, 0])

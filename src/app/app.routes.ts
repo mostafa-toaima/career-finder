@@ -26,12 +26,12 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'frontend', // Default track
+        redirectTo: 'frontend',
         pathMatch: 'full'
       },
       {
         path: ':trackId',
-        loadComponent: () => import('./components/carer-path/components/carer/carer.component').then((m) => m.CarerComponent),
+        loadComponent: () => import('./components/carer-path/components/track/track.component').then((m) => m.TrackComponent),
         canActivate: [AuthGuard]
       }
     ]

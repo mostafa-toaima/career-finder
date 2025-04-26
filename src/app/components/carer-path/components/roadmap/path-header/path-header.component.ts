@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CarerService } from '../../../services/carer.service';
+import { TrackService } from '../../../services/track.service';
 type FilterOption = 'all' | 'completed' | 'in-progress' | 'not-started';
 
 @Component({
@@ -20,8 +20,8 @@ export class PathHeaderComponent {
 
   filterOptions: any[] = []
 
-  constructor(private careerService: CarerService) {
-    this.filterOptions = this.careerService.filterOptions;
+  constructor(private trackService: TrackService) {
+    this.filterOptions = this.trackService.filterOptions;
   }
 
   onSearchChange(value: string) {

@@ -1,0 +1,96 @@
+<ng-container *ngIf="isTrackModalVisible">
+  <track-modal
+    [visible]="isTrackModalVisible"
+    [trackData]="trackData"
+    (visibleChange)="toggleTrackModal($event)">
+  </track-modal>
+</ng-container>
+
+<section class="track-journey">
+  <div class="journey-hero">
+    <div class="hero-content text-center">
+      <h1 class="hero-title display-4 fw-bold mb-3">{{trackData.title}}
+        Journey</h1>
+
+      <div *ngIf="trackData.progress"
+        class="progress-container w-75 mx-auto mb-4">
+        <div class="d-flex justify-content-between mb-2">
+          <span class="progress-text">Progress:
+            {{trackData.progress.current}}/{{trackData.progress.total}}</span>
+          <span
+            class="progress-text">{{calculateProgressPercentage(trackData.progress)}}%
+            Complete</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress"
+            [style.width.%]="calculateProgressPercentage(trackData.progress)"></div>
+        </div>
+      </div>
+
+      <p class="hero-subtitle fs-5 mb-4">{{trackData.description}}</p>
+      <div class="hero-divider mx-auto"></div>
+    </div>
+  </div>
+
+  <div class="container journey-container py-4">
+    <div class="intro-section">
+      <div class="intro-card">
+        <h2 class="section-title">Introduction to {{trackData.title}}</h2>
+        <p class="section-description mb-4">
+          {{trackData.content.sections[0].content | slice:0:200}}...
+        </p>
+        <button class="learn-more-btn btn btn-primary"
+          (click)="toggleTrackModal(true)">
+          Explore Path <i class="pi pi-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="benefits-card">
+        <h2 class="section-title">Why Learn {{trackData.title}}?</h2>
+        <ul class="benefits-list list-unstyled">
+          <li class="benefit-item py-3"
+            *ngFor="let benefit of trackData.benefits">
+            <div
+              class="benefit-icon d-flex align-items-center justify-content-center">
+              <i class="pi pi-{{benefit.icon}}"></i>
+            </div>
+            <div class="benefit-content">
+              <h3 class="h5">{{benefit.title}}</h3>
+              <p class="mb-0">{{benefit.description}}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="path-cards mt-5">
+      <div class="path-card" *ngFor="let card of trackData.pathCards"
+        [class.highlight-card]="card.highlighted">
+        <div class="card-icon mx-auto mb-4">
+          <i class="pi pi-{{card.icon}}"></i>
+        </div>
+        <h3 class="h4">{{card.title}}</h3>
+        <p class="flex-grow-1">{{card.description}}</p>
+
+        <div *ngIf="card.progress" class="progress-container w-100 mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="progress-text small">Progress</span>
+            <span class="progress-text small">
+              {{calculateCardProgress(card)}}%
+            </span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress"
+              [style.width.%]="calculateCardProgress(card)"></div>
+          </div>
+        </div>
+
+        <button class="path-btn btn w-100 mt-2"
+          [disabled]="!card.enabled"
+          [routerLink]="card.link || null">
+          {{card.enabled ? (card.buttonText || 'Start') : 'Coming Soon'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
