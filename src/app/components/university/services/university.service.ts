@@ -9,7 +9,6 @@ export class UniversityService {
   private selectedUniversitySubject = new BehaviorSubject<any>(null);
   selectedUniversity$ = this.selectedUniversitySubject.asObservable();
   collectionName = "universities";
-
   constructor(private firestore: Firestore) { }
 
   setUniversity(university: any) {

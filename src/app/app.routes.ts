@@ -3,10 +3,9 @@ import { AuthGuard } from './components/auth/auth.guard';
 import { AdminGuard } from './common/guards/admin.guard';
 
 export const routes: Routes = [
+
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: '', loadComponent: () => import('./components/About/home/home.component').then((m) => m.HomeComponent),
   },
   {
     path: 'home',

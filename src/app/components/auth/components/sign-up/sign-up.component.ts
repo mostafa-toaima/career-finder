@@ -129,8 +129,8 @@ export class SignUpComponent {
   onGoogleLogin() {
     this.authService.loginWithGoogle().subscribe({
       next: (res) => {
+        
         this.isSubmitting = false;
-        this.messageService.add({ severity: 'success', summary: 'Login Successful', detail: 'Welcome back!' });
         this.router.navigate(['/features']);
         this.closeDialog();
       },
