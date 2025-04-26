@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'login',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, DialogModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -25,6 +26,8 @@ export class LoginComponent {
   loginError: string = '';
   isSubmitting: boolean = false;
   showSignUp: boolean = false;
+  disblayResetSection: boolean = false;
+  confimedResetSection: boolean = false;
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -57,6 +60,7 @@ export class LoginComponent {
   }
 
   onGoogleLogin() {
+    this.isSubmitting = true;
     this.authService.loginWithGoogle().subscribe({
       next: (res) => {
         this.isSubmitting = false;
@@ -70,50 +74,52 @@ export class LoginComponent {
         this.loginForm.reset();
         console.error('Login error:', error);
         this.loginError = error?.message || 'Invalid email or password.';
-      }, complete: () => {
-        this.isSubmitting = false;
       }
     });
   }
 
-  resetPasseord(email: any) {
-    this.authService.resetPassword(email).subscribe({
-      next: (res) => {
-        console.log("res", res);
-      },
-      error: (error) => {
-        console.log("err ", error);
-        const errorCode = error.code;
-        const errorMessage = error.message
-      }
-    })
-  }
-  handleForgotPassword() {
-    const email = this.loginForm.controls['email'].value;
+  resetPassword(form: FormGroup) {
+    const email = form.controls["email"];
+    if (email.valid && email.value !== "") {
+      this.isSubmitting = true;
+      this.loginError = '';
 
-    if (!email) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Missing Email',
-        detail: 'Please enter your email to reset password.',
+      this.authService.resetPassword(email.value).subscribe({
+        next: (res) => {
+          this.confimedResetSection = true;
+          this.disblayResetSection = false;
+          this.isSubmitting = false;
+        },
+        error: (error) => {
+          this.disblayResetSection = true;
+          this.confimedResetSection = false;
+          this.isSubmitting = false;
+          this.loginError = error?.message || 'Failed to send reset email. Please try again.';
+        }
       });
-      this.loginForm.controls['email'].markAsTouched();
-      return;
+    } else {
+      this.loginError = "Please enter a valid email address";
+      email.markAsTouched();
     }
-
-    this.resetPasseord(email);
   }
-
 
   showDialog() {
     this.visible = true;
-
+    this.resetFormStates();
   }
 
   closeDialog() {
     this.visible = false;
     this.visibleChange.emit(false);
+    this.resetFormStates();
+  }
+
+  private resetFormStates() {
     this.loginError = '';
+    this.isSubmitting = false;
+    this.disblayResetSection = false;
+    this.confimedResetSection = false;
+    this.loginForm.reset();
   }
 
   get emailError() {
@@ -126,6 +132,7 @@ export class LoginComponent {
     }
     return '';
   }
+
   get passwordError() {
     const control = this.loginForm.get('password');
     if (control?.hasError('required') && control?.touched) {
@@ -139,6 +146,6 @@ export class LoginComponent {
 
   switchToSignup() {
     this.closeDialog();
-    this.requestSignUp.emit();
+    this.requestSignUp.emit(true);
   }
 }
