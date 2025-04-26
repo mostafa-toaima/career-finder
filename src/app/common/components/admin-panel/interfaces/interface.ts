@@ -1,5 +1,6 @@
 export interface Track {
   id?: string;
+  trackId?: string;
   title: string;
   description: string;
   heroImage?: string;

@@ -27,8 +27,10 @@ export interface TrackPathCard {
 }
 
 export interface Track {
+  id?: string;
   title: string;
   description: string;
+  trackId?: string;
   benefits: TrackBenefit[];
   content: {
     sections: TrackSection[];

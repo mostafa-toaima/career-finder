@@ -126,6 +126,8 @@ export class AdminPanelComponent implements OnInit {
   }
 
   async saveTrack() {
+    console.log("this.trackForm", this.trackForm);
+
     try {
       const tracksCollection = collection(this.firestore, 'tracksData');
 
@@ -288,7 +290,6 @@ export class AdminPanelComponent implements OnInit {
     }
   }
 
-  // JSON Upload
   async uploadJson() {
     try {
       const data = JSON.parse(this.jsonInput);
@@ -318,7 +319,6 @@ export class AdminPanelComponent implements OnInit {
     }
   }
 
-  // Reset Forms
   resetTrackForm() {
     this.trackForm = this.getDefaultTrack();
     this.editMode = false;
@@ -343,7 +343,6 @@ export class AdminPanelComponent implements OnInit {
     this.currentEditId = '';
   }
 
-  // Default Form Values
   getDefaultTrack(): Track {
     return {
       title: '',
@@ -376,13 +375,10 @@ export class AdminPanelComponent implements OnInit {
     };
   }
 
-  // Tab change handler
   onTabChange(index: number) {
     this.activeTabIndex = index;
     this.editMode = false;
     this.currentEditId = '';
-
-    // Reset forms when changing tabs
     this.resetTrackForm();
     this.resetDepartmentForm();
     this.resetCareerTrackForm();
@@ -401,5 +397,9 @@ export class AdminPanelComponent implements OnInit {
     } else {
       this.careerTrackForm.departmentIds.splice(index, 1);
     }
+  }
+  getCareerTrackName(trackId: string): string {
+    const track = this.careerTracks.find(t => t.id === trackId);
+    return track ? track.name : 'Not associated';
   }
 }

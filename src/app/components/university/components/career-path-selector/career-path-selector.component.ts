@@ -38,6 +38,8 @@ import { Department } from '../../interfaces/Department';
 import { CareerTrack } from '../../interfaces/CareerTrack';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { bounceIn, fadeIn, fadeInRight, fadeInUp, pulse, scaleIn, slideInDown, slideInUp } from '../../interfaces/animations';
+import { TrackService } from '../../../carer-path/services/track.service';
+import { Track } from '../../../carer-path/interfaces/Track';
 
 @Component({
   selector: 'app-career-path-selector',
@@ -94,6 +96,7 @@ export class CareerPathSelectorComponent implements OnInit {
   faculties: Faculty[] = [];
   allDepartments: Department[] = [];
   allTracks: CareerTrack[] = [];
+  tracksData: Track[] = [];
 
   // Filtered collections
   departments: Department[] = [];
@@ -113,11 +116,13 @@ export class CareerPathSelectorComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private viewportScroller = inject(ViewportScroller);
   private universityService = inject(UniversityService);
+  private trackService = inject(TrackService);
 
   ngOnInit(): void {
     this.viewportScroller.scrollToPosition([0, 0]);
     this.checkQueryParams();
     this.loadInitialData();
+    this.getTracks();
   }
 
   /**
@@ -195,31 +200,46 @@ export class CareerPathSelectorComponent implements OnInit {
     this.selectedTrack = null;
   }
 
-  /**
-   * Handle track selection
-   */
+
   onTrackSelect(track: CareerTrack): void {
     this.selectedTrack = track;
   }
 
-  /**
-   * Navigate to career path exploration
-   */
+  getTracks() {
+    this.trackService.getAllTracks().subscribe({
+      next: (tracksData) => {
+        this.tracksData = tracksData;
+      },
+      error: (error) => {
+        console.log("error", error);
 
-  exploreCareerPath(): void {
-    if (!this.selectedTrack) return;
-    console.log(this.selectedTrack.id);
-
-
-    // Updated to use the new route structure with track ID in the path
-    this.router.navigate(['/career-path', this.selectedTrack.id], {
-      queryParams: {
-        faculty: this.selectedFaculty?.id,
-        department: this.selectedDepartment?.id
       }
     });
   }
 
+
+  exploreCareerPath(): void {
+    if (!this.selectedTrack) {
+      return;
+    }
+
+    console.log("selectedTrack", this.selectedTrack.id);
+
+    const trackId = this.tracksData.find(track => track.trackId === this.selectedTrack?.id);
+    console.log("trackId", trackId);
+
+    if (trackId) {
+      console.log("Selected track:", trackId.id);
+      this.router.navigate(['/career-path', trackId.id], {
+        queryParams: {
+          faculty: this.selectedFaculty?.id,
+          department: this.selectedDepartment?.id
+        }
+      });
+    } else {
+      console.log("Track not found in tracksData");
+    }
+  }
   openHelperModal(): void {
     if (!this.selectedFaculty || !this.selectedDepartment) return;
 

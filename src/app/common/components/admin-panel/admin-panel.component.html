@@ -48,7 +48,7 @@
   <div class="tab-content" *ngIf="activeTabIndex === 1">
     <h2>{{ editMode ? 'Edit' : 'Add' }} Department</h2>
 
-    <form (submit)="saveDepartment()">
+    <form (submit)="saveDepartment()" class="mb-5">
       <div class="form-group">
         <label>Faculty</label>
         <select [(ngModel)]="departmentForm.facultyId" name="departmentFaculty"
@@ -96,7 +96,7 @@
   <div class="tab-content" *ngIf="activeTabIndex === 2">
     <h2>{{ editMode ? 'Edit' : 'Add' }} Career Track</h2>
 
-    <form (submit)="saveCareerTrack()">
+    <form (submit)="saveCareerTrack()" class="mb-5">
       <div class="form-group">
         <label>Name</label>
         <input type="text" [(ngModel)]="careerTrackForm.name"
@@ -154,7 +154,7 @@
   <div class="tab-content" *ngIf="activeTabIndex === 3">
     <h2>{{ editMode ? 'Edit' : 'Add' }} Track</h2>
 
-    <form (submit)="saveTrack()">
+    <form (submit)="saveTrack()"  class="mb-5">
       <div class="form-group">
         <label>Title</label>
         <input type="text" [(ngModel)]="trackForm.title" name="trackTitle"
@@ -171,6 +171,17 @@
         <label>Hero Image URL</label>
         <input type="text" [(ngModel)]="trackForm.heroImage"
           name="trackHeroImage">
+      </div>
+
+      <div class="form-group">
+        <label>Associated Career Track</label>
+        <select [(ngModel)]="trackForm.trackId" name="trackCareerTrack">
+          <option value selected disabled>Select Career Track
+            (Optional)</option>
+          <option *ngFor="let track of careerTracks" [value]="track.id">
+            {{ track.name }}
+          </option>
+        </select>
       </div>
 
       <h3>Benefits</h3>
@@ -280,6 +291,9 @@
     <div class="list-container">
       <div class="list-item" *ngFor="let track of tracks">
         <h3>{{ track.title }}</h3>
+        <p *ngIf="track.trackId">
+          Associated with: {{ getCareerTrackName(track.trackId) }}
+        </p>
         <div class="item-actions">
           <button (click)="editTrack(track)">Edit</button>
           <button class="delete-btn"
