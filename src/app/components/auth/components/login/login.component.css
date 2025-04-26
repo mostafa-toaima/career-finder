@@ -333,3 +333,20 @@
   flex: 1;
   border: 1px solid #db4437;
 }
+
+.resetButton {
+  background: none;
+  border: none;
+  color: #4361ee;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.resetButton:hover {
+  color: #3a0ca3;
+  text-decoration: underline;
+}

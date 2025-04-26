@@ -38,15 +38,13 @@ export class LoginComponent {
         next: (res) => {
           console.log('Login successful', this.loginForm.value, res);
           this.isSubmitting = false;
-          this.messageService.add({ severity: 'success', summary: 'Login Successful', detail: 'Welcome back!' });
           this.router.navigate(['/features']);
           this.closeDialog();
         },
         error: (error) => {
-          this.isSubmitting = false;
-          this.messageService.add({ severity: 'error', summary: 'Login Failed', detail: error?.message || 'Invalid email or password.' });
-          this.loginForm.reset();
           console.error('Login error:', error);
+          this.isSubmitting = false;
+          this.loginForm.reset();
           this.loginError = error?.message || 'Invalid email or password.';
         },
         complete: () => {
@@ -76,6 +74,34 @@ export class LoginComponent {
         this.isSubmitting = false;
       }
     });
+  }
+
+  resetPasseord(email: any) {
+    this.authService.resetPassword(email).subscribe({
+      next: (res) => {
+        console.log("res", res);
+      },
+      error: (error) => {
+        console.log("err ", error);
+        const errorCode = error.code;
+        const errorMessage = error.message
+      }
+    })
+  }
+  handleForgotPassword() {
+    const email = this.loginForm.controls['email'].value;
+
+    if (!email) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Missing Email',
+        detail: 'Please enter your email to reset password.',
+      });
+      this.loginForm.controls['email'].markAsTouched();
+      return;
+    }
+
+    this.resetPasseord(email);
   }
 
 

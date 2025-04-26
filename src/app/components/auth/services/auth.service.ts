@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, authState, UserCredential, GoogleAuthProvider, signInWithPopup, FacebookAuthProvider } from '@angular/fire/auth';
 import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { Observable, from, map, of, switchMap } from 'rxjs';
 
 
@@ -77,6 +78,9 @@ export class AuthService {
     return this.auth.currentUser !== null;
   }
 
+  resetPassword(email: string): Observable<any> {
+    return from(sendPasswordResetEmail(this.auth, email));
+  }
 
   // login(data: any): Observable<any> {
   //   const url = environment.BaseUrl + "auth/login";
