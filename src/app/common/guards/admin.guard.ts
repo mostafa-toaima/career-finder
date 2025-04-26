@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from './services/auth.service';
-import { map, Observable, take } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { AuthService } from '../../components/auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) { }
 
-  canActivate(): Observable<boolean> {
-    return this.authService.user$.pipe(
+  canActivate() {
+    return this.authService.isAdmin$.pipe(
       take(1),
-      map(user => {
-        if (user) {
+      map(isAdmin => {
+        if (isAdmin) {
           return true;
         } else {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/access-denied']);
           return false;
         }
       })

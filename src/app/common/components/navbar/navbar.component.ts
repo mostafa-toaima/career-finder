@@ -27,6 +27,7 @@ export class NavbarComponent {
   private universityService = inject(UniversityService);
 
   user$: Observable<User | null> = this.authService.user$;
+  isAdmin$: Observable<boolean> = this.authService.isAdmin$;
 
 
   toggleMobileMenu() {

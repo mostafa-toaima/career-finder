@@ -41,6 +41,15 @@
             <i class="fas fa-briefcase me-1"></i> Build Career
           </a>
         </li>
+        <li class="nav-item" *ngIf="(isAdmin$ | async) && (user$ | async)">
+          <a class="nav-link"
+            [class.logged-in]="user$ | async"
+            [routerLink]="'/admin'"
+            routerLinkActive="active"
+            (click)="handleNavigationClick('/admin')">
+            <i class="fas fa-user-alt me-1"></i> Admin
+          </a>
+        </li>
 
         <!-- Conditional Links -->
         <!-- <ng-container>

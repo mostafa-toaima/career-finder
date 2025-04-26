@@ -1,0 +1,317 @@
+<div class="admin-panel">
+  <div class="tabs">
+    <button
+      *ngFor="let tab of [ 'Faculties','Departments', 'Department Tracks',  'Tracks Info','JSON Upload']; let i = index"
+      [class.active]="activeTabIndex === i"
+      (click)="onTabChange(i)">
+      {{ tab }}
+    </button>
+  </div>
+
+  <!-- Faculties Tab -->
+  <div class="tab-content" *ngIf="activeTabIndex === 0">
+    <h2>{{ editMode ? 'Edit' : 'Add' }} Faculty</h2>
+
+    <form (submit)="saveFaculty()">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="facultyForm.name" name="facultyName"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label>Icon URL</label>
+        <input type="text" [(ngModel)]="facultyForm.icon" name="facultyIcon">
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">{{ editMode ? 'Update' : 'Save' }}
+          Faculty</button>
+        <button type="button" (click)="resetFacultyForm()">Cancel</button>
+      </div>
+    </form>
+
+    <h2>Existing Faculties</h2>
+    <div class="list-container">
+      <div class="list-item" *ngFor="let faculty of faculties">
+        <h3>{{ faculty.name }}</h3>
+        <div class="item-actions">
+          <button (click)="editFaculty(faculty)">Edit</button>
+          <button class="delete-btn"
+            (click)="deleteFaculty(faculty.id || '')">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Departments Tab -->
+  <div class="tab-content" *ngIf="activeTabIndex === 1">
+    <h2>{{ editMode ? 'Edit' : 'Add' }} Department</h2>
+
+    <form (submit)="saveDepartment()">
+      <div class="form-group">
+        <label>Faculty</label>
+        <select [(ngModel)]="departmentForm.facultyId" name="departmentFaculty"
+          required>
+          <option value>Select Faculty</option>
+          <option *ngFor="let faculty of facultyOptions" [value]="faculty.id">{{
+            faculty.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="departmentForm.name"
+          name="departmentName" required>
+      </div>
+
+      <div class="form-group">
+        <label>Icon URL</label>
+        <input type="text" [(ngModel)]="departmentForm.icon"
+          name="departmentIcon">
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">{{ editMode ? 'Update' : 'Save' }}
+          Department</button>
+        <button type="button" (click)="resetDepartmentForm()">Cancel</button>
+      </div>
+    </form>
+
+    <h2>Existing Departments</h2>
+    <div class="list-container">
+      <div class="list-item" *ngFor="let department of departments">
+        <h3>{{ department.name }}</h3>
+        <p>Faculty: {{ getFacultyName(department.facultyId) }}</p>
+        <div class="item-actions">
+          <button (click)="editDepartment(department)">Edit</button>
+          <button class="delete-btn"
+            (click)="deleteDepartment(department.id || '')">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Career Tracks Tab -->
+  <div class="tab-content" *ngIf="activeTabIndex === 2">
+    <h2>{{ editMode ? 'Edit' : 'Add' }} Career Track</h2>
+
+    <form (submit)="saveCareerTrack()">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="careerTrackForm.name"
+          name="careerTrackName" required>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="careerTrackForm.description"
+          name="careerTrackDescription" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Icon</label>
+        <input type="text" [(ngModel)]="careerTrackForm.icon"
+          name="careerTrackIcon">
+      </div>
+
+      <div class="form-group">
+        <label>Departments</label>
+        <div *ngFor="let department of departmentOptions"
+          class="checkbox-option">
+          <input
+            type="checkbox"
+            [id]="'dept-' + department.id"
+            [value]="department.id"
+            [checked]="careerTrackForm.departmentIds.includes(department.id)"
+            (change)="toggleDepartment(department.id)">
+          <label [for]="'dept-' + department.id">{{ department.label }}</label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">{{ editMode ? 'Update' : 'Save' }} Career
+          Track</button>
+        <button type="button" (click)="resetCareerTrackForm()">Cancel</button>
+      </div>
+    </form>
+
+    <h2>Existing Career Tracks</h2>
+    <div class="list-container">
+      <div class="list-item" *ngFor="let track of careerTracks">
+        <h3>{{ track.name }}</h3>
+        <p>{{ track.description }}</p>
+        <div class="item-actions">
+          <button (click)="editCareerTrack(track)">Edit</button>
+          <button class="delete-btn"
+            (click)="deleteCareerTrack(track.id || '')">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tracks Tab -->
+  <div class="tab-content" *ngIf="activeTabIndex === 3">
+    <h2>{{ editMode ? 'Edit' : 'Add' }} Track</h2>
+
+    <form (submit)="saveTrack()">
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" [(ngModel)]="trackForm.title" name="trackTitle"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="trackForm.description" name="trackDescription"
+          required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Hero Image URL</label>
+        <input type="text" [(ngModel)]="trackForm.heroImage"
+          name="trackHeroImage">
+      </div>
+
+      <h3>Benefits</h3>
+      <div class="array-section"
+        *ngFor="let benefit of trackForm.benefits; let i = index">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" [(ngModel)]="benefit.title"
+            [name]="'benefitTitle' + i" required>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea [(ngModel)]="benefit.description"
+            [name]="'benefitDescription' + i" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Icon</label>
+          <input type="text" [(ngModel)]="benefit.icon"
+            [name]="'benefitIcon' + i">
+        </div>
+
+        <button type="button" class="remove-btn"
+          (click)="removeBenefit(i)">Remove Benefit</button>
+      </div>
+      <button type="button" class="add-btn" (click)="addBenefit()">Add
+        Benefit</button>
+
+      <h3>Content Sections</h3>
+      <div class="array-section"
+        *ngFor="let section of trackForm.content.sections; let i = index">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" [(ngModel)]="section.title"
+            [name]="'sectionTitle' + i" required>
+        </div>
+
+        <div class="form-group">
+          <label>Content</label>
+          <textarea [(ngModel)]="section.content" [name]="'sectionContent' + i"
+            required></textarea>
+        </div>
+
+        <button type="button" class="remove-btn"
+          (click)="removeSection(i)">Remove Section</button>
+      </div>
+      <button type="button" class="add-btn" (click)="addSection()">Add
+        Section</button>
+
+      <h3>Path Cards</h3>
+      <div class="array-section"
+        *ngFor="let card of trackForm.pathCards; let i = index">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" [(ngModel)]="card.title" [name]="'cardTitle' + i"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea [(ngModel)]="card.description"
+            [name]="'cardDescription' + i" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Icon</label>
+          <input type="text" [(ngModel)]="card.icon" [name]="'cardIcon' + i">
+        </div>
+
+        <div class="form-group">
+          <label>Enabled</label>
+          <input type="checkbox" [(ngModel)]="card.enabled"
+            [name]="'cardEnabled' + i">
+        </div>
+
+        <div class="form-group">
+          <label>Link</label>
+          <input type="text" [(ngModel)]="card.link" [name]="'cardLink' + i">
+        </div>
+
+        <div class="form-group">
+          <label>Button Text</label>
+          <input type="text" [(ngModel)]="card.buttonText"
+            [name]="'cardButtonText' + i">
+        </div>
+
+        <div class="form-group">
+          <label>Highlighted</label>
+          <input type="checkbox" [(ngModel)]="card.highlighted"
+            [name]="'cardHighlighted' + i">
+        </div>
+
+        <button type="button" class="remove-btn"
+          (click)="removePathCard(i)">Remove Card</button>
+      </div>
+      <button type="button" class="add-btn" (click)="addPathCard()">Add Path
+        Card</button>
+
+      <div class="form-actions">
+        <button type="submit">{{ editMode ? 'Update' : 'Save' }} Track</button>
+        <button type="button" (click)="resetTrackForm()">Cancel</button>
+      </div>
+    </form>
+
+    <h2>Existing Tracks</h2>
+    <div class="list-container">
+      <div class="list-item" *ngFor="let track of tracks">
+        <h3>{{ track.title }}</h3>
+        <div class="item-actions">
+          <button (click)="editTrack(track)">Edit</button>
+          <button class="delete-btn"
+            (click)="deleteTrack(track.id || '')">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JSON Upload Tab -->
+  <div class="tab-content" *ngIf="activeTabIndex === 4">
+    <h2>Upload JSON Data</h2>
+
+    <div class="form-group">
+      <label>JSON Data</label>
+      <textarea [(ngModel)]="jsonInput" placeholder='Paste your JSON data here'
+        rows="10"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="uploadJson()">Upload</button>
+    </div>
+
+    <div class="instructions">
+      <h3>Instructions:</h3>
+      <p>Paste valid JSON data for either:</p>
+      <ul>
+        <li>Track (must contain title and content properties)</li>
+        <li>Department (must contain facultyId property)</li>
+        <li>Career Track (must contain departmentIds property)</li>
+        <li>Faculty (must contain name property only)</li>
+      </ul>
+    </div>
+  </div>
+</div>
