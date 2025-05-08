@@ -1,10 +1,8 @@
 <div class="career-path-container">
   <path-header
-    [title]="Title"
+    [title]="title"
     [selectedFilter]="selectedFilter"
-    [searchQuery]="searchQuery"
-    (selectedFilterChange)="onFilterChange($event)"
-    (searchQueryChange)="onSearchChange($event)">
+    (selectedFilterChange)="onFilterChange($event)">
   </path-header>
 
   <div class="path-visualization">

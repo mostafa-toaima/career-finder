@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, ViewportScroller } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TrackModalComponent } from '../track-modal/track-modal.component';
 import { Track, TrackPathCard, TrackProgress } from '../../interfaces/Track';
 import { TrackService } from '../../services/track.service';
@@ -20,7 +20,8 @@ export class TrackComponent implements OnInit {
   constructor(
     private viewportScroller: ViewportScroller,
     private trackService: TrackService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -102,5 +103,12 @@ export class TrackComponent implements OnInit {
       pathCards: [],
       progress: { current: 0, total: 10 }
     };
+  }
+
+
+  exploreRoadmap(roadmapId: string) {
+    console.log("roadmapId", roadmapId);
+    if (!roadmapId) return;
+    this.router.navigate(['/roadmap', roadmapId]);
   }
 }

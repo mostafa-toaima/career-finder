@@ -25,8 +25,14 @@ export interface Step {
 
 export interface Stage {
   id: string;
+  icon: string;
   name: string;
   steps: Step[];
 }
 
+export interface Roadmap {
+  id: string;
+  title: string;
+  stages: Stage[];
+}
 export type SkillStatus = 'start' | 'in-progress' | 'complete';

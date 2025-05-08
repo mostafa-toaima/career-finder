@@ -13,20 +13,12 @@ type FilterOption = 'all' | 'completed' | 'in-progress' | 'not-started';
 export class PathHeaderComponent {
   @Input() title: string = '';
   @Input() selectedFilter: FilterOption = 'all';
-  @Input() searchQuery: string = '';
-
-  @Output() searchQueryChange = new EventEmitter<string>();
   @Output() selectedFilterChange = new EventEmitter<FilterOption>();
 
   filterOptions: any[] = []
 
   constructor(private trackService: TrackService) {
     this.filterOptions = this.trackService.filterOptions;
-  }
-
-  onSearchChange(value: string) {
-    this.searchQueryChange.emit(value);
-
   }
 
   onFilterChange(event: Event) {
@@ -36,6 +28,4 @@ export class PathHeaderComponent {
       this.selectedFilterChange.emit(this.selectedFilter);
     }
   }
-
-
 }

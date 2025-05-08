@@ -20,9 +20,11 @@ export class HomeComponent implements OnInit {
   showLogin = false;
   showSignUp = false;
 
-  constructor(private viewportScroller: ViewportScroller) { }
+  constructor(private viewportScroller: ViewportScroller, private authServices: AuthService) { }
   ngOnInit(): void {
     this.viewportScroller.scrollToPosition([0, 0])
+    console.log("getUserProfile", this.authService.getUserProfile());
+    console.log("getUserProfileFromFirestore", this.authService.getUserProfileFromFirestore());
   }
   visible: boolean = false;
 

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Firestore, collection, addDoc, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, doc, updateDoc, deleteDoc, setDoc, getDoc } from '@angular/fire/firestore';
 import { UniversityService } from '../../../components/university/services/university.service';
 import { TrackService } from '../../../components/carer-path/services/track.service';
 import { CareerTrack, Department, Faculty, Track } from './interfaces/interface';
@@ -211,20 +211,27 @@ export class AdminPanelComponent implements OnInit {
   // Career Track Form Methods
   async saveCareerTrack() {
     try {
-      const careerTracksCollection = collection(this.firestore, 'careerTracks');
+      if (!this.careerTrackForm.id) {
+        alert('Track ID is required');
+        return;
+      }
+
+      const careerTrackDocRef = doc(this.firestore, 'careerTracks', this.careerTrackForm.id);
 
       if (this.editMode && this.currentEditId) {
-        const trackDoc = doc(this.firestore, 'careerTracks', this.currentEditId);
-        await updateDoc(trackDoc, { ...this.careerTrackForm });
+        if (this.currentEditId !== this.careerTrackForm.id) {
+          const oldDocRef = doc(this.firestore, 'careerTracks', this.currentEditId);
+          await deleteDoc(oldDocRef);
+        }
+        await setDoc(careerTrackDocRef, this.careerTrackForm, { merge: true });
       } else {
-        await addDoc(careerTracksCollection, this.careerTrackForm);
+        await setDoc(careerTrackDocRef, this.careerTrackForm);
       }
 
       alert('Career track saved successfully');
       this.resetCareerTrackForm();
       this.loadCareerTracks();
     } catch (error) {
-      console.error('Error saving career track:', error);
       alert('Failed to save career track');
     }
   }
@@ -292,33 +299,164 @@ export class AdminPanelComponent implements OnInit {
 
   async uploadJson() {
     try {
-      const data = JSON.parse(this.jsonInput);
-      let collectionName = '';
+      const input = JSON.parse(this.jsonInput);
 
-      if (data.title && data.content) {
-        collectionName = 'tracksData';
-      } else if (data.facultyId) {
-        collectionName = 'departments';
-      } else if (data.departmentIds) {
-        collectionName = 'careerTracks';
-      } else if (data.name && !data.facultyId && !data.departmentIds) {
-        collectionName = 'faculties';
-      } else {
-        throw new Error('Cannot determine collection type from JSON data');
+      // Case 1: Add complete roadmap
+      if (input.id && input.title && input.stages) {
+        const roadmapData = {
+          id: input.id,
+          title: input.title,
+          stages: input.stages.map((stage: { steps: any[]; }) => ({
+            ...stage,
+            steps: stage.steps.map(step => ({
+              ...step,
+              id: step.id || Date.now().toString(),
+              skills: step.skills?.map((skill: { id: any; }) => ({
+                ...skill,
+                id: skill.id || Date.now().toString()
+              })) || [],
+              createdAt: new Date().toISOString()
+            }))
+          }))
+        };
+
+        const docRef = doc(this.firestore, 'roadmaps', input.id);
+        await setDoc(docRef, roadmapData);
+        alert('Roadmap created successfully');
+        return;
       }
 
-      const collectionRef = collection(this.firestore, collectionName);
-      await addDoc(collectionRef, data);
+      // Case 2: Add stage to existing roadmap
+      if (input.docId && input.name && input.steps) {
+        const docRef = doc(this.firestore, 'roadmaps', input.docId);
+        const docSnap = await getDoc(docRef);
 
-      alert('Data uploaded successfully');
+        if (!docSnap.exists()) {
+          throw new Error('Roadmap not found');
+        }
+
+        const existingData = docSnap.data();
+        const newStage = {
+          id: input.id || Date.now().toString(),
+          name: input.name,
+          icon: input.icon || '',
+          steps: input.steps.map((step: { id: any; skills: any[]; }) => ({
+            ...step,
+            id: step.id || Date.now().toString(),
+            skills: step.skills?.map((skill: { id: any; }) => ({
+              ...skill,
+              id: skill.id || Date.now().toString()
+            })) || [],
+            createdAt: new Date().toISOString()
+          }))
+        };
+
+        const updatedData = {
+          stages: [...(existingData['stages'] || []), newStage]
+        };
+
+        await setDoc(docRef, updatedData, { merge: true });
+        alert('Stage added successfully');
+        return;
+      }
+
+      // Case 3: Add step to existing stage
+      if (input.docId && input.stageId && input.stepData) {
+        const docRef = doc(this.firestore, 'roadmaps', input.docId);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+          throw new Error('Roadmap not found');
+        }
+
+        const existingData = docSnap.data();
+        const stageIndex = existingData['stages'].findIndex((s: { id: any; }) => s.id === input.stageId);
+
+        if (stageIndex === -1) {
+          throw new Error('Stage not found');
+        }
+
+        const updatedStages = [...existingData['stages']];
+        updatedStages[stageIndex] = {
+          ...updatedStages[stageIndex],
+          steps: [
+            ...(updatedStages[stageIndex].steps || []),
+            {
+              ...input.stepData,
+              id: input.stepData.id || Date.now().toString(),
+              skills: input.stepData.skills?.map((skill: { id: any; }) => ({
+                ...skill,
+                id: skill.id || Date.now().toString()
+              })) || [],
+              createdAt: new Date().toISOString()
+            }
+          ]
+        };
+
+        await setDoc(docRef, { stages: updatedStages }, { merge: true });
+        alert('Step added successfully');
+        return;
+      }
+
+      // Case 4: Add skill to existing step
+      if (input.docId && input.stageId && input.stepId && input.skillData) {
+        const docRef = doc(this.firestore, 'roadmaps', input.docId);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+          throw new Error('Roadmap not found');
+        }
+
+        const existingData = docSnap.data();
+        const stageIndex = existingData['stages'].findIndex((s: { id: any; }) => s.id === input.stageId);
+
+        if (stageIndex === -1) {
+          throw new Error('Stage not found');
+        }
+
+        const stepIndex = existingData['stages'][stageIndex].steps.findIndex(
+          (          step: { id: any; }) => step.id === input.stepId
+        );
+
+        if (stepIndex === -1) {
+          throw new Error('Step not found');
+        }
+
+        const updatedStages = [...existingData['stages']];
+        updatedStages[stageIndex] = {
+          ...updatedStages[stageIndex],
+          steps: [
+            ...updatedStages[stageIndex].steps.slice(0, stepIndex),
+            {
+              ...updatedStages[stageIndex].steps[stepIndex],
+              skills: [
+                ...(updatedStages[stageIndex].steps[stepIndex].skills || []),
+                {
+                  ...input.skillData,
+                  id: input.skillData.id || Date.now().toString(),
+                  createdAt: new Date().toISOString()
+                }
+              ]
+            },
+            ...updatedStages[stageIndex].steps.slice(stepIndex + 1)
+          ]
+        };
+
+        await setDoc(docRef, { stages: updatedStages }, { merge: true });
+        alert('Skill added successfully');
+        return;
+      }
+
+      throw new Error('Invalid JSON structure');
+
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert(`Upload failed: ${error}`);
+    } finally {
       this.jsonInput = '';
       this.loadAllData();
-    } catch (error) {
-      console.error('Error uploading JSON:', error);
-      alert('Invalid JSON or upload failed');
     }
   }
-
   resetTrackForm() {
     this.trackForm = this.getDefaultTrack();
     this.editMode = false;
@@ -365,7 +503,8 @@ export class AdminPanelComponent implements OnInit {
       departmentIds: [],
       description: '',
       icon: '',
-      name: ''
+      name: '',
+      id: ''
     };
   }
 

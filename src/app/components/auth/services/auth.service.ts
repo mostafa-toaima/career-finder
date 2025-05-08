@@ -14,6 +14,7 @@ export class AuthService {
 
   constructor(private auth: Auth, private firestore: Firestore) {
     this.user$ = authState(this.auth);
+
     this.isAdmin$ = this.user$.pipe(
       switchMap(user => {
         if (user) {
@@ -23,6 +24,26 @@ export class AuthService {
       })
     );
   }
+
+  getUserProfile(): User | null {
+    return this.auth.currentUser;
+  }
+
+
+  getUserProfileFromFirestore(): Observable<any> {
+    return this.user$.pipe(
+      switchMap(user => {
+        if (user) {
+          const userDocRef = doc(this.firestore, `users/${user.uid}`);
+          return from(getDoc(userDocRef)).pipe(
+            map(snapshot => snapshot.exists() ? snapshot.data() : null)
+          );
+        }
+        return of(null);
+      })
+    );
+  }
+
 
   private checkAdminStatus(uid: string): Observable<boolean> {
     const userDocRef = doc(this.firestore, `users/${uid}`);
@@ -62,7 +83,8 @@ export class AuthService {
         return from(setDoc(userDocRef, {
           email: email,
           createdAt: new Date(),
-          role: 'user'
+          role: 'user',
+          
         })).pipe(
           map(() => userCredential)
         );

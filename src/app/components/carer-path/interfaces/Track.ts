@@ -16,6 +16,7 @@ export interface TrackProgress {
 }
 
 export interface TrackPathCard {
+  id: string;
   icon: string;
   title: string;
   description: string;

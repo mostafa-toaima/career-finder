@@ -8,6 +8,9 @@ import { FormsModule } from '@angular/forms';
 import { PathContainerComponent } from './path-container/path-container.component';
 import { TrackService } from '../../services/track.service';
 import { PathHeaderComponent } from './path-header/path-header.component';
+import { ActivatedRoute } from '@angular/router';
+import { Firestore, collection, doc, getDoc } from '@angular/fire/firestore';
+import { Roadmap, Stage } from './models/pathModel';
 
 @Component({
   imports: [CommonModule, CardModule, ChipModule, AvatarModule, FormsModule, PathHeaderComponent, PathContainerComponent],
@@ -33,7 +36,7 @@ import { PathHeaderComponent } from './path-header/path-header.component';
   ]
 })
 export class RoadmapComponent implements OnInit {
-  Title = 'Front-End Developer Roadmap';
+  title: string = '';
   activeStep: string | null = null;
   activeStage: string | null = null;
   searchQuery = '';
@@ -41,13 +44,59 @@ export class RoadmapComponent implements OnInit {
   selectedFilter: any = 'all';
   inProgressSteps: string[] = [];
   filterOptions: any[] = []
-  stages: any[] = [];
-  constructor(private viewportScroller: ViewportScroller, private trackService: TrackService) {
-    this.stages = this.trackService.stages;
+  stages: Stage[] = [];
+
+
+  constructor(private viewportScroller: ViewportScroller,
+    private route: ActivatedRoute, private trackService: TrackService) {
+    // this.route.paramMap.subscribe(params => {
+    //   const roadmapId = params.get('id');
+    //   this.stages = history.state.roadmapData.stages;
+    //   this.Title = history.state.roadmapData.title;
+    //   // if (!this.stages) {
+    //   //   const roadmapCollection = collection(this.firestore, 'roadmaps');
+    //   //   const roadmapDoc = doc(roadmapCollection, roadmapId!);
+    //   //   getDoc(roadmapDoc).then(docSnapshot => {
+    //   //     if (docSnapshot.exists()) {
+    //   //       const roadmapData = docSnapshot.data();
+    //   //       this.stages = roadmapData['stages'];
+    //   //       this.Title = roadmapData['title'];
+    //   //     }
+    //   //   });
+    //   // }
+    // });
   }
+
   ngOnInit(): void {
-    this.viewportScroller.scrollToPosition([0, 0])
+    this.scrollToTop();
+    this.subscribeToRouteParams();
+
   }
+
+  private scrollToTop(): void {
+    this.viewportScroller.scrollToPosition([0, 0]);
+  }
+
+  private subscribeToRouteParams(): void {
+    this.route.params.subscribe(params => {
+      const roadmapId = params['roadmapId'] || 'frontend';
+      this.loadRoadMapData(roadmapId);
+    });
+  }
+
+  loadRoadMapData(roadMapId: string): void {
+    this.trackService.getRoadmapById(roadMapId).subscribe({
+      next: (data: Roadmap) => {
+        this.title = data.title;
+        this.stages = data.stages;
+        console.log('data', data);
+      },
+      error: (error) => {
+        console.error('Error loading track data:', error);
+      }
+    });
+  }
+
   filterStages(): void {
     this.searchQuery = this.searchQuery;
   }
@@ -98,7 +147,7 @@ export class RoadmapComponent implements OnInit {
     if (this.selectedFilter !== 'all') {
       filtered = filtered.map(stage => ({
         ...stage,
-        steps: stage.steps.filter((step: any) => {
+        steps: stage?.steps.filter((step: any) => {
           const isCompleted = this.completedSteps.includes(step.id);
           const isInProgress = this.inProgressSteps.includes(step.id);
           switch (this.selectedFilter) {

@@ -5,9 +5,6 @@ import { AdminGuard } from './common/guards/admin.guard';
 export const routes: Routes = [
 
   {
-    path: '', loadComponent: () => import('./components/About/home/home.component').then((m) => m.HomeComponent),
-  },
-  {
     path: 'home',
     loadComponent: () => import('./components/About/home/home.component').then((m) => m.HomeComponent),
   },
@@ -38,13 +35,23 @@ export const routes: Routes = [
   },
   {
     path: 'roadmap',
-    loadComponent: () => import('./components/carer-path/components/roadmap/roadmap.component').then((m) => m.RoadmapComponent),
-    canActivate: [AuthGuard]
-  },
+    children: [
+      {
+        path: ':roadmapId',
+        loadComponent: () => import('./components/carer-path/components/roadmap/roadmap.component').then((m) => m.RoadmapComponent),
+        canActivate: [AuthGuard]
+      }
+    ]
 
+  },
   {
     path: 'admin', loadComponent: () => import('./common/components/admin-panel/admin-panel.component').then((m) => m.AdminPanelComponent),
     canActivate: [AuthGuard, AdminGuard]
+  },
+  {
+    path: '**',
+    redirectTo: 'home',
+    pathMatch: 'full'
   }
 
 ];

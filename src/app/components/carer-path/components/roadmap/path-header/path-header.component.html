@@ -1,21 +1,13 @@
 <div class="path-header">
-  <h2>{{title}}</h2>
-  <div class="controls">
-    <div class="filter-control">
-      <label for="path-filter">Filter by:</label>
-      <select id="path-filter" class="form-select"
+  <h2 class="path-title text-center">{{title}}</h2>
+  <div class="d-flex align-items-center">
+      <label for="path-filter" class="w-50">Filter by:</label>
+      <select id="path-filter" class="form-select 2-50"
         [(ngModel)]="selectedFilter"
         (change)="onFilterChange($event)">
         <option *ngFor="let option of filterOptions" [value]="option.value">
           {{ option.label }}
         </option>
       </select>
-    </div>
-
-    <div class="search-control">
-      <i class="fas fa-search"></i>
-      <input type="text" placeholder="Search learning paths..."
-        [(ngModel)]="searchQuery" (input)="onSearchChange(searchQuery)">
-    </div>
   </div>
 </div>

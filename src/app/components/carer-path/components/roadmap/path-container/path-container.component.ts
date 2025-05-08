@@ -19,7 +19,7 @@ export class PathContainerComponent {
   showSkillModal: boolean = false;
   skillModalData: any;
   completedStages: any[] = [];
-  skillStatuses: { [key: string]: string } = {}; // 'start' | 'in-progress' | 'complete'
+  skillStatuses: { [key: string]: string } = {};
 
   @Input() filteredStages: any[] = [];
   @Input() activeStage: string | null = null;
