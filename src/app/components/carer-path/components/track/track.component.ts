@@ -4,6 +4,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TrackModalComponent } from '../track-modal/track-modal.component';
 import { Track, TrackPathCard, TrackProgress } from '../../interfaces/Track';
 import { TrackService } from '../../services/track.service';
+import { UserProgress } from '../../../auth/interfaces/UserProgress';
+import { AuthService } from '../../../auth/services/auth.service';
+import { switchMap, take } from 'rxjs';
 
 
 @Component({
@@ -16,18 +19,23 @@ import { TrackService } from '../../services/track.service';
 export class TrackComponent implements OnInit {
   isTrackModalVisible = false;
   trackData: Track = this.getDefaultTrackData();
+  userProgress: UserProgress | null = null;
 
   constructor(
     private viewportScroller: ViewportScroller,
     private trackService: TrackService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authServices: AuthService
   ) { }
 
   ngOnInit(): void {
+    this.loadUserProgress();
     this.scrollToTop();
     this.subscribeToRouteParams();
+
   }
+
 
   private scrollToTop(): void {
     this.viewportScroller.scrollToPosition([0, 0]);
@@ -40,10 +48,28 @@ export class TrackComponent implements OnInit {
     });
   }
 
+  private loadUserProgress(): void {
+    const user = this.authServices.getUserProfile();
+    if (user) {
+      this.authServices.getUserProgress(user.uid).subscribe(progress => {
+        console.log("progress", progress);
+
+        this.userProgress = progress;
+      },
+        error => {
+          console.error('Error loading user progress:', error);
+        });
+    }
+  }
   loadTrackData(trackId: string): void {
-    this.trackService.getTrack(trackId).subscribe({
-      next: (data: Partial<Track>) => {
-        this.trackData = this.normalizeTrackData(data);
+    const user = this.authServices.getUserProfile();
+    if (!user) return;
+
+    this.trackService.getTrackWithProgress(trackId, user.uid).subscribe({
+      next: ({ track, progress }) => {
+        this.trackData = this.normalizeTrackData(track);
+        // Update progress based on user data
+        this.trackData.progress = progress;
       },
       error: (error) => {
         console.error('Error loading track data:', error);
@@ -51,7 +77,6 @@ export class TrackComponent implements OnInit {
       }
     });
   }
-
   calculateProgressPercentage(progress?: TrackProgress): number {
     if (!progress) return 0;
     return Math.round((progress.current / progress.total) * 100);
@@ -111,4 +136,27 @@ export class TrackComponent implements OnInit {
     if (!roadmapId) return;
     this.router.navigate(['/roadmap', roadmapId]);
   }
+
+  startStep(stepId: string) {
+    const user = this.authServices.getUserProfile();
+    if (!user) return;
+
+    this.authServices.getUserProgress(user.uid).pipe(
+      take(1),
+      switchMap(progress => {
+        const updatedProgress = {
+          ...progress,
+          inProgressSteps: [...progress.inProgressTracks, stepId],
+          lastUpdated: new Date()
+        };
+        return this.authServices.updateUserProgress(user.uid, updatedProgress);
+      })
+    ).subscribe(() => {
+      this.router.navigate(['/roadmap', stepId]);
+    },
+      error => {
+        console.error('Error updating user progress:', error);
+      });
+  }
 }
+

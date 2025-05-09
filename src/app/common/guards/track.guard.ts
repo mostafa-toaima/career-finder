@@ -3,7 +3,6 @@ import { CanActivate, Router, ActivatedRouteSnapshot } from "@angular/router";
 import { Observable, map, catchError, of } from "rxjs";
 import { TrackService } from "../../components/carer-path/services/track.service";
 
-// track.guard.ts
 @Injectable({
   providedIn: 'root'
 })

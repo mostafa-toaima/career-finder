@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, authState, UserCredential, GoogleAuthProvider, signInWithPopup, FacebookAuthProvider } from '@angular/fire/auth';
-import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
+import { doc, docData, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { Observable, from, map, of, switchMap } from 'rxjs';
+import { UserProgress } from '../interfaces/UserProgress';
 
 
 @Injectable({
@@ -65,27 +66,45 @@ export class AuthService {
 
   loginWithGoogle(): Observable<any> {
     const provider = new GoogleAuthProvider();
-    return from(signInWithPopup(this.auth, provider));
+    return from(signInWithPopup(this.auth, provider)).pipe(
+      switchMap((userCredential) => {
+        console.log("userCredential", userCredential);
+
+        const userDocRef = doc(this.firestore, `users/${userCredential.user.uid}`);
+        return from(setDoc(userDocRef, {
+          photo: userCredential.user.photoURL,
+          email: userCredential.user.email,
+          name: userCredential.user.displayName,
+          createdAt: new Date(),
+          role: 'user',
+        })).pipe(
+          switchMap(() => this.initializeUserProgress(userCredential.user.uid)),
+          map(() => userCredential)
+        );
+      })
+    );
   }
 
-  loginWithFacebook(): Observable<any> {
-    const provider = new FacebookAuthProvider();
-    return from(signInWithPopup(this.auth, provider));
-  }
+  register(data: any): Observable<UserCredential> {
+    console.log("register", data);
+    const { department, email, faculty, firstName, gender, lastName, university, password, mobile } = data;
 
-  // register(email: string, password: string): Observable<UserCredential> {
-  //   return from(createUserWithEmailAndPassword(this.auth, email, password));
-  // }
-  register(email: string, password: string): Observable<UserCredential> {
     return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap((userCredential) => {
         const userDocRef = doc(this.firestore, `users/${userCredential.user.uid}`);
         return from(setDoc(userDocRef, {
-          email: email,
+          email,
+          password,
+          department,
+          university,
+          faculty,
+          name: firstName + " " + lastName,
+          gender,
+          mobile,
           createdAt: new Date(),
           role: 'user',
-          
         })).pipe(
+          switchMap(() => this.initializeUserProgress(userCredential.user.uid)),
           map(() => userCredential)
         );
       })
@@ -104,31 +123,67 @@ export class AuthService {
     return from(sendPasswordResetEmail(this.auth, email));
   }
 
-  // login(data: any): Observable<any> {
-  //   const url = environment.BaseUrl + "auth/login";
-  //   console.log('Making request to:', url);
-  //   return this.apiService.postApiWithPackageName(data, "auth/login");
-  // }
 
 
-  // register(data: any): Observable<any> {
-  //   const url = environment.BaseUrl + "/auth/register";
-  //   console.log('Making request to:', url);
-  //   return this.apiService.postApiWithPackageName(data, "/auth/register");
-  // }
+  getUserProgress(userId: string): Observable<UserProgress> {
+    const progressRef = doc(this.firestore, `userProgress/${userId}`);
+    return docData(progressRef) as Observable<UserProgress>;
+  }
 
-  // promoteToAdmin(email: string) {
-  //   this.authService.user$.pipe(
-  //     take(1),
-  //     switchMap(user => {
-  //       if (user) {
-  //         return this.authService.setAdminStatus(user.uid, true);
-  //       }
-  //       return of(null);
-  //     })
-  //   ).subscribe(() => {
-  //     alert('Admin privileges granted');
-  //   });
-  // }
+  initializeUserProgress(userId: string): Promise<void> {
+    const progressRef = doc(this.firestore, `userProgress/${userId}`);
+    const initialProgress: UserProgress = {
+      userId,
+      completedTracks: [],
+      inProgressTracks: [],
+      trackProgress: {},
+      roadmapProgress: {},
+      skillProgress: {}, // Add this
+      lastUpdated: new Date(),
+      completedSteps: [],
+      inProgressSteps: []
+    };
+    return setDoc(progressRef, initialProgress);
+  }
 
+  updateUserProgress(userId: string, progress: Partial<UserProgress>): Observable<any> {
+    const progressRef = doc(this.firestore, `userProgress/${userId}`);
+    return from(setDoc(progressRef, {
+      ...progress,
+      lastUpdated: new Date()
+    }, { merge: true }));
+  }
+
+  updateSkillStatus(userId: string, skillId: string, status: 'start' | 'in-progress' | 'completed'): Observable<void> {
+    const progressRef = doc(this.firestore, `userProgress/${userId}`);
+    return from(setDoc(progressRef, {
+      skillProgress: {
+        [skillId]: status
+      },
+      lastUpdated: new Date()
+    }, { merge: true }));
+  }
+
+
+  // services/auth.service.ts
+  updateSkillProgress(
+    userId: string,
+    skillId: string,
+    status: 'start' | 'in-progress' | 'completed'
+  ): Observable<void> {
+    const progressRef = doc(this.firestore, `userProgress/${userId}`);
+    return from(setDoc(progressRef, {
+      skillProgress: {
+        [skillId]: status
+      },
+      lastUpdated: new Date()
+    }, { merge: true }));
+  }
+
+  getSkillProgress(userId: string, skillId: string): Observable<string> {
+    const progressRef = doc(this.firestore, `userProgress/${userId}`);
+    return docData(progressRef).pipe(
+      map(progress => progress?.['skillProgress']?.[skillId] || 'start')
+    );
+  }
 }

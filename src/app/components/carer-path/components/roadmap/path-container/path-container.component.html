@@ -59,29 +59,22 @@
               <h5><i class="fas fa-lightbulb"></i> Skills You'll Learn:</h5>
               <div class="skills-list">
                 <ng-container *ngFor="let skill of step.skills">
-                  <span
-                    *ngIf="skill.name; else noSkill"
-                    matTooltip="Must Begin Step"
-                    matTooltipClass="custom-tooltip"
-                    [matTooltipDisabled]="inProgressSteps.includes(step.id) || completedSteps.includes(step.id)"
+                  <span *ngIf="skill.name"
                     class="skill-tag"
-                    [ngStyle]="{
-        'background': completedSteps.includes(step.id) ? 'linear-gradient(to right, #2d89ff, #6aa9ff)': '#f0f0f0',
-        'color': completedSteps.includes(step.id) ? 'white' : 'black',
-        'border': completedSteps.includes(step.id) ? '1px solid #388E3C' : '1px solid #ccc',
-        'cursor': inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? 'pointer' : 'not-allowed',
-        'opacity': inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? '1' : '0.6'
-      }"
-                    (click)="inProgressSteps.includes(step.id) || completedSteps.includes(step.id) ? openSkillsModal(skill) : null">
+                    [ngClass]="{
+             'completed': getSkillStatus(skill.id) === 'completed',
+             'in-progress': getSkillStatus(skill.id) === 'in-progress',
+             'not-started': getSkillStatus(skill.id) === 'start' || !getSkillStatus(skill.id)
+           }"
+                    [matTooltip]="getSkillTooltip(getSkillStatus(skill.id))"
+                    (click)="handleSkillClick(step.id, skill)">
                     {{ skill.name }}
+                    <i class="fas"
+                      [class.fa-check-circle]="getSkillStatus(skill.id) === 'completed'"
+                      [class.fa-spinner]="getSkillStatus(skill.id) === 'in-progress'"
+                      [class.fa-play]="getSkillStatus(skill.id) === 'start' || !getSkillStatus(skill.id)"></i>
                   </span>
-
-                  <ng-template #noSkill>
-                    <span class="skill-tag no-skill"
-                      style="cursor: not-allowed; opacity: 0.6;">No skill</span>
-                  </ng-template>
                 </ng-container>
-
               </div>
             </div>
 

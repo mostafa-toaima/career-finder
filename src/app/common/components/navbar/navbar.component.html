@@ -105,12 +105,13 @@
               <li><h6 class="dropdown-header">{{ user.email }}</h6></li>
               <li><hr class="dropdown-divider"></li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" routerLink="profile">
                   <i class="fas fa-user-circle me-2"></i> Profile
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" [routerLink]="'settings'"
+                  routerLinkActive="active">
                   <i class="fas fa-cog me-2"></i> Settings
                 </a>
               </li>

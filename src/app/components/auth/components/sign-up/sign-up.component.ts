@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'sign-up',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, DialogModule],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',
@@ -80,14 +81,9 @@ export class SignUpComponent {
   onSubmit() {
     if (this.registerForm.valid) {
       this.isSubmitting = true;
-      const { firstName, email, password, mobile } = this.registerForm.value;
-      const data = {
-        name: firstName,
-        email,
-        password,
-        mobile,
-      }
-      this.authService.register(data.email, data.password).subscribe({
+      const data = this.registerForm.value;
+
+      this.authService.register(data).subscribe({
         next: () => {
           this.isSubmitting = false;
           this.registerSuccess.emit(true);
@@ -103,8 +99,6 @@ export class SignUpComponent {
             this.registerError = 'An error occurred. Please try again later.';
           }
         }
-
-
       });
     } else {
       this.registerForm.markAllAsTouched();
@@ -129,7 +123,7 @@ export class SignUpComponent {
   onGoogleLogin() {
     this.authService.loginWithGoogle().subscribe({
       next: (res) => {
-        
+
         this.isSubmitting = false;
         this.router.navigate(['/features']);
         this.closeDialog();
