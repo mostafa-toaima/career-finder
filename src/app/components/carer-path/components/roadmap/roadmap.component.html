@@ -1,18 +1,33 @@
-<div class="career-path-container">
+<div class="roadmap-container">
   <path-header
     [title]="title"
     [selectedFilter]="selectedFilter"
+    [completionPercentage]="completionPercentage"
     (selectedFilterChange)="onFilterChange($event)">
   </path-header>
 
-  <div class="path-visualization">
-    <div class="progress-summary">
-      <div class="progress-bar-container">
-        <div class="progress-bar"
-          [style.width]="(completedSteps.length / totalSteps) * 100 + '%'">
-          <div class="progress-label">{{completedSteps.length}}/{{totalSteps}}
-            steps completed</div>
-        </div>
+  <div class="progress-summary-card">
+    <div class="progress-header">
+      <h3>Your Learning Journey</h3>
+      <span class="completion-percentage">{{ completionPercentage }}% Complete</span>
+    </div>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar" [style.width]="completionPercentage + '%'"></div>
+    </div>
+
+    <div class="progress-stats">
+      <div class="stat">
+        <span class="stat-value">{{ completedSteps.length }}</span>
+        <span class="stat-label">Completed</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ inProgressSteps.length }}</span>
+        <span class="stat-label">In Progress</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ totalSteps - completedSteps.length - inProgressSteps.length }}</span>
+        <span class="stat-label">Remaining</span>
       </div>
     </div>
   </div>

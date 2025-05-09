@@ -1,36 +1,31 @@
-// skill-model.component.ts
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
-  selector: 'skill-model',
+  selector: 'skill-modal',
   standalone: true,
-  imports: [CommonModule, DialogModule],
+  imports: [CommonModule, DialogModule, ButtonModule],
   templateUrl: './skill-model.component.html',
-  styleUrls: ['./skill-model.component.css']
+  styleUrls: ['./skill-model.component.scss']
 })
-export class SkillModelComponent {
-  @Input() visible: boolean = false;
+export class SkillModalComponent {
+  @Input() visible = false;
   @Output() visibleChange = new EventEmitter<boolean>();
-  @Input() data: any;
-  @Output() statusChanged = new EventEmitter<{
-    skillId: string,
-    status: 'start' | 'in-progress' | 'complete'
-  }>();
+  @Input() skill: any;
+  @Output() statusChange = new EventEmitter<{ skillId: string, status: 'start' | 'in-progress' | 'completed' }>();
 
-  closeDialog() {
+  closeModal(): void {
     this.visible = false;
     this.visibleChange.emit(false);
   }
 
-  setStatus(status: 'start' | 'in-progress' | 'complete') {
-    if (this.data?.id) {
-      this.statusChanged.emit({
-        skillId: this.data.id,
-        status: status
-      });
-      this.data.status = status; // Update local data
-    }
+  updateStatus(status: 'start' | 'in-progress' | 'completed'): void {
+    this.statusChange.emit({
+      skillId: this.skill.id,
+      status: status
+    });
+    this.skill.status = status;
   }
 }

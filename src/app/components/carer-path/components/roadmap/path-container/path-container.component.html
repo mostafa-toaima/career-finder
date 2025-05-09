@@ -3,10 +3,12 @@
     <div class="stage-header"
       [class.active]="activeStages.includes(stage.id)"
       (click)="toggleStage(stage.id)">
-      <h3 class="stage-title">{{ stage.name }}</h3>
-      <div class="stage-progress">
-        <span class="completed">{{completedStages.length}}</span>
-        <span class="total">/{{ stage.steps.length }} steps</span>
+      <div class="stage-info">
+        <h3 class="stage-title">{{ stage.name }}</h3>
+        <div class="stage-stats">
+          <span class="completed">{{ getCompletedStepsCount(stage) }}</span>
+          <span class="total">/{{ stage.steps.length }} steps</span>
+        </div>
       </div>
       <i class="fas"
         [class.fa-chevron-down]="!activeStages.includes(stage.id)"
@@ -14,15 +16,17 @@
     </div>
 
     <div class="stage-content" *ngIf="activeStages.includes(stage.id)">
-      <div class="step-cards">
+      <div class="step-grid">
         <div class="step-card" *ngFor="let step of stage.steps"
           [class.active]="activeStep === step.id"
           [class.completed]="completedSteps.includes(step.id)"
           [class.in-progress]="inProgressSteps.includes(step.id)">
+
           <div class="step-header" (click)="toggleStep(step.id)">
             <div class="step-icon" [style.background]="step.color">
               <i [class]="step.icon"></i>
             </div>
+
             <div class="step-info">
               <h4 class="step-title">{{ step.title }}</h4>
               <div class="step-meta">
@@ -32,80 +36,73 @@
                 <span class="level" *ngIf="step.level">
                   <i class="fas fa-signal"></i> {{ step.level }}
                 </span>
-                <span class="status-badge completed"
-                  *ngIf="completedSteps.includes(step.id)">
-                  <i class="fas fa-check-circle"></i> Completed
-                </span>
-                <span class="status-badge in-progress"
-                  *ngIf="inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)">
-                  <i class="fas fa-spinner"></i> In Progress
-                </span>
               </div>
             </div>
-            <i class="fas"
-              [class.fa-chevron-down]="activeStep !== step.id"
-              [class.fa-chevron-up]="activeStep === step.id"></i>
+
+            <div class="step-status">
+              <span class="status-badge completed"
+                *ngIf="completedSteps.includes(step.id)">
+                <i class="fas fa-check-circle"></i> Completed
+              </span>
+              <span class="status-badge in-progress"
+                *ngIf="inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)">
+                <i class="fas fa-spinner fa-pulse"></i> In Progress
+              </span>
+            </div>
           </div>
 
           <div class="step-details" *ngIf="activeStep === step.id">
             <div class="step-description">
               <p>{{ step.description }}</p>
-              <button class="learn-more-btn" (click)="openStepModel()">
-                <i class="fas fa-book-open"></i> Learn More
-              </button>
             </div>
 
             <div class="step-skills" *ngIf="step.skills?.length">
-              <h5><i class="fas fa-lightbulb"></i> Skills You'll Learn:</h5>
+              <h5><i class="fas fa-lightbulb"></i> Skills You'll Learn</h5>
               <div class="skills-list">
-                <ng-container *ngFor="let skill of step.skills">
-                  <span *ngIf="skill.name"
-                    class="skill-tag"
-                    [ngClass]="{
-             'completed': getSkillStatus(skill.id) === 'completed',
-             'in-progress': getSkillStatus(skill.id) === 'in-progress',
-             'not-started': getSkillStatus(skill.id) === 'start' || !getSkillStatus(skill.id)
-           }"
-                    [matTooltip]="getSkillTooltip(getSkillStatus(skill.id))"
-                    (click)="handleSkillClick(step.id, skill)">
-                    {{ skill.name }}
-                    <i class="fas"
-                      [class.fa-check-circle]="getSkillStatus(skill.id) === 'completed'"
-                      [class.fa-spinner]="getSkillStatus(skill.id) === 'in-progress'"
-                      [class.fa-play]="getSkillStatus(skill.id) === 'start' || !getSkillStatus(skill.id)"></i>
-                  </span>
-                </ng-container>
+                <span *ngFor="let skill of step.skills"
+                  class="skill-tag"
+                  matTooltipClass="custom-tooltip"
+                  [class.completed]="getSkillStatus(skill.id) === 'completed'"
+                  [class.in-progress]="getSkillStatus(skill.id) === 'in-progress'"
+                  [class.not-started]="getSkillStatus(skill.id) === 'start' && (!inProgressSteps.includes(step.id) && !completedSteps.includes(step.id))"
+                  [matTooltip]="getSkillTooltip(getSkillStatus(skill.id), step.id)"
+                  (click)="openSkillModal(skill, step.id)">
+                  {{ skill.name }}
+                  <i class="fas"
+                    [class.fa-check-circle]="getSkillStatus(skill.id) === 'completed'"
+                    [class.fa-spinner]="getSkillStatus(skill.id) === 'in-progress'"
+                    [class.fa-play]="getSkillStatus(skill.id) === 'start'"></i>
+                </span>
               </div>
             </div>
 
             <div class="step-resources" *ngIf="step.resources?.length">
-              <h5><i class="fas fa-link"></i> Resources:</h5>
+              <h5><i class="fas fa-link"></i> Resources</h5>
               <div class="resources-list">
                 <a *ngFor="let resource of step.resources"
-                  [href]="resource.url" target="_blank">
+                  [href]="resource.url" target="_blank" class="resource-link">
                   <i [class]="resource.icon"></i> {{ resource.name }}
                 </a>
               </div>
             </div>
 
             <div class="step-actions">
-              <button
+              <button class="btn-start"
                 *ngIf="!inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
                 (click)="startStep(step.id)">
                 <i class="fas fa-play"></i> Begin Step
               </button>
-              <button
+
+              <button class="btn-complete"
                 *ngIf="inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)"
-                (click)="completeStep(step.id)" class="in-progress">
+                (click)="completeStep(step.id)">
                 <i class="fas fa-check"></i> Mark Complete
               </button>
-              <div *ngIf="completedSteps.includes(step.id)"
-                class="completed-actions">
-                <span class="completed-text">
-                  <i class="fas fa-check-circle"></i> Completed
-                </span>
-                <button (click)="resetStep(step.id)" class="reset-btn">
-                  <i class="fas fa-undo"></i> Reset
+
+              <div class="completed-actions"
+                *ngIf="completedSteps.includes(step.id)">
+                <button class="btn-reset" (click)="resetStep(step.id)">
+                  <i class="fas fa-undo"></i> Reset Step
                 </button>
               </div>
             </div>
@@ -120,17 +117,16 @@
       <i class="fas fa-search"></i>
     </div>
     <h4>No Learning Paths Found</h4>
-    <p>Try adjusting your search or filter criteria</p>
-    <button class="reset-filters-btn" (click)="resetFilters()">
+    <p>Try adjusting your filter criteria</p>
+    <button class="btn-reset-filters" (click)="resetFilters()">
       <i class="fas fa-filter"></i> Reset Filters
     </button>
   </div>
+
+  <skill-modal
+    *ngIf="selectedSkill"
+    [(visible)]="showSkillModal"
+    [skill]="selectedSkill"
+    (statusChange)="onSkillStatusChange($event)">
+  </skill-modal>
 </div>
-
-<step-model [visible]="visibleModel"
-  (visibleChange)="visibleModel = $event"></step-model>
-
-<skill-model
-  [(visible)]="showSkillModal"
-  [data]="skillModalData">
-</skill-model>

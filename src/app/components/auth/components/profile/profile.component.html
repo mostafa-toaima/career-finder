@@ -10,110 +10,86 @@
       <div class="avatar" [style.background]="randomGradient">
         {{ userInitials }}
       </div>
+      <button class="edit-profile-btn" (click)="editProfile()">
+        <i class="icon-edit"></i> Edit Profile
+      </button>
     </div>
-    <h1 class="user-name">{{ userData?.name || 'User' }}</h1>
-    <p class="user-role">{{ (userData?.role | titlecase) || 'User' }}</p>
-    <p class="user-bio" *ngIf="userData?.bio">{{ userData.bio }}</p>
+    <div class="profile-info">
+      <h1 class="user-name">{{ userData?.name || 'User' }}</h1>
+      <p class="user-role">{{ (userData?.role | titlecase) || 'User' }}</p>
+
+      <div class="profile-stats">
+        <div class="stat-item">
+          <span class="stat-value">{{ filteredRoadmaps.length }}</span>
+          <span class="stat-label">Roadmaps</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">{{ getTotalCompletedSteps() }}</span>
+          <span class="stat-label">Completed steps</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">{{ getTotalInProgressSteps() }}</span>
+          <span class="stat-label">In Progress steps</span>
+        </div>
+      </div>
+
+      <!-- <p class="user-bio" *ngIf="userData?.bio; else noBio">{{ userData.bio }}</p>
+      <ng-template #noBio>
+        <p class="user-bio placeholder">
+          <i class="icon-info"></i> No bio added yet. Click edit to add one.
+        </p>
+      </ng-template> -->
+    </div>
   </div>
 
   <div class="profile-content">
+    <!-- Personal Info Section -->
     <div class="profile-section personal-info">
-      <h2 class="section-title">
-        <i class="icon-user"></i> Personal Information
-      </h2>
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="icon-user"></i> Personal Information
+        </h2>
+        <button class="section-action" (click)="editPersonalInfo()">
+          <i class="icon-edit"></i> Edit
+        </button>
+      </div>
+
       <div class="info-grid">
-        <div class="info-item">
-          <span class="info-label"><i class="icon-email"></i> Email</span>
-          <span class="info-value">{{ userData?.email || 'Not provided'
-            }}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label"><i class="icon-phone"></i> Mobile</span>
-          <span class="info-value">{{ userData?.mobile || 'Not provided'
-            }}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label"><i class="icon-gender"></i> Gender</span>
-          <span class="info-value">{{ userData?.gender || 'Not provided'
-            }}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label"><i class="icon-school"></i> University</span>
-          <span class="info-value">{{ userData?.university || 'Not provided'
-            }}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label"><i class="icon-book"></i> Faculty</span>
-          <span class="info-value">{{ userData?.faculty || 'Not provided'
-            }}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label"><i class="icon-department"></i>
-            Department</span>
-          <span class="info-value">{{ userData?.department || 'Not provided'
-            }}</span>
+        <div class="info-item" *ngFor="let item of personalInfoItems">
+          <div class="info-icon">
+            <i [class]="'icon-' + item.icon"></i>
+          </div>
+          <div class="info-content">
+            <span class="info-label">{{ item.label }}</span>
+            <span class="info-value">{{ userData?.[item.field] || 'Not provided' }}</span>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- Learning Progress Section -->
     <div class="profile-section learning-progress">
-      <h2 class="section-title">
-        <i class="icon-progress"></i> Learning Progress
-      </h2>
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="icon-progress"></i> Learning Progress
+        </h2>
+        <button class="section-action" (click)="openRoadmaps()">
+          <i class="icon-add"></i> Add Roadmap
+        </button>
+      </div>
 
-      <div *ngIf="filteredRoadmaps.length > 0; else noRoadmaps">
+      <ng-container *ngIf="filteredRoadmaps.length > 0; else noRoadmaps">
         <div class="progress-cards">
           <div class="progress-card" *ngFor="let roadmap of filteredRoadmaps">
             <div class="roadmap-header">
-              <h3>{{ roadmap.title || 'Unnamed Roadmap' }}</h3>
-              <span class="roadmap-category">{{ roadmap.category || 'General'
-                }}</span>
-            </div>
-
-            <div class="progress-status-container">
-              <div class="progress-status">
-                <h4>Completed Steps ({{ getCompletedSteps(roadmap.id).length
-                  }})</h4>
-                <ul
-                  *ngIf="getCompletedSteps(roadmap.id).length > 0; else noCompleted">
-                  <li *ngFor="let step of getCompletedSteps(roadmap.id)">
-                    <i class="icon-check"></i> {{ getStepTitle(roadmap.id, step)
-                    }}
-                  </li>
-                </ul>
-                <ng-template #noCompleted>
-                  <p class="no-items">No steps completed yet</p>
-                </ng-template>
+              <div class="roadmap-title">
+                <h3>{{ roadmap.title || 'Unnamed Roadmap' }}</h3>
+                <span class="roadmap-category">{{ roadmap.category || 'General' }}</span>
               </div>
-
-              <div class="progress-status">
-                <h4>In Progress ({{ getInProgressSteps(roadmap.id).length
-                  }})</h4>
-                <ul
-                  *ngIf="getInProgressSteps(roadmap.id).length > 0; else noInProgress">
-                  <li *ngFor="let step of getInProgressSteps(roadmap.id)">
-                    <i class="icon-progress"></i> {{ getStepTitle(roadmap.id,
-                    step) }}
-                  </li>
-                </ul>
-                <ng-template #noInProgress>
-                  <p class="no-items">No steps in progress</p>
-                </ng-template>
-              </div>
-
-              <div class="progress-status">
-                <h4>Not Started ({{ getNotStartedSteps(roadmap.id).length
-                  }})</h4>
-                <ul
-                  *ngIf="getNotStartedSteps(roadmap.id).length > 0; else allStarted">
-                  <li *ngFor="let step of getNotStartedSteps(roadmap.id)">
-                    <i class="icon-pending"></i> {{ getStepTitle(roadmap.id,
-                    step) }}
-                  </li>
-                </ul>
-                <ng-template #allStarted>
-                  <p class="no-items">All steps started!</p>
-                </ng-template>
+              <div class="roadmap-actions">
+                <button class="action-btn" (click)="viewRoadmap(roadmap.id)">
+                  <i class="pi pi-eye"> continue</i>
+                </button>
               </div>
             </div>
 
@@ -134,18 +110,73 @@
                 </span>
               </div>
             </div>
+
+            <div class="progress-status-container">
+              <div class="progress-status completed">
+                <h4>Completed</h4>
+                <div class="status-content">
+                  <span class="status-count">{{ getCompletedSteps(roadmap.id).length }}</span>
+                  <div class="status-steps">
+                    <ul *ngIf="getCompletedSteps(roadmap.id).length > 0; else noCompleted">
+                      <li *ngFor="let step of getCompletedSteps(roadmap.id)">
+                        <i class="icon-check"></i> {{ getStepTitle(roadmap.id, step) }}
+                      </li>
+                    </ul>
+                    <ng-template #noCompleted>
+                      <p class="no-items">No steps completed yet</p>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+
+              <div class="progress-status in-progress">
+                <h4>In Progress</h4>
+                <div class="status-content">
+                  <span class="status-count">{{ getInProgressSteps(roadmap.id).length }}</span>
+                  <div class="status-steps">
+                    <ul *ngIf="getInProgressSteps(roadmap.id).length > 0; else noInProgress">
+                      <li *ngFor="let step of getInProgressSteps(roadmap.id)">
+                        <i class="icon-progress"></i> {{ getStepTitle(roadmap.id, step) }}
+                      </li>
+                    </ul>
+                    <ng-template #noInProgress>
+                      <p class="no-items">No steps in progress</p>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+
+              <div class="progress-status not-started">
+                <h4>Not Started</h4>
+                <div class="status-content">
+                  <span class="status-count">{{ getNotStartedSteps(roadmap.id).length }}</span>
+                  <div class="status-steps">
+                    <ul *ngIf="getNotStartedSteps(roadmap.id).length > 0; else allStarted">
+                      <li *ngFor="let step of getNotStartedSteps(roadmap.id)">
+                        <i class="icon-pending"></i> {{ getStepTitle(roadmap.id, step) }}
+                      </li>
+                    </ul>
+                    <ng-template #allStarted>
+                      <p class="no-items">All steps started!</p>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-container>
 
       <ng-template #noRoadmaps>
         <div class="empty-state">
-          <img src="../../../../../assets/images/12.jpg" alt="No progress"
-            width="150">
+          <div class="empty-icon">
+            <i class="icon-roadmap"></i>
+          </div>
           <h3>No Learning Progress Yet</h3>
           <p>Start your learning journey by selecting a roadmap</p>
-          <button class="btn-primary" (click)="openRoadmaps()">Browse
-            Roadmaps</button>
+          <button class="btn-primary" (click)="openRoadmaps()">
+            <i class="icon-explore"></i> Browse Roadmaps
+          </button>
         </div>
       </ng-template>
     </div>

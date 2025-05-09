@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { TrackService } from '../../../carer-path/services/track.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { Router } from '@angular/router';
+
+interface PersonalInfoItem {
+  icon: string;
+  label: string;
+  field: string;
+}
 
 @Component({
   selector: 'app-profile',
@@ -20,15 +26,26 @@ export class ProfileComponent implements OnInit {
   loading: boolean = true;
   randomGradient: string;
 
+  personalInfoItems: PersonalInfoItem[] = [
+    { icon: 'email', label: 'Email', field: 'email' },
+    { icon: 'phone', label: 'Mobile', field: 'mobile' },
+    { icon: 'gender', label: 'Gender', field: 'gender' },
+    { icon: 'school', label: 'University', field: 'university' },
+    { icon: 'book', label: 'Faculty', field: 'faculty' },
+    { icon: 'department', label: 'Department', field: 'department' }
+  ];
+
   constructor(
     private authService: AuthService,
     private trackService: TrackService,
-    private router: Router
+    private router: Router,
+    private viewportScroller: ViewportScroller
   ) {
     this.randomGradient = this.generateRandomGradient();
   }
 
   ngOnInit(): void {
+    this.viewportScroller.scrollToPosition([0, 0]);
     this.loadUserData();
   }
 
@@ -128,6 +145,18 @@ export class ProfileComponent implements OnInit {
     return this.getAllStepIds(roadmap).length;
   }
 
+  getTotalCompletedSteps(): number {
+    return this.filteredRoadmaps.reduce((total, roadmap) => {
+      return total + this.getCompletedSteps(roadmap.id).length;
+    }, 0);
+  }
+
+  getTotalInProgressSteps(): number {
+    return this.filteredRoadmaps.reduce((total, roadmap) => {
+      return total + this.getInProgressSteps(roadmap.id).length;
+    }, 0);
+  }
+
   getStepTitle(roadmapId: string, stepId: string): string {
     const roadmap = this.roadmaps.find(r => r.id === roadmapId);
     if (!roadmap) return stepId;
@@ -155,10 +184,10 @@ export class ProfileComponent implements OnInit {
   generateRandomGradient(): string {
     const gradients = [
       'linear-gradient(135deg, #4a6cf7 0%, #2541b2 100%)',
-      'linear-gradient(135deg, #f39c12 0%, #e74c3c 100%)',
-      'linear-gradient(135deg, #2ecc71 0%, #1abc9c 100%)',
       'linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)',
-      'linear-gradient(135deg, #ff6b6b 0%, #f06595 100%)',
+      'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)',
+      'linear-gradient(135deg, #3498db 0%, #2980b9 100%)',
+      'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)',
     ];
     const randomIndex = Math.floor(Math.random() * gradients.length);
     return gradients[randomIndex];
@@ -176,5 +205,19 @@ export class ProfileComponent implements OnInit {
 
   openRoadmaps() {
     this.router.navigate(['/build-career']);
+  }
+
+  viewRoadmap(roadmapId: string) {
+    this.router.navigate(['/roadmap', roadmapId]);
+  }
+
+  editProfile() {
+    // Implement edit profile functionality
+    console.log('Edit profile clicked');
+  }
+
+  editPersonalInfo() {
+    // Implement edit personal info functionality
+    console.log('Edit personal info clicked');
   }
 }

@@ -16,9 +16,19 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { switchMap, take } from 'rxjs';
 
 @Component({
-  imports: [CommonModule, CardModule, ChipModule, AvatarModule, FormsModule, PathHeaderComponent, PathContainerComponent],
+  selector: 'app-roadmap',
+  standalone: true,
+  imports: [
+    CommonModule,
+    CardModule,
+    ChipModule,
+    AvatarModule,
+    FormsModule,
+    PathHeaderComponent,
+    PathContainerComponent
+  ],
   templateUrl: './roadmap.component.html',
-  styleUrl: './roadmap.component.css',
+  styleUrls: ['./roadmap.component.scss'],
   animations: [
     trigger('stepAnimation', [
       transition('* => *', [
@@ -39,39 +49,25 @@ import { switchMap, take } from 'rxjs';
   ]
 })
 export class RoadmapComponent implements OnInit {
-  title: string = '';
+  title = '';
   activeStep: string | null = null;
   activeStage: string | null = null;
-  searchQuery = '';
   completedSteps: string[] = [];
-  selectedFilter: any = 'all';
   inProgressSteps: string[] = [];
-  filterOptions: any[] = []
   stages: Stage[] = [];
-  userProgress: UserProgress | null = null;
   roadmapId: string | null = null;
+  userProgress: UserProgress | null = null;
 
+  // Filter state
+  searchQuery = '';
+  selectedFilter: 'all' | 'completed' | 'in-progress' | 'not-started' = 'all';
 
-  constructor(private viewportScroller: ViewportScroller,
-    private route: ActivatedRoute, private trackService: TrackService, private authService: AuthService
-  ) {
-    // this.route.paramMap.subscribe(params => {
-    //   const roadmapId = params.get('id');
-    //   this.stages = history.state.roadmapData.stages;
-    //   this.Title = history.state.roadmapData.title;
-    //   // if (!this.stages) {
-    //   //   const roadmapCollection = collection(this.firestore, 'roadmaps');
-    //   //   const roadmapDoc = doc(roadmapCollection, roadmapId!);
-    //   //   getDoc(roadmapDoc).then(docSnapshot => {
-    //   //     if (docSnapshot.exists()) {
-    //   //       const roadmapData = docSnapshot.data();
-    //   //       this.stages = roadmapData['stages'];
-    //   //       this.Title = roadmapData['title'];
-    //   //     }
-    //   //   });
-    //   // }
-    // });
-  }
+  constructor(
+    private viewportScroller: ViewportScroller,
+    private route: ActivatedRoute,
+    private trackService: TrackService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.scrollToTop();
@@ -93,17 +89,18 @@ export class RoadmapComponent implements OnInit {
   private loadUserProgress(): void {
     const user = this.authService.getUserProfile();
     if (user) {
-      this.authService.getUserProgress(user.uid).subscribe(progress => {
-        this.userProgress = progress;
-        // Initialize completedSteps and inProgressSteps from user progress
-        if (this.roadmapId && progress.roadmapProgress[this.roadmapId]) {
-          this.completedSteps = progress.roadmapProgress[this.roadmapId].completedSteps;
-          this.inProgressSteps = progress.roadmapProgress[this.roadmapId].inProgressSteps;
-        }
-      },
-        (error) => {
+      this.authService.getUserProgress(user.uid).subscribe({
+        next: progress => {
+          this.userProgress = progress;
+          if (this.roadmapId && progress.roadmapProgress[this.roadmapId]) {
+            this.completedSteps = progress.roadmapProgress[this.roadmapId].completedSteps;
+            this.inProgressSteps = progress.roadmapProgress[this.roadmapId].inProgressSteps;
+          }
+        },
+        error: (error) => {
           console.error('Error loading user progress:', error);
-        });
+        }
+      });
     }
   }
 
@@ -125,65 +122,36 @@ export class RoadmapComponent implements OnInit {
     });
   }
 
-  // Update methods to save progress
+  // Step management methods
   startStep(stepId: string): void {
-    const user = this.authService.getUserProfile();
-    if (!user || !this.roadmapId) return;
+    if (!this.roadmapId) return;
 
     if (!this.inProgressSteps.includes(stepId) && !this.completedSteps.includes(stepId)) {
-      this.inProgressSteps.push(stepId);
-
-      this.authService.getUserProgress(user.uid).pipe(
-        take(1),
-        switchMap(progress => {
-          const updatedRoadmapProgress = {
-            ...progress.roadmapProgress,
-            [this.roadmapId!]: {
-              completedSteps: progress.roadmapProgress[this.roadmapId!]?.completedSteps || [],
-              inProgressSteps: [...this.inProgressSteps]
-            }
-          };
-
-          return this.authService.updateUserProgress(user.uid, {
-            roadmapProgress: updatedRoadmapProgress
-          });
-        })
-      ).subscribe();
+      this.inProgressSteps = [...this.inProgressSteps, stepId];
+      this.updateUserProgress();
     }
-  }
-
-
-  filterStages(): void {
-    this.searchQuery = this.searchQuery;
-  }
-  onFilterChange(value: any): void {
-    if (['all', 'completed', 'in-progress', 'not-started'].includes(value)) {
-      this.selectedFilter = value;
-    } else {
-      console.warn('Invalid filter option:', value);
-    }
-  }
-
-
-  onSearchChange(value: any): void {
-    this.searchQuery = value;
-  }
-  toggleStep(stepId: string): void {
-    this.activeStep = this.activeStep === stepId ? null : stepId;
-  }
-  toggleStage(stageId: string): void {
-    this.activeStage = this.activeStage === stageId ? null : stageId;
   }
 
   completeStep(stepId: string): void {
+    if (!this.roadmapId) return;
+
+    this.inProgressSteps = this.inProgressSteps.filter(id => id !== stepId);
+    this.completedSteps = [...this.completedSteps, stepId];
+    this.updateUserProgress();
+  }
+
+  resetStep(stepId: string): void {
+    if (!this.roadmapId) return;
+
+    this.inProgressSteps = this.inProgressSteps.filter(id => id !== stepId);
+    this.completedSteps = this.completedSteps.filter(id => id !== stepId);
+    this.updateUserProgress();
+  }
+
+  private updateUserProgress(): void {
     const user = this.authService.getUserProfile();
     if (!user || !this.roadmapId) return;
 
-    // Update local state first for immediate UI feedback
-    this.inProgressSteps = this.inProgressSteps.filter(id => id !== stepId);
-    this.completedSteps = [...this.completedSteps, stepId];
-
-    // Then update Firestore
     this.authService.getUserProgress(user.uid).pipe(
       take(1),
       switchMap(progress => {
@@ -201,51 +169,40 @@ export class RoadmapComponent implements OnInit {
         return this.authService.updateUserProgress(user.uid, updated);
       })
     ).subscribe({
-      next: () => console.log('Progress updated'),
-      error: (err) => console.error('Update failed', err)
+      next: () => console.log('Progress updated successfully'),
+      error: (err) => console.error('Failed to update progress:', err)
     });
   }
-  // In roadmap.component.ts
-  resetStep(stepId: string): void {
-    const user = this.authService.getUserProfile();
-    if (!user || !this.roadmapId) return;
 
-    // Update local state
-    this.inProgressSteps = this.inProgressSteps.filter(id => id !== stepId);
-    this.completedSteps = this.completedSteps.filter(id => id !== stepId);
-
-    // Update Firestore
-    this.authService.getUserProgress(user.uid).pipe(
-      take(1),
-      switchMap(progress => {
-        const updated = {
-          ...progress,
-          roadmapProgress: {
-            ...progress.roadmapProgress,
-            [this.roadmapId!]: {
-              completedSteps: this.completedSteps,
-              inProgressSteps: this.inProgressSteps
-            }
-          },
-          lastUpdated: new Date()
-        };
-        return this.authService.updateUserProgress(user.uid, updated);
-      })
-    ).subscribe();
+  // UI interaction methods
+  toggleStep(stepId: string): void {
+    this.activeStep = this.activeStep === stepId ? null : stepId;
   }
-  resetFilter() {
+
+  toggleStage(stageId: string): void {
+    this.activeStage = this.activeStage === stageId ? null : stageId;
+  }
+
+  onFilterChange(filter: 'all' | 'completed' | 'in-progress' | 'not-started'): void {
+    this.selectedFilter = filter;
+  }
+
+  resetFilter(): void {
     this.selectedFilter = 'all';
     this.searchQuery = '';
   }
 
-  get filteredStages() {
+  // Computed properties
+  get filteredStages(): Stage[] {
     let filtered = this.stages;
+
     if (this.selectedFilter !== 'all') {
       filtered = filtered.map(stage => ({
         ...stage,
-        steps: stage?.steps.filter((step: any) => {
+        steps: stage.steps.filter(step => {
           const isCompleted = this.completedSteps.includes(step.id);
           const isInProgress = this.inProgressSteps.includes(step.id);
+
           switch (this.selectedFilter) {
             case 'completed': return isCompleted;
             case 'in-progress': return isInProgress && !isCompleted;
@@ -255,11 +212,15 @@ export class RoadmapComponent implements OnInit {
         })
       })).filter(stage => stage.steps.length > 0);
     }
+
     return filtered;
   }
 
-
   get totalSteps(): number {
     return this.stages.reduce((total, stage) => total + stage.steps.length, 0);
+  }
+
+  get completionPercentage(): number {
+    return this.totalSteps > 0 ? Math.round((this.completedSteps.length / this.totalSteps) * 100) : 0;
   }
 }
