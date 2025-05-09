@@ -174,7 +174,6 @@ export class PathContainerComponent {
 
 
   handleSkillClick(stepId: string, skill: any): void {
-    // Only allow interaction if step is in progress or completed
     if (!this.inProgressSteps.includes(stepId) && !this.completedSteps.includes(stepId)) {
       return;
     }
