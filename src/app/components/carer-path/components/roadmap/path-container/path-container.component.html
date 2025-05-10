@@ -48,6 +48,10 @@
                 *ngIf="inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)">
                 <i class="fas fa-spinner fa-pulse"></i> In Progress
               </span>
+              <span class="status-badge not-started "
+                *ngIf="!inProgressSteps.includes(step.id) && !completedSteps.includes(step.id)">
+                <i class="fas fa-play"></i> Not Started
+              </span>
             </div>
           </div>
 

@@ -1,3 +1,4 @@
+<!-- profile.component.html -->
 <div class="profile-container">
   <!-- Loading State -->
   <div *ngIf="loading" class="loading-overlay">
@@ -32,13 +33,6 @@
           <span class="stat-label">In Progress steps</span>
         </div>
       </div>
-
-      <!-- <p class="user-bio" *ngIf="userData?.bio; else noBio">{{ userData.bio }}</p>
-      <ng-template #noBio>
-        <p class="user-bio placeholder">
-          <i class="icon-info"></i> No bio added yet. Click edit to add one.
-        </p>
-      </ng-template> -->
     </div>
   </div>
 
@@ -61,7 +55,8 @@
           </div>
           <div class="info-content">
             <span class="info-label">{{ item.label }}</span>
-            <span class="info-value">{{ userData?.[item.field] || 'Not provided' }}</span>
+            <span class="info-value">{{ userData?.[item.field] || 'Not provided'
+              }}</span>
           </div>
         </div>
       </div>
@@ -84,7 +79,8 @@
             <div class="roadmap-header">
               <div class="roadmap-title">
                 <h3>{{ roadmap.title || 'Unnamed Roadmap' }}</h3>
-                <span class="roadmap-category">{{ roadmap.category || 'General' }}</span>
+                <span class="roadmap-category">{{ roadmap.category || 'General'
+                  }}</span>
               </div>
               <div class="roadmap-actions">
                 <button class="action-btn" (click)="viewRoadmap(roadmap.id)">
@@ -115,11 +111,14 @@
               <div class="progress-status completed">
                 <h4>Completed</h4>
                 <div class="status-content">
-                  <span class="status-count">{{ getCompletedSteps(roadmap.id).length }}</span>
+                  <span class="status-count">{{
+                    getCompletedSteps(roadmap.id).length }}</span>
                   <div class="status-steps">
-                    <ul *ngIf="getCompletedSteps(roadmap.id).length > 0; else noCompleted">
+                    <ul
+                      *ngIf="getCompletedSteps(roadmap.id).length > 0; else noCompleted">
                       <li *ngFor="let step of getCompletedSteps(roadmap.id)">
-                        <i class="icon-check"></i> {{ getStepTitle(roadmap.id, step) }}
+                        <i class="icon-check"></i> {{ getStepTitle(roadmap.id,
+                        step) }}
                       </li>
                     </ul>
                     <ng-template #noCompleted>
@@ -132,11 +131,14 @@
               <div class="progress-status in-progress">
                 <h4>In Progress</h4>
                 <div class="status-content">
-                  <span class="status-count">{{ getInProgressSteps(roadmap.id).length }}</span>
+                  <span class="status-count">{{
+                    getInProgressSteps(roadmap.id).length }}</span>
                   <div class="status-steps">
-                    <ul *ngIf="getInProgressSteps(roadmap.id).length > 0; else noInProgress">
+                    <ul
+                      *ngIf="getInProgressSteps(roadmap.id).length > 0; else noInProgress">
                       <li *ngFor="let step of getInProgressSteps(roadmap.id)">
-                        <i class="icon-progress"></i> {{ getStepTitle(roadmap.id, step) }}
+                        <i class="icon-progress"></i> {{
+                        getStepTitle(roadmap.id, step) }}
                       </li>
                     </ul>
                     <ng-template #noInProgress>
@@ -149,11 +151,14 @@
               <div class="progress-status not-started">
                 <h4>Not Started</h4>
                 <div class="status-content">
-                  <span class="status-count">{{ getNotStartedSteps(roadmap.id).length }}</span>
+                  <span class="status-count">{{
+                    getNotStartedSteps(roadmap.id).length }}</span>
                   <div class="status-steps">
-                    <ul *ngIf="getNotStartedSteps(roadmap.id).length > 0; else allStarted">
+                    <ul
+                      *ngIf="getNotStartedSteps(roadmap.id).length > 0; else allStarted">
                       <li *ngFor="let step of getNotStartedSteps(roadmap.id)">
-                        <i class="icon-pending"></i> {{ getStepTitle(roadmap.id, step) }}
+                        <i class="icon-pending"></i> {{ getStepTitle(roadmap.id,
+                        step) }}
                       </li>
                     </ul>
                     <ng-template #allStarted>

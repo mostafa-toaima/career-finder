@@ -1,9 +1,10 @@
+// profile.component.scss
 @use '../../../../../assets/styles/vars.scss' as vars;
 
 .profile-container {
   max-width: 1200px;
   margin: 4rem auto;
-  padding: 2rem;
+  padding: 1rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: vars.$gray-800;
   background-color: white;
@@ -11,6 +12,13 @@
   box-shadow: vars.$shadow-lg;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    margin: 4rem auto;
+    padding: 2rem;
+  }
 
   .loading-overlay {
     position: absolute;
@@ -40,16 +48,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 3rem;
-  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
   position: relative;
-  gap: 1.5rem;
+  gap: 1rem;
 
   @media (min-width: 768px) {
     flex-direction: row;
     align-items: flex-start;
     text-align: left;
     gap: 2.5rem;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
   }
 
   &::after {
@@ -65,9 +75,14 @@
 
 .avatar-container {
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   flex-shrink: 0;
+
+  @media (min-width: 768px) {
+    width: 150px;
+    height: 150px;
+  }
 
   .avatar {
     width: 100%;
@@ -77,10 +92,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
     box-shadow: vars.$shadow-lg;
     transition: transform 0.3s ease;
+
+    @media (min-width: 768px) {
+      font-size: 3rem;
+    }
 
     &:hover {
       transform: scale(1.05);
@@ -95,16 +114,22 @@
     background: white;
     color: vars.$primary-600;
     border: 1px solid vars.$primary-100;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 600;
     box-shadow: vars.$shadow-sm;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.3rem;
     transition: all 0.2s ease;
+
+    @media (min-width: 768px) {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      gap: 0.5rem;
+    }
 
     &:hover {
       background: vars.$primary-50;
@@ -116,6 +141,7 @@
 .profile-info {
   flex: 1;
   text-align: center;
+  width: 100%;
 
   @media (min-width: 768px) {
     text-align: left;
@@ -123,85 +149,109 @@
 }
 
 .user-name {
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 0.5rem 0;
   color: vars.$gray-900;
   font-weight: 700;
   line-height: 1.2;
+
+  @media (min-width: 768px) {
+    font-size: 2rem;
+  }
 }
 
 .user-role {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: vars.$primary-600;
   background-color: rgba(vars.$primary-600, 0.1);
-  padding: 0.35rem 1.25rem;
+  padding: 0.3rem 1rem;
   border-radius: 20px;
   display: inline-block;
   margin: 0.5rem 0;
   font-weight: 600;
+
+  @media (min-width: 768px) {
+    font-size: 0.95rem;
+    padding: 0.35rem 1.25rem;
+  }
 }
 
 .profile-stats {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  margin: 1.5rem 0;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
 
   @media (min-width: 768px) {
     justify-content: flex-start;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: nowrap;
   }
 
   .stat-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 8px;
     background: vars.$gray-50;
+    min-width: 80px;
+
+    @media (min-width: 768px) {
+      padding: 0.5rem 1rem;
+      min-width: auto;
+    }
 
     .stat-value {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: vars.$primary-600;
+
+      @media (min-width: 768px) {
+        font-size: 1.2rem;
+      }
     }
 
     .stat-label {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: vars.$gray-600;
+
+      @media (min-width: 768px) {
+        font-size: 0.8rem;
+      }
     }
-  }
-}
-
-.user-bio {
-  font-size: 1rem;
-  color: vars.$gray-600;
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 1rem auto 0;
-
-  &.placeholder {
-    color: vars.$gray-400;
-    font-style: italic;
   }
 }
 
 .profile-content {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
 
   @media (min-width: 992px) {
     grid-template-columns: 1fr 2fr;
+    gap: 2rem;
   }
 }
 
 .profile-section {
   background-color: white;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: vars.$shadow-sm;
   position: relative;
   transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    padding: 1.5rem;
+  }
 
   &:hover {
     box-shadow: vars.$shadow;
@@ -220,16 +270,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
 }
 
 .section-title {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   margin: 0;
   color: vars.$gray-800;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.4rem;
+    gap: 0.75rem;
+  }
 
   i {
     color: vars.$primary-600;
@@ -240,13 +299,18 @@
   background: transparent;
   border: none;
   color: vars.$primary-600;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
   cursor: pointer;
   transition: all 0.2s ease;
+
+  @media (min-width: 768px) {
+    font-size: 0.9rem;
+    gap: 0.5rem;
+  }
 
   &:hover {
     color: vars.$primary-800;
@@ -257,19 +321,25 @@
 .info-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 0.75rem;
 
   @media (min-width: 480px) {
     grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
 }
 
 .info-item {
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 0.8rem;
+  padding: 0.8rem;
   border-radius: 8px;
   transition: all 0.2s ease;
+
+  @media (min-width: 768px) {
+    gap: 1rem;
+    padding: 1rem;
+  }
 
   &:hover {
     background: vars.$gray-50;
@@ -278,16 +348,22 @@
 }
 
 .info-icon {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: vars.$primary-50;
   display: flex;
   align-items: center;
   justify-content: center;
   color: vars.$primary-600;
-  font-size: 1.2rem;
+  font-size: 1rem;
   flex-shrink: 0;
+
+  @media (min-width: 768px) {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
 }
 
 .info-content {
@@ -296,34 +372,51 @@
 
 .info-label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: vars.$gray-600;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
   font-weight: 500;
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
 }
 
 .info-value {
   display: block;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: vars.$gray-800;
   font-weight: 600;
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
+  }
 }
 
 .progress-cards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 1.2rem;
+
+  @media (min-width: 768px) {
+    gap: 1.5rem;
+  }
 }
 
 .progress-card {
   background-color: white;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: vars.$shadow-sm;
   transition: all 0.3s ease;
   border: 1px solid vars.$gray-100;
   position: relative;
   overflow: hidden;
+
+  @media (min-width: 768px) {
+    padding: 1.5rem;
+  }
 
   &:hover {
     transform: translateY(-5px);
@@ -336,25 +429,39 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
 
   .roadmap-title {
     h3 {
       margin: 0;
       color: vars.$gray-900;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
+
+      @media (min-width: 768px) {
+        font-size: 1.2rem;
+      }
     }
 
     .roadmap-category {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       background-color: vars.$gray-100;
       color: vars.$gray-700;
-      padding: 0.25rem 0.75rem;
+      padding: 0.2rem 0.6rem;
       border-radius: 20px;
       font-weight: 500;
       display: inline-block;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
+
+      @media (min-width: 768px) {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        margin-top: 0.5rem;
+      }
     }
   }
 
@@ -362,8 +469,8 @@
     .action-btn {
       background: vars.$gray-50;
       border: none;
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -371,6 +478,11 @@
       color: vars.$gray-600;
       cursor: pointer;
       transition: all 0.2s ease;
+
+      @media (min-width: 768px) {
+        width: 36px;
+        height: 36px;
+      }
 
       &:hover {
         background: vars.$primary-50;
@@ -382,15 +494,24 @@
 }
 
 .progress-summary {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
 }
 
 .progress-bar-container {
-  height: 8px;
+  height: 6px;
   background-color: vars.$gray-100;
   border-radius: 4px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   overflow: hidden;
+
+  @media (min-width: 768px) {
+    height: 8px;
+    margin-bottom: 0.5rem;
+  }
 }
 
 .progress-bar {
@@ -405,25 +526,34 @@
   align-items: center;
 
   .progress-percent {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: vars.$gray-800;
+
+    @media (min-width: 768px) {
+      font-size: 0.9rem;
+    }
   }
 
   .progress-stats {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: vars.$gray-500;
+
+    @media (min-width: 768px) {
+      font-size: 0.85rem;
+    }
   }
 }
 
 .progress-status-container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 0.8rem;
   width: 100%;
 
   @media (min-width: 640px) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 
   @media (min-width: 1024px) {
@@ -432,46 +562,65 @@
 }
 
 .progress-status {
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 8px;
   min-width: 0;
   overflow: hidden;
 
+  @media (min-width: 768px) {
+    padding: 1rem;
+  }
+
   h4 {
-    font-size: 0.9rem;
-    margin: 0 0 1rem 0;
+    font-size: 0.85rem;
+    margin: 0 0 0.8rem 0;
     color: vars.$gray-700;
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
+
+    @media (min-width: 768px) {
+      font-size: 0.9rem;
+      margin: 0 0 1rem 0;
+      gap: 0.5rem;
+    }
 
     &::before {
       content: '';
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: currentColor;
+
+      @media (min-width: 768px) {
+        width: 8px;
+        height: 8px;
+      }
     }
   }
 
   .status-content {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
 
     @media (min-width: 480px) {
       flex-direction: row;
       align-items: flex-start;
+      gap: 0.5rem;
     }
   }
 
   .status-count {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     line-height: 1;
-    min-width: 2.5rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.5rem;
+    }
   }
 
   .status-steps {
@@ -484,16 +633,25 @@
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.3rem;
+
+      @media (min-width: 768px) {
+        gap: 0.5rem;
+      }
 
       li {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.4rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        @media (min-width: 768px) {
+          font-size: 0.85rem;
+          gap: 0.5rem;
+        }
       }
     }
   }
@@ -539,55 +697,86 @@
 }
 
 .no-items {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: vars.$gray-400;
   margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
+  }
 }
 
 .empty-state {
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 1.5rem 1rem;
   color: vars.$gray-500;
 
+  @media (min-width: 768px) {
+    padding: 2rem 1rem;
+  }
+
   .empty-icon {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background: vars.$primary-50;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
+    margin: 0 auto 1rem;
     color: vars.$primary-600;
-    font-size: 2rem;
+    font-size: 1.5rem;
+
+    @media (min-width: 768px) {
+      width: 80px;
+      height: 80px;
+      font-size: 2rem;
+      margin: 0 auto 1.5rem;
+    }
   }
 
   h3 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: vars.$gray-700;
     margin-bottom: 0.5rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.3rem;
+    }
   }
 
   p {
-    margin-bottom: 1.5rem;
-    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
+
+    @media (min-width: 768px) {
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
   }
 
   .btn-primary {
     background-color: vars.$primary-600;
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 6px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+
+    @media (min-width: 768px) {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      gap: 0.5rem;
+    }
 
     &:hover {
       background-color: vars.$primary-700;
