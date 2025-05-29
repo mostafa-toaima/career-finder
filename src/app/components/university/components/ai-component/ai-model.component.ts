@@ -215,7 +215,6 @@ export class AiModelComponent implements OnInit {
     const filledControls = Object.values(this.aiForm.controls).filter(
       control => control.value !== null && control.value !== '' && control.value !== 'N/A'
     ).length;
-
     this.progress = Math.round((filledControls / totalControls) * 100);
     return this.progress;
   }

@@ -215,9 +215,7 @@ export class AdminPanelComponent implements OnInit {
         alert('Track ID is required');
         return;
       }
-
       const careerTrackDocRef = doc(this.firestore, 'careerTracks', this.careerTrackForm.id);
-
       if (this.editMode && this.currentEditId) {
         if (this.currentEditId !== this.careerTrackForm.id) {
           const oldDocRef = doc(this.firestore, 'careerTracks', this.currentEditId);
@@ -227,7 +225,6 @@ export class AdminPanelComponent implements OnInit {
       } else {
         await setDoc(careerTrackDocRef, this.careerTrackForm);
       }
-
       alert('Career track saved successfully');
       this.resetCareerTrackForm();
       this.loadCareerTracks();

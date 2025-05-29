@@ -22,19 +22,7 @@ export const appConfig: ApplicationConfig = {
 
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    // provideDatabase(() => getDatabase()), if we need use realtime database
-    // provideFunctions(() => getFunctions()),
-    // provideMessaging(() => getMessaging()),
-    // providePerformance(() => getPerformance()),
     provideStorage(() => getStorage()),
-    // provideRemoteConfig(() => getRemoteConfig()),
-    // provideVertexAI(() => getVertexAI()),
-
-    // provideAppCheck(() => {
-    //   const provider = new ReCaptchaEnterpriseProvider("your-site-key");
-    //   return initializeAppCheck(getApp(), { provider, isTokenAutoRefreshEnabled: true });
-    // }),
-
     ScreenTrackingService,
     UserTrackingService,
     provideHttpClient(withInterceptorsFromDi())

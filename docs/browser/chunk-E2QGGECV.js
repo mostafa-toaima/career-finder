@@ -1,0 +1,1 @@
+import{Fb as o,Gb as s,Nc as m,Xb as i,lb as n}from"./chunk-5KWSUYNW.js";var p=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=n({type:t,selectors:[["app-settings"]],decls:2,vars:0,consts:[[1,"my-5"]],template:function(e,c){e&1&&(o(0,"p",0),i(1,"settings works!"),s())},dependencies:[m],encapsulation:2})};export{p as SettingsComponent};

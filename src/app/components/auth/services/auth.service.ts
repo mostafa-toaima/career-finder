@@ -45,6 +45,10 @@ export class AuthService {
     );
   }
 
+  setAdminStatus(uid: string, isAdmin: boolean): Observable<void> {
+    const userDocRef = doc(this.firestore, `users/${uid}`);
+    return from(setDoc(userDocRef, { role: isAdmin ? 'admin' : 'user' }, { merge: true }));
+  }
 
   private checkAdminStatus(uid: string): Observable<boolean> {
     const userDocRef = doc(this.firestore, `users/${uid}`);
@@ -55,10 +59,7 @@ export class AuthService {
     );
   }
 
-  setAdminStatus(uid: string, isAdmin: boolean): Observable<void> {
-    const userDocRef = doc(this.firestore, `users/${uid}`);
-    return from(setDoc(userDocRef, { role: isAdmin ? 'admin' : 'user' }, { merge: true }));
-  }
+
 
   login(email: string, password: string) {
     return from(signInWithEmailAndPassword(this.auth, email, password));
@@ -125,11 +126,6 @@ export class AuthService {
 
 
 
-  getUserProgress(userId: string): Observable<UserProgress> {
-    const progressRef = doc(this.firestore, `userProgress/${userId}`);
-    return docData(progressRef) as Observable<UserProgress>;
-  }
-
   initializeUserProgress(userId: string): Promise<void> {
     const progressRef = doc(this.firestore, `userProgress/${userId}`);
     const initialProgress: UserProgress = {
@@ -145,6 +141,13 @@ export class AuthService {
     };
     return setDoc(progressRef, initialProgress);
   }
+
+
+  getUserProgress(userId: string): Observable<UserProgress> {
+    const progressRef = doc(this.firestore, `userProgress/${userId}`);
+    return docData(progressRef) as Observable<UserProgress>;
+  }
+
 
   updateUserProgress(userId: string, progress: Partial<UserProgress>): Observable<any> {
     const progressRef = doc(this.firestore, `userProgress/${userId}`);
