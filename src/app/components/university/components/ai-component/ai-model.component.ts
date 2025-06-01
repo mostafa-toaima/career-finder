@@ -5,7 +5,7 @@ import { DialogModule } from 'primeng/dialog';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
-import { GeminiService } from '../../../../common/service/gemini.service';
+import { CareerAdvisorService } from '../../../../common/service/gemini.service';
 import { SafeHtmlPipe } from '../../../../common/pipes/safe-html.pipe';
 
 @Component({
@@ -22,7 +22,9 @@ export class AiModelComponent implements OnInit {
   @Output() visibleChange = new EventEmitter<boolean>();
 
   aiForm!: FormGroup;
-  geminiService = inject(GeminiService);
+  // geminiService = inject(GeminiService);
+  careerAdvisorService = inject(CareerAdvisorService);
+
   messageService = inject(MessageService);
   loadingProgress = 0;
   private loadingInterval: any;
@@ -95,7 +97,8 @@ export class AiModelComponent implements OnInit {
       department: this.data?.selectedDepartment,
     };
 
-    this.geminiService.sendFormDataToGemini(formData)
+    // this.geminiService.sendFormDataToGemini(formData)
+    this.careerAdvisorService.sendFormData(formData)
       .then((response) => {
         this.aiResponse = this.parseAiResponse(response);
         this.showResults = true;

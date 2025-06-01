@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GeminiService {
-  private genAI: GoogleGenerativeAI;
+export class CareerAdvisorService {
+  private apiKey = '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'; // Replace with your OpenRouter API Key
+  private apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
 
-  constructor() {
-    this.genAI = new GoogleGenerativeAI('AIzaSyAvSVWL2YJ3_LpG3Ke1R3AH3WaH3EWTBPc'); // 🔥 Replace with your Gemini API Key
-  }
+  constructor(private http: HttpClient) { }
 
-  async sendFormDataToGemini(formData: any): Promise<any> {
-    const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
-
+  async sendFormData(formData: any): Promise<any> {
     const prompt = `
     I am building a smart career advisor for university students. Please provide a detailed career analysis in the following exact JSON format:
 
@@ -55,22 +52,24 @@ export class GeminiService {
     - Career Goal: ${formData.goal}
 
     IMPORTANT: Return ONLY valid JSON in the specified format.
-  `;
+    `;
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.apiKey}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      model: 'mistralai/mistral-7b-instruct', // You can choose other available models
+      messages: [{ role: 'user', content: prompt }]
+    };
 
     try {
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-
-      // Return both text and parsed JSON for better error handling
-      const responseText = response.text();
-      try {
-        return JSON.parse(responseText);
-      } catch (e) {
-        // If parsing fails, return the text for manual parsing
-        return responseText;
-      }
+      const response: any = await this.http.post(this.apiUrl, body, { headers }).toPromise();
+      const content = response.choices[0].message.content;
+      return JSON.parse(content);
     } catch (error) {
-      console.error('Error calling Gemini API:', error);
+      console.error('Error communicating with OpenRouter:', error);
       throw error;
     }
   }
